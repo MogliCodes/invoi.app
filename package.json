@@ -8,6 +8,7 @@
     "postinstall": "nuxt prepare"
   },
   "devDependencies": {
+    "@nuxtjs/tailwindcss": "^6.2.0",
     "@vue/eslint-config-typescript": "^11.0.2",
     "eslint": "^8.31.0",
     "eslint-config-prettier": "^8.6.0",
