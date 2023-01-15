@@ -6,17 +6,20 @@
 </template>
 
 <script setup lang="ts">
-const user = useSupabaseUser()
-const client = useSupabaseAuthClient()
-const router = useRouter()
+const user = useSupabaseUser();
+const client = useSupabaseAuthClient();
+const router = useRouter();
 // Login method using providers
-const login = async (provider: 'github' | 'google' | 'gitlab' | 'bitbucket') => {
-  const { error } = await client.auth.signInWithOAuth({ provider, options: {
-    redirectTo: '/dashboard'
-    } })
+async function login(provider: "github" | "google" | "gitlab" | "bitbucket") {
+  const { error } = await client.auth.signInWithOAuth({
+    provider,
+    options: {
+      redirectTo: "/dashboard",
+    },
+  });
   if (error) {
-    return alert('Something went wrong !')
+    return alert("Something went wrong !");
   }
-  router.push('/dashboard')
+  router.push("/dashboard");
 }
 </script>
