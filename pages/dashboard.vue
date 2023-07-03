@@ -22,7 +22,7 @@ async function fetchUserSettings() {
     if(userData.value.length <= 0 ) {
       insertInitialUserSettings(user?.value?.id)
     } else {
-      console.log(`user exists and has id ${userData.value[0].userId}`)
+      console.log(`user exists and has id ${userData.value?.[0]?.userId}`)
     }
     return userData.value[0].userId
 }
