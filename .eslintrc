@@ -1,0 +1,28 @@
+{
+    "plugins": ["vue", "tailwindcss"],
+    "extends": [
+        "plugin:vue/vue3-recommended",
+        "@nuxtjs/eslint-config-typescript",
+        "plugin:tailwindcss/recommended",
+        "prettier",
+        "plugin:prettier/recommended"
+    ],
+    "settings": {
+        "tailwindcss": {
+            "config": "./tailwind.config.ts"
+        }
+    },
+    "rules": {
+        "prettier/prettier": "error",
+        "require-await": "off",
+        "tailwindcss/classnames-order": "error",
+        "no-console": ["warn", { "allow": ["error", "warn", "info"] }]
+    },
+    "ignorePatterns": [
+        "node_modules/",
+        ".nuxt/",
+        ".output",
+        "dist/",
+        "node-jiti/"
+    ]
+}

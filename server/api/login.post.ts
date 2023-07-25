@@ -8,6 +8,5 @@ export default defineEventHandler(async (event) => {
     }
   );
   console.log("res", res);
-  console.log("res", res);
   return { message: "HELLO" };
 });

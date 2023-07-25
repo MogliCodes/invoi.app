@@ -5,7 +5,7 @@
       <label class="block" for="username">Username</label>
       <input
         v-model="username"
-        class="block shadow-lg p-4 bg-slate-100"
+        class="block bg-slate-100 p-4 shadow-lg"
         type="text"
       />
     </div>
@@ -13,7 +13,7 @@
       <label class="block" for="password">Password</label>
       <input
         v-model="password"
-        class="block shadow-lg p-4 bg-slate-100"
+        class="block bg-slate-100 p-4 shadow-lg"
         type="password"
       />
     </div>
@@ -30,8 +30,8 @@ async function login() {
     const { data } = await useFetch("/api/login", {
       method: "POST",
       body: {
-        username: username,
-        password: password,
+        username,
+        password,
       },
     });
     console.log("data", data);
