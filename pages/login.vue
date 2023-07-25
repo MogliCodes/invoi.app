@@ -1,25 +1,42 @@
 <template>
-  <div>
+  <div class="container mx-auto">
     <h1 class="text-4xl">Login</h1>
-    <button @click="login('google', )">Login with GitHub</button>
+    <div class="mb-6">
+      <label class="block" for="username">Username</label>
+      <input
+        v-model="username"
+        class="block shadow-lg p-4 bg-slate-100"
+        type="text"
+      />
+    </div>
+    <div>
+      <label class="block" for="password">Password</label>
+      <input
+        v-model="password"
+        class="block shadow-lg p-4 bg-slate-100"
+        type="password"
+      />
+    </div>
+    <button @click="login">Login</button>
   </div>
 </template>
 
 <script setup lang="ts">
-const user = useSupabaseUser();
-const client = useSupabaseAuthClient();
-const router = useRouter();
-// Login method using providers
-async function login(provider: "github" | "google" | "gitlab" | "bitbucket") {
-  const { error } = await client.auth.signInWithOAuth({
-    provider,
-    options: {
-      redirectTo: "/dashboard",
-    },
-  });
-  if (error) {
-    return alert("Something went wrong !");
+const username = ref(null);
+const password = ref(null);
+
+async function login() {
+  try {
+    const { data } = await useFetch("/api/login", {
+      method: "POST",
+      body: {
+        username: username,
+        password: password,
+      },
+    });
+    console.log("data", data);
+  } catch (error) {
+    console.log("error", error);
   }
-  router.push("/dashboard");
 }
 </script>
