@@ -2,7 +2,7 @@
   <nuxt-link
     :is="componentType"
     :to="to"
-    class="cursor-pointer rounded bg-blue-700 px-6 py-3 text-white"
+    class="inline-block cursor-pointer rounded bg-slate-400 px-6 py-3 text-white"
   >
     {{ props.text }}
   </nuxt-link>
