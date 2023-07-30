@@ -8,7 +8,7 @@
 
 <script setup lang="ts">
 interface Props {
-  type: "h1" | "h2";
+  type: "h1" | "h2" | "h3";
   text: string;
 }
 const props = withDefaults(defineProps<Props>(), {

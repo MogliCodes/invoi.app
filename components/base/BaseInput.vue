@@ -1,16 +1,16 @@
 <template>
-  <input class="rounded border-2 p-2" type="text" @input="updateValue" />
+  <input class="rounded border-2 p-2" :type="props.type" @input="updateValue" />
 </template>
 
 <script setup lang="ts">
 type Props = {
-  modelValue: String;
+  modelValue?: String;
+  type: "text" | "file" | "date" | "password";
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const props = defineProps<Props>();
 const emit = defineEmits(["update:modelValue"]);
-const updateValue = (event) => {
+const updateValue = (event: any) => {
   emit("update:modelValue", event.target.value);
 };
 </script>
