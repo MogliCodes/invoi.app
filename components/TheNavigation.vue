@@ -16,6 +16,11 @@
           >Clients</nuxt-link
         >
       </li>
+      <li class="inline-block">
+        <nuxt-link class="inline-block py-2 pr-8 text-white" to="/invoice"
+          >Invoices</nuxt-link
+        >
+      </li>
     </ul>
   </nav>
 </template>
