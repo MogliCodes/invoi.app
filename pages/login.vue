@@ -20,6 +20,9 @@
 <script setup lang="ts">
 import BaseInput from "~/components/base/BaseInput.vue";
 import BaseButton from "~/components/base/BaseButton.vue";
+import { useAuthStore } from "~/stores/auth.store";
+
+const authStore = useAuthStore();
 
 const username = ref(null);
 const email = ref(null);
@@ -35,9 +38,11 @@ async function login() {
         password,
       },
     });
-    console.log("data", data);
+    authStore.setAccessToken(data.value);
+    authStore.setUserLoggedIn(true);
+    navigateTo("/dashboard");
   } catch (error) {
-    console.log("error", error);
+    console.error("error", error);
   }
 }
 </script>

@@ -2,6 +2,10 @@
   <div class="container mx-auto">
     <BaseHeadline class="mb-8" text="Sign up a for a free account" type="h1" />
     <div class="mb-3">
+      <label class="block" for="username">Username</label>
+      <BaseInput v-model="username" />
+    </div>
+    <div class="mb-3">
       <label class="block" for="username">E-Mail</label>
       <BaseInput v-model="email" />
     </div>
@@ -14,6 +18,7 @@
 </template>
 
 <script setup lang="ts">
+const username = ref(null);
 const email = ref(null);
 const password = ref(null);
 
@@ -22,6 +27,7 @@ async function register() {
     const { data } = await useFetch("/api/register", {
       method: "POST",
       body: {
+        username,
         email,
         password,
       },
