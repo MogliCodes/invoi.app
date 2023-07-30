@@ -1,5 +1,9 @@
 <template>
-  <input class="rounded border-2 p-2" :type="props.type" @input="updateValue" />
+  <input
+    class="rounded border-2 p-2 text-slate-950"
+    :type="props.type"
+    @input="updateValue"
+  />
 </template>
 
 <script setup lang="ts">
