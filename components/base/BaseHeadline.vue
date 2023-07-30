@@ -1,8 +1,10 @@
 <template>
   <div>
-    <component :is="props.type" :class="{ 'text-4xl': props.type === 'h1' }">{{
-      text
-    }}</component>
+    <component
+      :is="props.type"
+      :class="{ 'text-5xl font-bold': props.type === 'h1' }"
+      >{{ text }}</component
+    >
   </div>
 </template>
 

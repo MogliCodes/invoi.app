@@ -1,5 +1,5 @@
 <template>
   <div class="container mx-auto">
-    <h1 class="text-4xl">Dashboard</h1>
+    <BaseHeadline text="Dashboard" type="h1" />
   </div>
 </template>
