@@ -5,5 +5,5 @@ export default defineEventHandler(async (event) => {
     body,
   });
 
-  return res.token;
+  return res;
 });

@@ -1,17 +1,21 @@
 <template>
-  <div class="container mx-auto">
-    <div class="flex gap-8">
-      <div>
-        <h1 class="mb-6 text-4xl">Login</h1>
-        <div class="mb-3">
-          <label class="block" for="username">Username</label>
-          <BaseInput v-model="username" />
+  <div class="flex h-full items-center">
+    <div class="container mx-auto">
+      <div class="flex justify-center gap-8">
+        <div
+          class="rounded border border-white border-opacity-30 bg-white bg-opacity-5 p-8"
+        >
+          <h1 class="mb-6 text-4xl">Login</h1>
+          <div class="mb-3">
+            <label class="block" for="username">Username</label>
+            <BaseInput v-model="username" type="text" />
+          </div>
+          <div class="mb-3">
+            <label class="block" for="password">Password</label>
+            <BaseInput v-model="password" type="password" />
+          </div>
+          <BaseButton variant="yellow" text="Login" @click="login" />
         </div>
-        <div class="mb-3">
-          <label class="block" for="password">Password</label>
-          <BaseInput v-model="password" />
-        </div>
-        <BaseButton text="Login" @click="login" />
       </div>
     </div>
   </div>
@@ -21,6 +25,10 @@
 import BaseInput from "~/components/base/BaseInput.vue";
 import BaseButton from "~/components/base/BaseButton.vue";
 import { useAuthStore } from "~/stores/auth.store";
+
+definePageMeta({
+  layout: "public",
+});
 
 const authStore = useAuthStore();
 
@@ -38,7 +46,8 @@ async function login() {
         password,
       },
     });
-    authStore.setAccessToken(data.value);
+    authStore.setAccessToken(data.value.token);
+    authStore.setUserId(data.value.id);
     authStore.setUserLoggedIn(true);
     navigateTo("/dashboard");
   } catch (error) {
