@@ -2,7 +2,11 @@
   <nuxt-link
     :is="componentType"
     :to="to"
-    class="inline-block cursor-pointer rounded bg-slate-400 px-6 py-3 text-white"
+    class="inline-block cursor-pointer rounded-lg px-6 py-3"
+    :class="{
+      'bg-yellow-normal text-yellow-dark': props.variant === 'yellow',
+      border: props.variant === 'outline',
+    }"
   >
     {{ props.text }}
   </nuxt-link>
@@ -12,6 +16,7 @@
 type Props = {
   text: string;
   to?: string;
+  variant: "yellow" | "outline";
 };
 
 const componentType = computed<String>(() => {
