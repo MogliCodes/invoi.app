@@ -22,7 +22,7 @@
 </template>
 
 <script setup lang="ts">
-import BaseInput from "~/components/base/BaseInput.vue";
+import BaseInput from "~/components/BaseInput/BaseInput.vue";
 import BaseButton from "~/components/base/BaseButton.vue";
 import { useAuthStore } from "~/stores/auth.store";
 

@@ -1,5 +1,5 @@
 <template>
-  <header class="mb-8 bg-slate-900 py-2">
+  <header class="bg-slate-900 mb-8 py-2">
     <div class="container mx-auto flex justify-between">
       <div class="flex gap-16">
         <nuxt-link to="/" class="flex items-center">invoi.app</nuxt-link>
