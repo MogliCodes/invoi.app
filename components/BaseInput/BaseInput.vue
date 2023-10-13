@@ -8,11 +8,14 @@
 
 <script setup lang="ts">
 type Props = {
-  modelValue?: String;
-  type: "text" | "file" | "date" | "password";
+  modelValue?: string;
+  type?: "text" | "file" | "date" | "password";
 };
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+  modelValue: "",
+  type: "text",
+});
 const emit = defineEmits(["update:modelValue"]);
 const updateValue = (event: any) => {
   emit("update:modelValue", event.target.value);

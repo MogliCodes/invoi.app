@@ -16,7 +16,7 @@
 type Props = {
   text: string;
   to?: string;
-  variant: "yellow" | "outline";
+  variant?: "yellow" | "outline";
 };
 
 const componentType = computed<string>(() => {
@@ -25,5 +25,6 @@ const componentType = computed<string>(() => {
 
 const props = withDefaults(defineProps<Props>(), {
   to: "",
+  variant: "yellow",
 });
 </script>
