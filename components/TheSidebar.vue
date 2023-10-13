@@ -15,6 +15,14 @@
         </li>
         <li class="block">
           <nuxt-link
+            to="/contacts"
+            class="block p-4 text-white"
+            active-class="bg-yellow-normal text-yellow-dark"
+            >Contacts</nuxt-link
+          >
+        </li>
+        <li class="block">
+          <nuxt-link
             to="/clients"
             class="block p-4 text-white"
             active-class="bg-yellow-normal text-yellow-dark"

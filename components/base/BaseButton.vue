@@ -19,7 +19,7 @@ type Props = {
   variant: "yellow" | "outline";
 };
 
-const componentType = computed<String>(() => {
+const componentType = computed<string>(() => {
   return props.to ? "NuxtLink" : "button";
 });
 
