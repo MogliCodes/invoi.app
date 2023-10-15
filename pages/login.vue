@@ -49,6 +49,10 @@ async function login() {
     authStore.setAccessToken(data.value.token);
     authStore.setUserId(data.value.id);
     authStore.setUserLoggedIn(true);
+    const accessToken = useCookie("accessToken");
+    accessToken.value = data.value.token;
+    const userId = useCookie("userId");
+    userId.value = data.value.id;
     navigateTo("/dashboard");
   } catch (error) {
     console.error("error", error);
