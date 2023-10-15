@@ -11,4 +11,12 @@
 import { useAuthStore } from "~/stores/auth.store";
 
 const authStore = useAuthStore();
+const accessToken = useCookie("accessToken");
+const userId = useCookie("userId");
+
+if (accessToken.value) {
+  authStore.setAccessToken(accessToken.value);
+  authStore.setUserId(userId.value);
+  authStore.setUserLoggedIn(true);
+}
 </script>
