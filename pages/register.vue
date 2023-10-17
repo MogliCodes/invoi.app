@@ -12,7 +12,7 @@
           type="h1"
         />
         <div
-          class="rounded border border-white border-opacity-30 bg-white bg-opacity-5 p-8"
+          class="border-2-white border-2-opacity-30 rounded border-2 bg-white bg-opacity-5 p-8"
         >
           <div class="mb-3">
             <label class="block" for="username">Username</label>
@@ -69,6 +69,7 @@ async function register() {
         password,
       },
     });
+    console.log(data);
     if (error.value) {
       const { statusCode, statusMessage, data } = error.value;
       // eslint-disable-next-line no-console

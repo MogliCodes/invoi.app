@@ -2,11 +2,8 @@
   <nuxt-link
     :is="componentType"
     :to="to"
-    class="inline-block cursor-pointer rounded-lg px-6 py-3"
-    :class="{
-      'bg-yellow-normal text-yellow-dark': props.variant === 'yellow',
-      border: props.variant === 'outline',
-    }"
+    class="inline-block cursor-pointer rounded-full px-6 py-3 font-medium"
+    :class="buttonClasses"
   >
     {{ props.text }}
   </nuxt-link>
@@ -16,7 +13,7 @@
 type Props = {
   text: string;
   to?: string;
-  variant?: "yellow" | "outline";
+  variant?: "yellow" | "secondary" | "outline";
 };
 
 const componentType = computed<string>(() => {
@@ -27,4 +24,12 @@ const props = withDefaults(defineProps<Props>(), {
   to: "",
   variant: "yellow",
 });
+
+const STYLE_MAPS = {
+  yellow: "bg-yellow-normal text-yellow-dark",
+  outline: "bg-yellow-normal text-yellow-dark",
+  secondary: "bg-secondary-100 text-white",
+};
+
+const buttonClasses = STYLE_MAPS[props.variant];
 </script>

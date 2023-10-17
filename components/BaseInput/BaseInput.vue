@@ -1,6 +1,6 @@
 <template>
   <input
-    class="rounded border-2 p-2 text-yellow-dark"
+    class="border-2-2 rounded p-2 text-yellow-dark"
     :type="props.type"
     @input="updateValue"
   />
