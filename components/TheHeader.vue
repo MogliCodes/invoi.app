@@ -1,5 +1,5 @@
 <template>
-  <header class="bg-slate-900 mb-8 py-2">
+  <header class="mb-8 bg-slate-900 py-2">
     <div class="container mx-auto flex justify-between">
       <div class="flex gap-16">
         <nuxt-link to="/" class="flex items-center">invoi.app</nuxt-link>
@@ -8,13 +8,13 @@
       <NuxtLink
         v-if="!authStore.isUserLoggedIn"
         to="/login"
-        class="rounded border border-white p-2 px-4 text-white"
+        class="border-2-white rounded border-2 p-2 px-4 text-white"
         >Login</NuxtLink
       >
       <NuxtLink
         v-if="authStore.isUserLoggedIn"
         to="/logout"
-        class="rounded border border-white p-2 px-4 text-white"
+        class="border-2-white rounded border-2 p-2 px-4 text-white"
         >Logout</NuxtLink
       >
     </div>

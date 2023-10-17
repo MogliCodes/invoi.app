@@ -1,7 +1,7 @@
 <template>
-  <div class="flex">
+  <div class="flex flex-col sm:flex-row">
     <TheSidebar v-if="authStore.isUserLoggedIn" />
-    <main class="w-full p-12">
+    <main class="w-full bg-white p-12">
       <slot />
     </main>
   </div>

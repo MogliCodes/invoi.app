@@ -2,7 +2,7 @@
   <div>
     <component
       :is="props.type"
-      :class="{ 'text-5xl font-bold': props.type === 'h1' }"
+      :class="{ 'font-syne text-5xl font-extrabold': props.type === 'h1' }"
       >{{ text }}</component
     >
   </div>

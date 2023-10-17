@@ -1,8 +1,8 @@
 <template>
-  <div class="w-1/3 rounded border p-4">
-    <span class="text-xl font-bold">{{ props.client.company }}</span
+  <div class="w-1/3 rounded border-2 p-4">
+    <span class="text-xl font-bold">{{ props.client?.company }}</span
     ><br />
-    <span>{{ props.client.street }}</span
+    <span>{{ props.client?.street }}</span
     ><br />
     <pre>{{ props.client }}</pre>
   </div>
