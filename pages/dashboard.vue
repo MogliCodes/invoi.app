@@ -1,7 +1,7 @@
 <template>
   <div class="w-full">
     <BaseHeadline class="mb-8" :text="welcomeMessage" type="h1" />
-    <div class="border-2 p-4">
+    <div class="border-2-2 p-4">
       <pre>{{ data }}</pre>
     </div>
   </div>

@@ -3,7 +3,7 @@
     <div class="container mx-auto">
       <div class="flex justify-center gap-8">
         <div
-          class="rounded border border-white border-opacity-30 bg-white bg-opacity-5 p-8"
+          class="border-2-white border-2-opacity-30 rounded border-2 bg-white bg-opacity-5 p-8"
         >
           <h1 class="mb-6 text-4xl">Login</h1>
           <div class="mb-3">

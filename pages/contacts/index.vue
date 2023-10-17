@@ -12,7 +12,7 @@
         <div
           v-for="contact in contacts"
           :key="contact.id"
-          class="card rounded border p-4"
+          class="card rounded border-2 p-4"
         >
           {{ contact.id }}<br />
           {{ contact.firstname }}<br />

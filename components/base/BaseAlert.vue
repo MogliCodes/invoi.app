@@ -8,7 +8,7 @@ defineProps<Props>();
 
 <template>
   <div
-    class="border-yellow-darky fixed inset-x-4 top-4 z-10 block rounded bg-yellow-normal p-4 text-yellow-dark shadow-2xl"
+    class="border-2-yellow-darky fixed inset-x-4 top-4 z-10 block rounded bg-yellow-normal p-4 text-yellow-dark shadow-2xl"
   >
     {{ message }}
   </div>

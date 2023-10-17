@@ -1,14 +1,14 @@
 <template>
-  <aside class="w-1/6 bg-blue-dark p-12">
-    <div class="mb-12">
-      <span class="text-gray-500 text-xl font-bold">Invoi.app</span>
+  <aside class="flex flex-row bg-blue-dark p-12 sm:w-1/6 sm:flex-col">
+    <div class="sm:mb-12">
+      <span class="text-xl font-bold text-white">Invoi.app</span>
     </div>
     <nav>
-      <ul class="block">
-        <li class="block">
+      <ul class="flex items-center sm:block">
+        <li class="inline-block sm:block">
           <nuxt-link
             to="/dashboard"
-            class="block p-4 text-white"
+            class="inline-block p-4 text-white sm:block"
             active-class="bg-yellow-normal text-yellow-dark"
             >Dashboard</nuxt-link
           >
