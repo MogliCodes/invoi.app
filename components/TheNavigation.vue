@@ -1,7 +1,7 @@
 <template>
   <nav>
     <ul>
-      <li class="inline-block">
+      <li class="inline-block rounded">
         <nuxt-link
           class="mr-8 inline-block py-2 font-bold text-white"
           :class="{

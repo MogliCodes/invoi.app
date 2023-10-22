@@ -1,7 +1,7 @@
 <template>
   <div class="container mx-auto">
-    <div class="mb-8">
-      <BaseHeadline class="mb-20" type="h1" text="My invoices" />
+    <div class="mb-12">
+      <BaseHeadline class="mb-4" type="h1" text="My invoices" />
       <BaseButtonGroup>
         <BaseButton
           variant="yellow"
