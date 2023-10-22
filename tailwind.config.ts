@@ -1,18 +1,22 @@
 export default {
+  content: [
+    "./index.html",
+    "./components/**/*.{vue,js,ts}",
+    "./components/**/*.stories.ts",
+    "./.storybook/**/*.{ts,mdx}",
+  ],
   theme: {
-    extend: {
-      colors: {
-        white: "#ffffff",
-        yellow: {
-          normal: "#F9DC5C",
-          dark: "#3B3416",
-        },
-        blue: {
-          dark: "#020C2A",
-        },
-        secondary: {
-          "100": "#3836BA",
-        },
+    colors: {
+      white: "#ffffff",
+      yellow: {
+        110: "#FFC200",
+        normal: "#F9DC5C",
+        dark: "#3B3416",
+      },
+      blue: {
+        100: "#0B0B30",
+        90: "#1B1B3E",
+        80: "#26264D",
       },
     },
     fontFamily: {
