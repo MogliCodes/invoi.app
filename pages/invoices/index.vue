@@ -15,9 +15,14 @@
         />
       </BaseButtonGroup>
     </div>
+    <div class="mb-2">
+      <span class="text-secondary-100 text-sm font-bold"
+        >{{ invoices.length }} Invoices</span
+      >
+    </div>
     <table class="w-full">
       <thead
-        class="border-x-2 border-t-2 border-yellow-dark bg-yellow-dark text-yellow-normal"
+        class="border-x-2 border-t-2 border-yellow-dark bg-blue-80 text-white"
       >
         <th class="px-6 py-3 text-left">Rechnungsnummer</th>
         <th class="px-6 py-3 text-left">Title</th>

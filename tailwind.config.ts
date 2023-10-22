@@ -7,6 +7,9 @@ export default {
   ],
   theme: {
     colors: {
+      secondary: {
+        100: "#3836BA",
+      },
       white: "#ffffff",
       yellow: {
         110: "#FFC200",
