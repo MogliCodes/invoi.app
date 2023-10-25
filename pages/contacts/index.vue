@@ -9,13 +9,16 @@
       />
     </div>
     <div class="w-full">
-      <div v-if="!contacts.length" class="flex flex-col items-start gap-4">
+      <div
+        v-if="!contacts && !contacts?.length"
+        class="flex flex-col items-start gap-4"
+      >
         <p>No contacts created yet! Start creating your first contact.</p>
       </div>
       <div>
         <div class="mb-2">
           <span class="text-secondary-100 text-sm font-bold"
-            >{{ contacts.length }} Contacts</span
+            >{{ contacts?.length }} Contacts</span
           >
         </div>
         <table class="w-full">
