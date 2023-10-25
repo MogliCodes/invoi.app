@@ -1,8 +1,42 @@
 <template>
   <div class="w-full">
     <BaseHeadline class="mb-8" :text="welcomeMessage" type="h1" />
-    <div class="border-2-2 p-4">
-      <pre>{{ data }}</pre>
+    <div class="grid grid-cols-3 gap-8">
+      <div class="bg-blue-100 rounded-xl p-10 text-white text-center">
+        <span
+          class="font-bold text-yellow-normal text-5xl font-syne block mb-2"
+          >{{ contactCount }}</span
+        >
+        <span>Contacts</span>
+      </div>
+      <div class="bg-blue-100 rounded-xl p-10 text-white text-center">
+        <span
+          class="font-bold text-yellow-normal text-5xl font-syne block mb-2"
+          >{{ invoiceCount }}</span
+        >
+        <span>Invoices</span>
+      </div>
+      <div class="bg-blue-100 rounded-xl p-10 text-white text-center">
+        <span
+          class="font-bold text-yellow-normal text-5xl font-syne block mb-2"
+          >{{ clientCount }}</span
+        >
+        <span>Clients</span>
+      </div>
+      <div>
+        <div class="bg-secondary-100 rounded-2xl p-10 text-white">Revenues</div>
+      </div>
+    </div>
+
+    <div class="mt-10">
+      <div class="bg-blue-80 text-white rounded-xl p-10">
+        <code>
+          <pre>
+          {{ data }}
+        </pre
+          >
+        </code>
+      </div>
     </div>
   </div>
 </template>
@@ -22,6 +56,36 @@ const { data } = useFetch<UserData>(
   {
     headers: {
       Authorization: `Bearer ${authStore.accessToken}`,
+    },
+  }
+);
+
+const { data: contactCount } = useFetch(
+  `http://localhost:8000/api/contact/count`,
+  {
+    headers: {
+      Authorization: `Bearer ${authStore.accessToken}`,
+      ClientId: authStore.userId,
+    },
+  }
+);
+
+const { data: invoiceCount } = useFetch(
+  `http://localhost:8000/api/invoice/count`,
+  {
+    headers: {
+      Authorization: `Bearer ${authStore.accessToken}`,
+      ClientId: authStore.userId,
+    },
+  }
+);
+
+const { data: clientCount } = useFetch(
+  `http://localhost:8000/api/client/count`,
+  {
+    headers: {
+      Authorization: `Bearer ${authStore.accessToken}`,
+      ClientId: authStore.userId,
     },
   }
 );

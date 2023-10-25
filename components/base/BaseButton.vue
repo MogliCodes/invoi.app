@@ -1,18 +1,20 @@
 <template>
-  <nuxt-link
+  <component
     :is="componentType"
     :to="to"
     class="inline-block cursor-pointer rounded-full px-6 py-3 font-medium"
     :class="buttonClasses"
   >
     {{ props.text }}
-  </nuxt-link>
+    {{ !!props.to }}
+  </component>
 </template>
 
 <script setup lang="ts">
 type Props = {
   text: string;
   to?: string;
+  type?: "submit";
   variant?: "yellow" | "secondary" | "outline";
 };
 
