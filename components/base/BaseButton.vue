@@ -6,11 +6,12 @@
     :class="buttonClasses"
   >
     {{ props.text }}
-    {{ !!props.to }}
   </component>
 </template>
 
 <script setup lang="ts">
+import { ConcreteComponent } from "vue";
+
 type Props = {
   text: string;
   to?: string;
@@ -18,8 +19,10 @@ type Props = {
   variant?: "yellow" | "secondary" | "outline";
 };
 
-const componentType = computed<string>(() => {
-  return props.to ? "NuxtLink" : "button";
+const NuxtLink = resolveComponent("NuxtLink");
+
+const componentType = computed<ConcreteComponent | string>(() => {
+  return props.to ? NuxtLink : "button";
 });
 
 const props = withDefaults(defineProps<Props>(), {
