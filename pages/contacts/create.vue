@@ -39,6 +39,7 @@ import { useAuthStore } from "~/stores/auth.store";
 
 const authStore = useAuthStore();
 const userId = authStore.userId;
+const accessToken = authStore.accessToken;
 const firstname: Ref<string> = ref("");
 const lastname: Ref<string> = ref("");
 const dob: Ref<string> = ref("");
@@ -59,9 +60,13 @@ const contact = computed(() => {
 });
 async function createContact() {
   try {
-    const { data, error } = await useFetch("/api/contacts", {
+    const { data, error } = await $fetch("/api/contacts", {
       method: "POST",
       body: contact.value,
+      credentials: "include",
+      headers: {
+        authorization: `Bearer ${accessToken}`,
+      },
     });
     console.log(data);
     if (error.value) {
