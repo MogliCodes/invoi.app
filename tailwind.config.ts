@@ -16,6 +16,10 @@ export default {
         normal: "#F9DC5C",
         dark: "#3B3416",
       },
+      green: {
+        100: "#1A4530",
+        50: "#56E39F",
+      },
       blue: {
         100: "#0B0B30",
         90: "#1B1B3E",

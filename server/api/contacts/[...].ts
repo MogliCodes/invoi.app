@@ -19,6 +19,7 @@ async function createContact(event: H3Event) {
       authorization: cookies.accessToken,
     },
   });
+
   return res;
 }
 

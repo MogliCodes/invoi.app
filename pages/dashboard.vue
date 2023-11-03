@@ -24,17 +24,27 @@
         <span>Clients</span>
       </div>
       <div>
-        <div class="bg-secondary-100 rounded-2xl p-10 text-white">Revenues</div>
+        <div class="bg-secondary-100 rounded-2xl p-10 text-white font-bold">
+          Revenues
+        </div>
+      </div>
+      <div>
+        <div class="bg-secondary-100 rounded-2xl p-10 text-white font-bold">
+          Taxes
+        </div>
+      </div>
+      <div>
+        <div class="bg-secondary-100 rounded-2xl p-10 text-white font-bold">
+          Spendings
+        </div>
       </div>
     </div>
 
     <div class="mt-10">
       <div class="bg-blue-80 text-white rounded-xl p-10">
+        <p class="font-bold mb-4">User Data:</p>
         <code>
-          <pre>
-          {{ data }}
-        </pre
-          >
+          <pre>{{ data }}</pre>
         </code>
       </div>
     </div>

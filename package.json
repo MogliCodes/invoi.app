@@ -44,7 +44,10 @@
     ]
   },
   "dependencies": {
+    "@headlessui/vue": "^1.7.16",
+    "@heroicons/vue": "^2.0.18",
     "@pinia/nuxt": "^0.4.11",
-    "pinia": "^2.1.6"
+    "pinia": "^2.1.6",
+    "solid": "link:@heroicons/vue/20/solid"
   }
 }

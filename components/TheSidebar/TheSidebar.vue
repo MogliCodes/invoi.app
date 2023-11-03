@@ -1,7 +1,7 @@
 <template>
   <aside class="flex flex-row bg-blue-dark-100 px-6 py-12 sm:w-1/6 sm:flex-col">
     <div class="sm:mb-12 ml-6">
-      <span class="text-xl font-bold text-white">Invoi.app</span>
+      <span class="text-md font-extrabold text-white font-syne">invoi.app</span>
     </div>
     <nav>
       <ul class="flex items-center sm:block">

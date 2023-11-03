@@ -32,6 +32,7 @@
         </form>
       </div>
     </div>
+    <BaseNotification v-if="showNotification" :message="notificationMessage" />
   </div>
 </template>
 <script setup lang="ts">
@@ -58,9 +59,12 @@ const contact = computed(() => {
     user: userId,
   };
 });
+
+const showNotification = ref(false);
+const notificationMessage = ref("");
 async function createContact() {
   try {
-    const { data, error } = await $fetch("/api/contacts", {
+    const res = await $fetch("/api/contacts", {
       method: "POST",
       body: contact.value,
       credentials: "include",
@@ -68,12 +72,16 @@ async function createContact() {
         authorization: `Bearer ${accessToken}`,
       },
     });
-    console.log(data);
-    if (error.value) {
-      const { statusCode, statusMessage, data } = error.value;
-      // eslint-disable-next-line no-console
-      console.log(statusCode, statusMessage, data);
+
+    if (res.status === 201) {
+      showNotification.value = true;
+      notificationMessage.value = res.message;
+      setTimeout(() => {
+        showNotification.value = false;
+      }, 5000);
+      navigateTo("/contacts");
     }
+    console.log(res);
   } catch (error) {
     console.error(error);
   }
