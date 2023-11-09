@@ -17,32 +17,41 @@
     </div>
     <div v-if="invoices && invoices.length">
       <div class="mb-2">
-        <span class="text-secondary-100 text-sm font-bold"
-          >{{ invoices?.length }} Invoices</span
+        <span class="text-sm font-bold text-secondary-100">{{
+          invoices?.length
+        }}</span>
+        <span class="text-sm font-bold text-secondary-100"> of </span>
+        <span
+          class="text-sm font-bold text-secondary-100"
+          v-if="invoiceCount"
+          >{{ invoiceCount }}</span
         >
+        <span class="text-sm font-bold text-secondary-100"> Invoices</span>
       </div>
-      <table class="w-full">
-        <thead
-          class="border-x-2 border-t-2 border-yellow-dark bg-blue-80 text-white"
-        >
-          <th class="px-6 py-3 text-left">Rechnungsnummer</th>
-          <th class="px-6 py-3 text-left">Title</th>
-          <th class="px-6 py-3 text-left">Client</th>
-          <th class="px-6 py-3 text-left">Date</th>
-          <th class="px-6 py-3 text-left">Netto</th>
-          <th class="px-6 py-3 text-left">Mwst.</th>
-          <th class="px-6 py-3 text-left">Brutto</th>
+      <table class="w-full overflow-hidden rounded-lg">
+        <thead class="border-x-2 border-t-2 bg-blue-80 text-white">
+          <tr>
+            <th class="px-6 py-5 text-left">Rechnungsnummer</th>
+            <th class="px-6 py-5 text-left">Title</th>
+            <th class="px-6 py-5 text-left">Client</th>
+            <th class="px-6 py-5 text-left">Date</th>
+            <th class="px-6 py-5 text-left">Netto</th>
+            <th class="px-6 py-5 text-left">Mwst.</th>
+            <th class="px-6 py-5 text-left">Brutto</th>
+          </tr>
         </thead>
         <tbody>
           <tr
             v-for="invoice in invoices"
             :key="invoice?._id"
-            class="card rounded border-2 p-4"
+            class="card rounded border-2 p-4 odd:bg-white even:bg-[rgba(0,0,0,0.05)]"
           >
-            <td class="px-6 py-3">{{ invoice?.nr }}</td>
-            <td class="px-6 py-3">{{ invoice.title }}</td>
-            <td class="px-6 py-3">{{ invoice.client }}</td>
-            <td class="px-6 py-3">
+            <td class="border-r-2 px-6 py-3">
+              {{ invoice?.nr }}
+            </td>
+            <td class="border-r-2 px-6 py-3">{{ invoice.title }}</td>
+            <td class="border-r-2 px-6 py-3">{{ invoice.client }}</td>
+            <td class="border-r-2 px-6 py-3">
               {{
                 new Date(invoice.date)
                   .toLocaleDateString("en-GB", {
@@ -54,9 +63,9 @@
                   .join(".")
               }}
             </td>
-            <td class="px-6 py-3">{{ invoice.total }}</td>
-            <td class="px-6 py-3">{{ invoice.taxes }}</td>
-            <td class="px-6 py-3">{{ invoice.totalWithTaxes }}</td>
+            <td class="border-r-2 px-6 py-3">{{ invoice.total }}</td>
+            <td class="border-r-2 px-6 py-3">{{ invoice.taxes }}</td>
+            <td class="border-r-2 px-6 py-3">{{ invoice.totalWithTaxes }}</td>
           </tr>
         </tbody>
       </table>
@@ -80,6 +89,15 @@ type Invoice = {
 
 const { data: invoices } = useFetch<Invoice[]>(
   `http://localhost:8000/api/invoice`,
+  {
+    headers: {
+      Authorization: `Bearer ${authStore.accessToken}`,
+    },
+  }
+);
+
+const { data: invoiceCount } = useFetch<Invoice[]>(
+  `http://localhost:8000/api/invoice/count`,
   {
     headers: {
       Authorization: `Bearer ${authStore.accessToken}`,

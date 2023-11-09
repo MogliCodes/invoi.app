@@ -1,9 +1,10 @@
 <template>
-  <div>
+  <div class="container mx-auto">
     <BaseHeadline class="mb-8" type="h1" text="Create contact" />
     <div class="flex">
-      <div class="w-1/2 rounded-lg bg-gray-light p-10">
+      <div class="w-1/2 rounded-lg bg-white p-10">
         <form @submit.prevent="createContact">
+          <h3 class="font-bold text-2xl mb-8">Contact base information</h3>
           <div class="mb-3">
             <label class="block" for="username">First name</label>
             <BaseInput v-model="firstname" />
@@ -37,8 +38,10 @@
 </template>
 <script setup lang="ts">
 import { useAuthStore } from "~/stores/auth.store";
+import { useAlertStore } from "~/stores/alert";
 
 const authStore = useAuthStore();
+const alertStore = useAlertStore();
 const userId = authStore.userId;
 const accessToken = authStore.accessToken;
 const firstname: Ref<string> = ref("");
@@ -74,10 +77,9 @@ async function createContact() {
     });
 
     if (res.status === 201) {
-      showNotification.value = true;
-      notificationMessage.value = res.message;
+      alertStore.setAlert("success", res.message);
       setTimeout(() => {
-        showNotification.value = false;
+        alertStore.resetAlert();
       }, 5000);
       navigateTo("/contacts");
     }

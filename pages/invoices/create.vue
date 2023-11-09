@@ -8,62 +8,29 @@
       <div>
         <label for="">Client</label>
       </div>
-      <div class="border-2">
-        <Listbox v-if="clients" v-model="selectedClient">
-          <div class="relative mt-1">
-            <ListboxButton
-              class="relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm"
+      <div v-if="selectedClient" class="border-2 mb-4 p-2">
+        <Listbox v-model="selectedClient.company">
+          <ListboxButton>{{ selectedClient.company }}</ListboxButton>
+          <ListboxOptions>
+            <!-- Use the `active` state to conditionally style the active option. -->
+            <!-- Use the `selected` state to conditionally style the selected option. -->
+            <ListboxOption
+              v-for="client in clients"
+              :key="client.company"
+              :value="client.company"
+              as="template"
+              v-slot="{ active, selected }"
             >
-              <span class="block truncate">{{ selectedClient?.company }}</span>
-              <span
-                class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2"
+              <li
+                :class="{
+                  'bg-blue-500': active,
+                  'bg-white text-black': !active,
+                }"
               >
-                <ChevronUpDownIcon
-                  class="h-5 w-5 text-gray-400"
-                  aria-hidden="true"
-                />
-              </span>
-            </ListboxButton>
-
-            <transition
-              leave-active-class="transition duration-100 ease-in"
-              leave-from-class="opacity-100"
-              leave-to-class="opacity-0"
-            >
-              <ListboxOptions
-                class="ring-black/5 absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 focus:outline-none sm:text-sm"
-              >
-                <ListboxOption
-                  v-for="client in clients"
-                  v-slot="{ active, selected }"
-                  :key="client?.company"
-                  :value="client?.company"
-                  as="template"
-                >
-                  <li
-                    :class="[
-                      active ? 'bg-amber-100 text-amber-900' : 'text-gray-900',
-                      'relative cursor-default select-none py-2 pl-10 pr-4',
-                    ]"
-                  >
-                    <span
-                      :class="[
-                        selected ? 'font-medium' : 'font-normal',
-                        'block truncate',
-                      ]"
-                      >{{ person.name }}</span
-                    >
-                    <span
-                      v-if="selected"
-                      class="absolute inset-y-0 left-0 flex items-center pl-3 text-amber-600"
-                    >
-                      <CheckIcon class="h-5 w-5" aria-hidden="true" />
-                    </span>
-                  </li>
-                </ListboxOption>
-              </ListboxOptions>
-            </transition>
-          </div>
+                {{ client.company }}
+              </li>
+            </ListboxOption>
+          </ListboxOptions>
         </Listbox>
       </div>
     </div>
@@ -89,22 +56,34 @@
           <td class="px-6 py-3">
             <input v-model="row.description" type="text" />
           </td>
-          <td class="px-6 py-3">{{ row.position }}</td>
-          <td class="px-6 py-3">{{ row.position }}</td>
-          <td class="px-6 py-3">{{ row.position }}</td>
+          <td class="px-6 py-3">{{ row.hours }}</td>
+          <td class="px-6 py-3">{{ row.factor }}</td>
+          <td class="px-6 py-3"><input v-model="row.total" type="number" /></td>
         </tr>
       </tbody>
-      <tfoot
-        class="border-x-2 border-t-2 border-yellow-dark bg-blue-80 text-white"
-      >
-        <tr>
-          <td colspan="3" class="px-6 py-3">test</td>
-          <td class="px-6 py-3">test</td>
-          <td class="px-6 py-3">test</td>
+      <tfoot class="border-x-2 border-t-2 border-yellow-dark">
+        <tr class="bg-gray-dark text-white">
+          <td colspan="4" class="px-6 py-3">Gesamt</td>
+          <td class="px-6 py-3">
+            <span>{{ totalAmount }} €</span>
+          </td>
+        </tr>
+        <tr class="bg-gray-dark text-white">
+          <td colspan="4" class="px-6 py-3">Mwst.</td>
+          <td class="px-6 py-3">
+            <span>{{ taxes }} €</span>
+          </td>
+        </tr>
+        <tr class="bg-blue-80 text-white">
+          <td colspan="4" class="px-6 py-3">
+            <span class="font-bold">Brutto-Rechnungssumme</span>
+          </td>
+          <td class="px-6 py-3">
+            <span>{{ totalWithTaxes }} €</span>
+          </td>
         </tr>
       </tfoot>
     </table>
-    {{ clients }}
   </div>
 </template>
 
@@ -130,9 +109,27 @@ const { data: clients } = useFetch(`http://localhost:8000/api/client`, {
   },
 });
 const selectedClient = ref(clients?.value?.[0]);
+
 const rows = ref([
   { position: 1, description: "description", hours: 0, factor: 0, total: 0 },
 ]);
+
+const totalAmount = computed(() => {
+  return rows.value.reduce(
+    (accumulator, currentItem) => accumulator + currentItem.total,
+    0
+  );
+});
+
+const hasTaxes: Ref<boolean> = ref(true);
+
+const taxes = computed(() => {
+  return hasTaxes.value ? totalAmount.value * 0.19 : totalAmount.value * 0;
+});
+
+const totalWithTaxes = computed(() => {
+  return totalAmount.value + taxes.value;
+});
 
 function addPosition() {
   rows.value.push({
@@ -145,16 +142,4 @@ function addPosition() {
 }
 
 const fileInput = ref(null);
-
-async function handleUpload() {
-  const file = fileInput.value?.files?.[0];
-  const formData = new FormData();
-  formData.append("file", file);
-
-  const res = await useFetch("http://localhost:8000/api/invoice/template", {
-    method: "POST",
-    body: formData,
-  });
-  console.log(res);
-}
 </script>
