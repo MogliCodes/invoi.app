@@ -3,6 +3,7 @@
     class="rounded border-2 border-gray-medium p-2 text-yellow-dark w-full"
     :type="props.type"
     @input="updateValue"
+    :value="modelValue"
   />
 </template>
 

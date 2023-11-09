@@ -10,17 +10,24 @@
     </section>
     <section class="mb-2 w-full">
       <div class="flex w-full items-center justify-between gap-8">
-        <div>
-          <span class="text-sm font-bold text-secondary-100">{{
-            contacts?.length
-          }}</span>
-          <span class="text-sm font-bold text-secondary-100"> of </span>
-          <span
-            v-if="contactCount"
-            class="text-sm font-bold text-secondary-100"
-            >{{ contactCount }}</span
-          >
-          <span class="text-sm font-bold text-secondary-100"> Contacts</span>
+        <div class="flex gap-3">
+          <div>
+            <span class="text-sm font-bold text-secondary-100">{{
+              contacts?.length
+            }}</span>
+            <span class="text-sm font-bold text-secondary-100"> of </span>
+            <span
+              v-if="contactCount"
+              class="text-sm font-bold text-secondary-100"
+              >{{ contactCount }}</span
+            >
+            <span class="text-sm font-bold text-secondary-100"> Contacts</span>
+          </div>
+          <div>
+            <span class="text-sm font-bold text-secondary-100"
+              >{{ startRange }} to {{ endRange }}</span
+            >
+          </div>
         </div>
         <div class="flex gap-8">
           <div>
@@ -62,7 +69,7 @@
         </div>
       </div>
     </section>
-    <div class="w-full">
+    <section class="w-full">
       <div
         v-if="!contacts && !contacts?.length"
         class="flex flex-col items-start gap-4"
@@ -75,12 +82,14 @@
             <thead
               class="border-x-2 border-t-2 border-yellow-dark bg-blue-80 text-white"
             >
-              <th class="px-6 py-5 text-left">Firstname</th>
-              <th class="px-6 py-5 text-left">Lastname</th>
-              <th class="px-6 py-5 text-left">DOB</th>
-              <th class="px-6 py-5 text-left">Street</th>
-              <th class="px-6 py-5 text-left">Zip</th>
-              <th colspan="2" class="px-6 py-5 text-left">City</th>
+              <tr>
+                <th class="px-6 py-5 text-left">Firstname</th>
+                <th class="px-6 py-5 text-left">Lastname</th>
+                <th class="px-6 py-5 text-left">DOB</th>
+                <th class="px-6 py-5 text-left">Street</th>
+                <th class="px-6 py-5 text-left">Zip</th>
+                <th colspan="2" class="px-6 py-5 text-left">City</th>
+              </tr>
             </thead>
             <tbody>
               <tr
@@ -109,13 +118,46 @@
                 <td class="px-6 py-3">{{ contact.city }}</td>
                 <td class="px-6 py-3">
                   <UIcon name="i-heroicons-ellipsis-vertical" />
+                  <NuxtLink :to="`/contacts/${contact._id}`"
+                    ><UIcon name="i-heroicons-pencil-square"
+                  /></NuxtLink>
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
       </div>
-    </div>
+      <div class="flex justify-end py-4">
+        <UPagination
+          v-model.number="page"
+          size="sm"
+          :page-count="pageSize"
+          :total="contactCount"
+          ><template #prev="{ onClick }">
+            <UTooltip text="Previous page">
+              <UButton
+                icon="i-heroicons-arrow-small-left-20-solid"
+                color="primary"
+                :ui="{ rounded: 'rounded-full' }"
+                class="me-2 rtl:[&_span:first-child]:rotate-180"
+                @click="onClick"
+              />
+            </UTooltip>
+          </template>
+
+          <template #next="{ onClick }">
+            <UTooltip text="Next page">
+              <UButton
+                icon="i-heroicons-arrow-small-right-20-solid"
+                color="primary"
+                :ui="{ rounded: 'rounded-full' }"
+                class="ms-2 rtl:[&_span:last-child]:rotate-180"
+                @click="onClick"
+              />
+            </UTooltip> </template
+        ></UPagination>
+      </div>
+    </section>
   </div>
 </template>
 
@@ -129,6 +171,10 @@ const pages = computed(() =>
 const items = ref(Array(55));
 const pageSizeOptions = [10, 20, 30, 40, 50];
 const pageSize = ref(pageSizeOptions[1]);
+const startRange = computed(
+  () => 1 + pageSize.value * page.value - pageSize.value
+);
+const endRange = computed(() => pageSize.value * page.value);
 
 const { data: contacts, execute } = useFetch(
   `http://localhost:8000/api/contact`,
