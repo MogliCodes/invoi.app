@@ -4,9 +4,12 @@
       class="container mx-auto flex min-h-[500px] items-center justify-center"
     >
       <div class="w-1/2 pt-48">
-        <BaseHeadline text="The most flexible and easiest accounting app " />
+        <BaseHeadline
+          class="text-blue-90 dark:text-white"
+          text="The most flexible and easiest accounting app "
+        />
         <h1 class="mb-8 text-6xl font-semibold"></h1>
-        <p class="mb-8 text-xl font-normal">
+        <p class="mb-8 text-xl font-normal text-blue-90 dark:text-white">
           Get started immediately and make use of features that no other app
           offers. invoi is uncomplicated and refreshing like lime lemonade.
         </p>

@@ -28,8 +28,10 @@
         >
         <span class="text-sm font-bold text-secondary-100"> Invoices</span>
       </div>
-      <table class="w-full overflow-hidden rounded-lg">
-        <thead class="border-x-2 border-t-2 bg-blue-80 text-white">
+      <table class="min-w-full overflow-hidden rounded-lg">
+        <thead
+          class="border-x-2 border-t-2 border-yellow-dark bg-blue-80 text-white"
+        >
           <tr>
             <th class="px-6 py-5 text-left">Rechnungsnummer</th>
             <th class="px-6 py-5 text-left">Title</th>

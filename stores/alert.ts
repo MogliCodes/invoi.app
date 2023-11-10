@@ -2,8 +2,8 @@ import { defineStore } from "pinia";
 
 export const useAlertStore = defineStore("alertStore", () => {
   const isActive = ref(false);
-  const alertType = ref("");
-  const alertMessage = ref("");
+  const alertType = ref("success");
+  const alertMessage = ref("test");
 
   function setAlert(type: string, message: string) {
     isActive.value = true;

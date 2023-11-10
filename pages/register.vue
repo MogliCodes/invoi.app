@@ -1,42 +1,46 @@
 <template>
-  <div>
+  <section class="min-h-screen w-8/12 mx-auto pt-16">
     <BaseAlert
       v-if="showAlert"
       :message="`A user with this E-Mail address already exists. Please use another one.`"
     />
-    <div class="container mx-auto flex justify-center">
-      <div class="flex flex-col items-center">
-        <BaseHeadline
-          class="mb-8"
-          text="Sign up for  a free account"
-          type="h1"
-        />
-        <div
-          class="border-2-white border-2-opacity-30 rounded border-2 bg-white bg-opacity-5 p-8"
-        >
-          <div class="mb-3">
-            <label class="block" for="username">Username</label>
-            <BaseInput v-model="username" />
-          </div>
-          <div class="mb-3">
-            <label class="block" for="username">E-Mail</label>
-            <BaseInput v-model="email" />
-          </div>
-          <div class="mb-3">
-            <label class="block" for="password">Password</label>
+    <div class="container mx-auto">
+      <div class="flex items-center gap-8">
+        <div class="w-1/2">
+          <BaseHeadline
+            class="mb-8 text-blue-80 dark:text-white"
+            text="Sign up for  a free account"
+            type="h1"
+          />
+          <p class="text-xl text-slate-600 dark:text-white w-6/12">
+            If you already have an account you can
+            <NuxtLink class="text-yellow-normal" to="/login"
+              >login here</NuxtLink
+            >
+          </p>
+        </div>
+        <div class="w-1/2 py-16">
+          <div class="ml-auto w-3/5 flex flex-col gap-3">
+            <BaseInput placeholder="Username" v-model="username" />
+            <BaseInput placeholder="E-Mail" v-model="email" />
             <BaseInput
+              placeholder="Password"
               ref="passwordInput"
               v-model="password"
               :type="isPasswordVisible ? 'text' : 'password'"
             />
-            <p>{{ isSufficientPassword }}</p>
-            <p @click="togglePassword">Show password</p>
+            <BaseButton
+              class="w-full"
+              variant="yellow"
+              text="Register"
+              @click="register"
+            />
+            <UDivider label="OR" />
           </div>
-          <BaseButton variant="yellow" text="Register" @click="register" />
         </div>
       </div>
     </div>
-  </div>
+  </section>
 </template>
 
 <script setup lang="ts">

@@ -1,19 +1,22 @@
 <template>
   <input
-    class="rounded border-2 border-gray-medium p-2 text-yellow-dark w-full"
+    class="rounded-lg focus:outline-0 focus:border-2 focus:border-yellow-normal border-2 border-blue-90 p-2 text-yellow-dark w-full bg-white font-inherit"
     :type="props.type"
     @input="updateValue"
     :value="modelValue"
+    :placeholder="props.placeholder"
   />
 </template>
 
 <script setup lang="ts">
 type Props = {
+  placeholder?: string;
   modelValue?: string;
   type?: "text" | "file" | "date" | "password";
 };
 
 const props = withDefaults(defineProps<Props>(), {
+  placeholder: "",
   modelValue: "",
   type: "text",
 });

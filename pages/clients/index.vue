@@ -17,15 +17,15 @@
             >{{ clients?.length }} Clients</span
           >
         </div>
-        <table class="w-full">
+        <table class="min-w-full overflow-hidden rounded-lg">
           <thead
             class="border-x-2 border-t-2 border-yellow-dark bg-blue-80 text-white"
           >
-            <th class="text-left px-6 py-3">Company</th>
-            <th class="text-left px-6 py-3">Street</th>
-            <th class="text-left px-6 py-3">Zip</th>
-            <th class="text-left px-6 py-3">City</th>
-            <th class="text-left px-6 py-3">Tax ID</th>
+            <th class="text-left px-6 py-5">Company</th>
+            <th class="text-left px-6 py-5">Street</th>
+            <th class="text-left px-6 py-5">Zip</th>
+            <th class="text-left px-6 py-5">City</th>
+            <th class="text-left px-6 py-5">Tax ID</th>
           </thead>
           <tbody>
             <tr

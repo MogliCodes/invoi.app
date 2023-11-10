@@ -11,7 +11,7 @@
           v-for="(item, index) in navItems"
         >
           <NuxtLink
-            class="transition-all hover:bg-blue-80 inline-block rounded-lg border-2 border-blue-100 px-6 py-4 font-medium text-white focus:border-2 focus:border-yellow-normal focus:outline-0 sm:block"
+            class="transition-all hover:bg-blue-80 inline-block rounded-lg border-2 border-blue-90 px-6 py-4 font-medium text-white focus:border-2 focus:border-yellow-normal focus:outline-0 sm:block"
             active-class="bg-yellow-normal text-yellow-dark focus:border-yellow-100 hover:!bg-yellow-110"
             :to="item.to"
             >{{ item.text }}</NuxtLink
