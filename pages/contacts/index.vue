@@ -1,12 +1,19 @@
 <template>
   <div class="container mx-auto flex flex-col items-start">
     <section class="mb-12">
-      <BaseHeadline class="mb-4" type="h1" text="Contacts" />
-      <BaseButton
-        to="/contacts/create"
-        text="Create contact"
-        variant="yellow"
-      />
+      <BaseHeadline class="mb-4 dark:text-white" type="h1" text="Contacts" />
+      <div class="flex items-center gap-3">
+        <BaseButton
+          to="/contacts/create"
+          text="Create contact"
+          variant="yellow"
+        />
+        <BaseButton
+          to="/contacts/import"
+          text="Import contacts"
+          variant="outline"
+        />
+      </div>
     </section>
     <section class="mb-2 w-full">
       <div class="flex w-full items-center justify-between gap-8">
@@ -78,10 +85,10 @@
       </div>
       <div>
         <div class="max-w-full overflow-x-auto">
-          <table class="min-w-full overflow-hidden rounded-lg">
-            <thead
-              class="border-x-2 border-t-2 border-yellow-dark bg-blue-80 text-white"
-            >
+          <table
+            class="min-w-full overflow-hidden rounded-lg dark:text-gray-400"
+          >
+            <thead class="bg-blue-90 text-white">
               <tr>
                 <th class="px-6 py-5 text-left">Firstname</th>
                 <th class="px-6 py-5 text-left">Lastname</th>
@@ -95,7 +102,7 @@
               <tr
                 v-for="contact in contacts"
                 :key="contact.id"
-                class="card rounded border-2 p-4 even:bg-[rgba(0,0,0,0.05)]"
+                class="card rounded p-4 bg-white even:bg-gray-200 dark:even:bg-blue-90 dark:odd:bg-blue-80"
               >
                 <td class="truncate px-6 py-3">{{ contact.firstname }}</td>
                 <td class="px-6 py-3">{{ contact.lastname }}</td>

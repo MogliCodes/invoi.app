@@ -1,6 +1,6 @@
 <template>
   <input
-    class="rounded-lg focus:outline-0 focus:border-2 focus:border-yellow-normal border-2 border-blue-90 p-2 text-yellow-dark w-full bg-white font-inherit"
+    class="rounded-lg focus:outline-0 focus:border-2 focus:border-yellow-normal border-2 border-gray-200 bg-gray-100 p-2 text-yellow-dark w-full dark:border-white dark:border-opacity-20 dark:focus:border-yellow-300 dark:placeholder-gray-600 dark:bg-black dark:bg-opacity-20 font-inherit dark:text-gray-100"
     :type="props.type"
     @input="updateValue"
     :value="modelValue"

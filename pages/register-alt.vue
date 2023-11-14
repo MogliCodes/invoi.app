@@ -1,32 +1,40 @@
 <template>
   <section class="h-screen">
     <div class="flex h-full">
+      <div class="w-1/2 h-full flex items-center px-12 pb-24"></div>
       <div
-        class="w-1/2 flex justify-center flex-col h-full dark:bg-blue-100 py-12 px-24"
+        class="w-1/2 flex justify-center flex-col h-full bg-blue-100 py-12 px-24"
       >
-        <div class="w-full">
-          <h1
-            class="mb-6 text-4xl text-blue-70 dark:text-white font-syne font-extrabold"
-          >
-            Login
-          </h1>
-          <div class="mb-3">
-            <label class="block text-gray-500 dark:text-gray-100" for="username"
-              >Username</label
+        <div class="pb-12">
+          <BaseHeadline
+            class="mb-8 text-blue-80 dark:text-white"
+            text="Sign up for  a free account"
+            type="h1"
+          />
+          <p class="text-xl text-slate-600 dark:text-white w-6/12">
+            If you already have an account you can
+            <NuxtLink class="text-yellow-normal" to="/login"
+              >login here</NuxtLink
             >
-            <BaseInput v-model="username" type="text" />
-          </div>
-          <div class="mb-3">
-            <label class="block text-gray-500 dark:text-gray-100" for="password"
-              >Password</label
-            >
-            <BaseInput v-model="password" type="password" />
-          </div>
-          <BaseButton variant="yellow" text="Login" @click="login" />
+          </p>
         </div>
-      </div>
-      <div class="w-1/2 h-full flex items-center px-12 pb-24">
-        <img src="/img/invoi-illu.svg" alt="" />
+        <div class="w-full flex flex-col gap-3">
+          <BaseInput placeholder="Username" v-model="username" />
+          <BaseInput placeholder="E-Mail" v-model="email" />
+          <BaseInput
+            placeholder="Password"
+            ref="passwordInput"
+            v-model="password"
+            :type="isPasswordVisible ? 'text' : 'password'"
+          />
+          <BaseButton
+            class="w-full"
+            variant="yellow"
+            text="Register"
+            @click="register"
+          />
+          <UDivider label="OR" />
+        </div>
       </div>
     </div>
   </section>

@@ -1,12 +1,10 @@
 <template>
-  <section class="min-h-screen w-8/12 mx-auto pt-16">
-    <BaseAlert
-      v-if="showAlert"
-      :message="`A user with this E-Mail address already exists. Please use another one.`"
-    />
-    <div class="container mx-auto">
-      <div class="flex items-center gap-8">
-        <div class="w-1/2">
+  <section class="h-screen">
+    <div class="flex h-full">
+      <div
+        class="w-1/2 flex justify-center flex-col h-full bg-blue-100 py-12 px-24"
+      >
+        <div class="pb-12">
           <BaseHeadline
             class="mb-8 text-blue-80 dark:text-white"
             text="Sign up for  a free account"
@@ -19,31 +17,35 @@
             >
           </p>
         </div>
-        <div class="w-1/2 py-16">
-          <div class="ml-auto w-3/5 flex flex-col gap-3">
-            <BaseInput placeholder="Username" v-model="username" />
-            <BaseInput placeholder="E-Mail" v-model="email" />
-            <BaseInput
-              placeholder="Password"
-              ref="passwordInput"
-              v-model="password"
-              :type="isPasswordVisible ? 'text' : 'password'"
-            />
-            <BaseButton
-              class="w-full"
-              variant="yellow"
-              text="Register"
-              @click="register"
-            />
-            <UDivider label="OR" />
-          </div>
+        <div class="w-full flex flex-col gap-3">
+          <BaseInput placeholder="Username" v-model="username" />
+          <BaseInput placeholder="E-Mail" v-model="email" />
+          <BaseInput
+            placeholder="Password"
+            ref="passwordInput"
+            v-model="password"
+            :type="isPasswordVisible ? 'text' : 'password'"
+          />
+          <BaseButton
+            class="w-full"
+            variant="yellow"
+            text="Register"
+            @click="register"
+          />
+          <UDivider label="OR" />
         </div>
+      </div>
+      <div class="w-1/2 h-full flex items-center px-12 pb-24">
+        <img src="/img/invoi-illu.svg" alt="" />
       </div>
     </div>
   </section>
 </template>
 
 <script setup lang="ts">
+import BaseInput from "~/components/BaseInput/BaseInput.vue";
+import BaseButton from "~/components/base/BaseButton.vue";
+
 const username: Ref<string> = ref("");
 const email: Ref<string> = ref("");
 const password: Ref<string> = ref("");

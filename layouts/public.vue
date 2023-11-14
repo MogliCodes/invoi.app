@@ -1,5 +1,5 @@
 <template>
-  <header class="py-8">
+  <header class="fixed top-0 w-full py-8">
     <div class="container mx-auto flex justify-between">
       <NuxtLink
         to="/"

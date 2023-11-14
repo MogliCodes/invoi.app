@@ -17,20 +17,19 @@ export default defineAppConfig({
     pagination: {
       default: {
         activeButton: {
-          color: "yellow",
-          class: "font-bold underline",
+          class: "font-bold dark:bg-blue-80 dark:text-white",
         },
         inactiveButton: {
-          color: "white",
+          class: "text-gray-700 dark:text-gray-700",
         },
         firstButton: {
           color: "white",
-          class: "rtl:[&_span:first-child]:rotate-180",
+          class: "rounded-l-lg rtl:[&_span:first-child]:rotate-180",
           icon: "i-heroicons-chevron-double-left-20-solid",
         },
         lastButton: {
           color: "white",
-          class: "rtl:[&_span:last-child]:rotate-180",
+          class: "rounded-r-lg rtl:[&_span:last-child]:rotate-180",
           icon: "i-heroicons-chevron-double-right-20-solid",
         },
         prevButton: {

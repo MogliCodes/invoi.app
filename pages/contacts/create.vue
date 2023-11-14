@@ -1,37 +1,55 @@
 <template>
   <div class="container mx-auto">
-    <BaseHeadline class="mb-8" type="h1" text="Create contact" />
-    <div class="flex">
-      <div class="w-1/2 rounded-lg bg-white p-10">
+    <BaseHeadline
+      class="mb-8 dark:text-white"
+      type="h1"
+      text="Create contact"
+    />
+    <div class="grid grid-cols-2">
+      <BaseBox>
         <form @submit.prevent="createContact">
-          <h3 class="font-bold text-2xl mb-8">Contact base information</h3>
+          <BaseText
+            type="h3"
+            class="block mb-8 text-2xl font-bold dark:text-white"
+            >Contact base information</BaseText
+          >
           <div class="mb-3">
-            <label class="block" for="username">First name</label>
+            <BaseText
+              ><label class="block" for="username">First name</label></BaseText
+            >
             <BaseInput v-model="firstname" />
           </div>
           <div class="mb-3">
-            <label class="block" for="username">Last name</label>
+            <BaseText
+              ><label class="block" for="username">Last name</label></BaseText
+            >
             <BaseInput v-model="lastname" />
           </div>
           <div class="mb-3">
-            <label class="block" for="username">DOB</label>
+            <BaseText><label class="block" for="username">DOB</label></BaseText>
             <BaseInput v-model="dob" />
           </div>
           <div class="mb-3">
-            <label class="block" for="username">Street</label>
+            <BaseText
+              ><label class="block" for="username">Street</label></BaseText
+            >
             <BaseInput v-model="street" />
           </div>
           <div class="mb-3">
-            <label class="block" for="username">ZIP Code</label>
+            <BaseText
+              ><label class="block" for="username">ZIP Code</label></BaseText
+            >
             <BaseInput v-model="zipcode" />
           </div>
           <div class="mb-3">
-            <label class="block" for="username">City</label>
+            <BaseText
+              ><label class="block" for="username">City</label></BaseText
+            >
             <BaseInput v-model="city" />
           </div>
           <BaseButton type="submit" text="Create contact" />
         </form>
-      </div>
+      </BaseBox>
     </div>
     <BaseNotification v-if="showNotification" :message="notificationMessage" />
   </div>
@@ -39,6 +57,7 @@
 <script setup lang="ts">
 import { useAuthStore } from "~/stores/auth.store";
 import { useAlertStore } from "~/stores/alert";
+import BaseText from "~/BaseText/BaseText.vue";
 
 const authStore = useAuthStore();
 const alertStore = useAlertStore();

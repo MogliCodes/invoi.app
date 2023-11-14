@@ -1,7 +1,7 @@
 <template>
   <div class="container mx-auto flex flex-col items-start">
     <div class="mb-12">
-      <BaseHeadline class="mb-4" type="h1" text="Clients" />
+      <BaseHeadline class="mb-4 dark:text-white" type="h1" text="Clients" />
       <BaseButton to="/clients/create" text="Create client" variant="yellow" />
     </div>
     <div class="w-full">

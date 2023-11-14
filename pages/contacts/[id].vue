@@ -2,7 +2,7 @@
   <section>
     <BaseHeadline
       class="mb-8"
-      :text="`${contact.firstname} ${contact.lastname}`"
+      :text="`${contact?.firstname} ${contact?.lastname}`"
     />
     <div class="flex w-1/2 flex-col items-start gap-4">
       <BaseInput
