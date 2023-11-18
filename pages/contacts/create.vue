@@ -57,7 +57,7 @@
 <script setup lang="ts">
 import { useAuthStore } from "~/stores/auth.store";
 import { useAlertStore } from "~/stores/alert";
-import BaseText from "~/BaseText/BaseText.vue";
+import BaseText from "~/components/BaseText/BaseText.vue";
 
 const authStore = useAuthStore();
 const alertStore = useAlertStore();

@@ -36,11 +36,24 @@
             >
           </div>
         </div>
-        <div class="flex gap-8">
+        <div class="flex gap-6">
+          <div class="flex items-center gap-3">
+            <USelect
+              v-model="bulkAction"
+              color="white"
+              :options="bulkActionOptions"
+            />
+            <div
+              class="text-sm border-2 bg-yellow-400 border-yellow-400 rounded-lg py-1 px-2"
+              @click="executeBulkAction"
+            >
+              Apply
+            </div>
+          </div>
           <div>
             <USelect
-              color="white"
               v-model.number="pageSize"
+              color="white"
               :options="pageSizeOptions"
               @change="reloadData"
             />
@@ -50,24 +63,22 @@
             size="sm"
             :page-count="pageSize"
             :total="contactCount"
-            ><template #prev="{ onClick }">
+          >
+            <template #prev="{ onClick }">
               <UTooltip text="Previous page">
                 <UButton
                   icon="i-heroicons-arrow-small-left-20-solid"
-                  color="primary"
-                  :ui="{ rounded: 'rounded-full' }"
+                  color="yellow"
                   class="me-2 rtl:[&_span:first-child]:rotate-180"
                   @click="onClick"
                 />
               </UTooltip>
             </template>
-
             <template #next="{ onClick }">
               <UTooltip text="Next page">
                 <UButton
                   icon="i-heroicons-arrow-small-right-20-solid"
-                  color="primary"
-                  :ui="{ rounded: 'rounded-full' }"
+                  color="yellow"
                   class="ms-2 rtl:[&_span:last-child]:rotate-180"
                   @click="onClick"
                 />
@@ -84,26 +95,40 @@
         <p>No contacts created yet! Start creating your first contact.</p>
       </div>
       <div>
-        <div class="max-w-full overflow-x-auto">
+        <div class="max-w-full overflow-x-auto rounded-lg shadow-lg">
           <table
             class="min-w-full overflow-hidden rounded-lg dark:text-gray-400"
           >
             <thead class="bg-blue-90 text-white">
               <tr>
+                <th class="py-5 pl-6 text-left">
+                  <UCheckbox
+                    v-model="selectAll"
+                    :checked="selectAll"
+                    @click="toggleSelectAll"
+                  />
+                </th>
                 <th class="px-6 py-5 text-left">Firstname</th>
                 <th class="px-6 py-5 text-left">Lastname</th>
                 <th class="px-6 py-5 text-left">DOB</th>
                 <th class="px-6 py-5 text-left">Street</th>
                 <th class="px-6 py-5 text-left">Zip</th>
-                <th colspan="2" class="px-6 py-5 text-left">City</th>
+                <th class="px-6 py-5 text-left">City</th>
+                <th class="px-6 py-5 text-left">Action</th>
               </tr>
             </thead>
             <tbody>
               <tr
                 v-for="contact in contacts"
                 :key="contact.id"
-                class="card rounded p-4 bg-white even:bg-gray-200 dark:even:bg-blue-90 dark:odd:bg-blue-80"
+                class="rounded bg-white p-4 even:bg-gray-200 dark:odd:bg-blue-80 dark:even:bg-blue-90"
               >
+                <td class="py-3 pl-6">
+                  <UCheckbox
+                    :checked="isSelectedContact(contact._id)"
+                    @click="toggleSelection(contact._id)"
+                  />
+                </td>
                 <td class="truncate px-6 py-3">{{ contact.firstname }}</td>
                 <td class="px-6 py-3">{{ contact.lastname }}</td>
                 <td class="px-6 py-3">
@@ -124,10 +149,19 @@
                 <td class="px-6 py-3">{{ contact.zip }}</td>
                 <td class="px-6 py-3">{{ contact.city }}</td>
                 <td class="px-6 py-3">
-                  <UIcon name="i-heroicons-ellipsis-vertical" />
-                  <NuxtLink :to="`/contacts/${contact._id}`"
-                    ><UIcon name="i-heroicons-pencil-square"
-                  /></NuxtLink>
+                  <span class="flex gap-2">
+                    <NuxtLink :to="`/contacts/${contact._id}`">
+                      <UIcon
+                        class="cursor-pointer text-xl transition-colors hover:text-gray-400 dark:hover:text-white"
+                        name="i-heroicons-eye"
+                      />
+                    </NuxtLink>
+                    <UIcon
+                      class="cursor-pointer text-xl transition-colors hover:text-gray-400 dark:hover:text-white"
+                      name="i-heroicons-trash"
+                      @click="initiateDeletion(contact._id)"
+                    />
+                  </span>
                 </td>
               </tr>
             </tbody>
@@ -140,24 +174,22 @@
           size="sm"
           :page-count="pageSize"
           :total="contactCount"
-          ><template #prev="{ onClick }">
+        >
+          <template #prev="{ onClick }">
             <UTooltip text="Previous page">
               <UButton
                 icon="i-heroicons-arrow-small-left-20-solid"
                 color="primary"
-                :ui="{ rounded: 'rounded-full' }"
                 class="me-2 rtl:[&_span:first-child]:rotate-180"
                 @click="onClick"
               />
             </UTooltip>
           </template>
-
           <template #next="{ onClick }">
             <UTooltip text="Next page">
               <UButton
                 icon="i-heroicons-arrow-small-right-20-solid"
                 color="primary"
-                :ui="{ rounded: 'rounded-full' }"
                 class="ms-2 rtl:[&_span:last-child]:rotate-180"
                 @click="onClick"
               />
@@ -165,6 +197,47 @@
         ></UPagination>
       </div>
     </section>
+    <UModal v-model="isOpen">
+      <div class="flex flex-col items-center p-8 text-center">
+        <div
+          class="mx-auto mb-4 flex h-10 w-10 items-center justify-center rounded-full bg-red-500"
+        >
+          <UIcon class="text-2xl text-red-900" name="i-heroicons-trash" />
+        </div>
+        <BaseHeadline class="mb-2" type="h3" text="Confirm delete" />
+
+        <section v-if="currentContactId">
+          <p class="mb-8">Are you sure you want to delete this entry?</p>
+          <div class="flex gap-4">
+            <BaseButton variant="red" text="Delete" @click="deleteContact()" />
+            <BaseButton
+              variant="outline"
+              text="Discard"
+              @click="isOpen = false"
+            />
+          </div>
+        </section>
+        <section v-else>
+          <p class="mb-8">
+            Are you sure you want to delete the entries with the following ids?
+          </p>
+          <div class="word-wrap mb-8 break-all bg-black p-1 text-gray-200">
+            {{ selectedContacts.toString() }}
+          </div>
+          <div class="flex justify-center gap-4">
+            <BaseButton variant="red" text="Delete" @click="bulkDelete()" />
+            <BaseButton
+              variant="outline"
+              text="Discard"
+              @click="isOpen = false"
+            />
+          </div>
+        </section>
+      </div>
+      <template #footer>
+        <Placeholder class="h-8" />
+      </template>
+    </UModal>
   </div>
 </template>
 
@@ -183,21 +256,24 @@ const startRange = computed(
 );
 const endRange = computed(() => pageSize.value * page.value);
 
-const { data: contacts, execute } = useFetch(
-  `http://localhost:8000/api/contact`,
-  {
-    params: {
-      page,
-      pageSize,
-    },
-    headers: {
-      Authorization: `Bearer ${authStore.accessToken}`,
-      ClientId: authStore.userId,
-    },
-  }
-);
+const {
+  data: contacts,
+  execute,
+  refresh: refreshContacts,
+}: {
+  data: Ref<Array<{}>>;
+} = useFetch(`http://localhost:8000/api/contact`, {
+  params: {
+    page,
+    pageSize,
+  },
+  headers: {
+    Authorization: `Bearer ${authStore.accessToken}`,
+    ClientId: authStore.userId,
+  },
+});
 
-const { data: contactCount } = useFetch(
+const { data: contactCount, refresh: refreshContactsCount } = useFetch(
   `http://localhost:8000/api/contact/count`,
   {
     headers: {
@@ -210,5 +286,82 @@ const { data: contactCount } = useFetch(
 function reloadData() {
   console.log("reloadData");
   execute();
+}
+
+const isOpen = ref(false);
+const currentContactId = ref();
+
+function initiateDeletion(contactId) {
+  isOpen.value = true;
+  currentContactId.value = contactId;
+}
+
+async function deleteContact() {
+  console.log("DELETE CONTACT FUNC");
+  try {
+    await useFetch(`/api/contacts?id=${currentContactId.value}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${authStore.accessToken}`,
+        ClientId: authStore.userId,
+      },
+    });
+    refreshContacts();
+    refreshContactsCount();
+    isOpen.value = false;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+const selectedContacts: Ref<string[]> = ref([]);
+function toggleSelectAll() {
+  !selectedContacts.value.length
+    ? (selectedContacts.value = contacts.value.map((contact) => contact._id))
+    : (selectedContacts.value = []);
+}
+
+function isSelectedContact(contactId: number): boolean {
+  return selectedContacts.value.includes(contactId);
+}
+
+function toggleSelection(contactId: number): void {
+  isSelectedContact(contactId)
+    ? selectedContacts.value.splice(
+        selectedContacts.value.indexOf(contactId),
+        1
+      )
+    : selectedContacts.value.push(contactId);
+}
+
+const bulkAction = ref();
+const bulkActionOptions = ["Delete"];
+const selectAll = ref(false);
+
+async function bulkDelete() {
+  try {
+    await $fetch(`/api/contacts/bulk/delete`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${authStore.accessToken}`,
+        userid: authStore.userId,
+      },
+      body: selectedContacts.value,
+    });
+    refreshContacts();
+    refreshContactsCount();
+    selectAll.value = false;
+    isOpen.value = false;
+  } catch (error) {
+    console.error(error);
+  }
+}
+function executeBulkAction() {
+  console.log("bulkAction", bulkAction.value.toLowerCase());
+  switch (bulkAction.value.toLowerCase()) {
+    case "delete":
+      initiateDeletion();
+      break;
+  }
 }
 </script>

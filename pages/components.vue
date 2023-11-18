@@ -1,6 +1,13 @@
 <template>
   <section>
     <div class="container mx-auto">
+      <BaseButton variant="yellow" text="Test" />
+      <BaseButton variant="outline" text="Test" />
+      <BaseButton variant="secondary" text="Test" />
+    </div>
+  </section>
+  <section>
+    <div class="container mx-auto">
       <BaseTable>
         <template #head>
           <th class="py-4"><BaseText>1</BaseText></th>
@@ -82,6 +89,6 @@
   </section>
 </template>
 <script setup lang="ts">
-import BaseText from "~/BaseText/BaseText.vue";
+import BaseText from "~/components/BaseText/BaseText.vue";
 import BaseTable from "~/components/BaseTable/BaseTable.vue";
 </script>

@@ -14,33 +14,18 @@ export default defineAppConfig({
         },
       },
     },
-    pagination: {
-      default: {
-        activeButton: {
-          class: "font-bold dark:bg-blue-80 dark:text-white",
-        },
-        inactiveButton: {
-          class: "text-gray-700 dark:text-gray-700",
-        },
-        firstButton: {
-          color: "white",
-          class: "rounded-l-lg rtl:[&_span:first-child]:rotate-180",
-          icon: "i-heroicons-chevron-double-left-20-solid",
-        },
-        lastButton: {
-          color: "white",
-          class: "rounded-r-lg rtl:[&_span:last-child]:rotate-180",
-          icon: "i-heroicons-chevron-double-right-20-solid",
-        },
-        prevButton: {
-          color: "white",
-          class: "rtl:[&_span:first-child]:rotate-180",
-          icon: "i-heroicons-chevron-left-20-solid",
-        },
-        nextButton: {
-          color: "white",
-          class: "rtl:[&_span:last-child]:rotate-180",
-          icon: "i-heroicons-chevron-right-20-solid ",
+    modal: {
+      overlay: {
+        background: "bg-black dark:bg-black bg-opacity-60 dark:bg-opacity-60",
+      },
+      padding: "p-8",
+      background: "dark:bg-blue-80  bg-white ",
+    },
+    textarea: {
+      color: {
+        white: {
+          outline:
+            "focus:ring-0 ring-0 font-inherit w-full rounded-lg border-2 border-gray-200 bg-gray-100 text-yellow-dark focus:border-2 focus:border-yellow-normal focus:outline-0 dark:border-white dark:border-opacity-20 dark:bg-black dark:bg-opacity-20 dark:text-gray-100 dark:placeholder-gray-600 dark:focus:border-yellow-300",
         },
       },
     },

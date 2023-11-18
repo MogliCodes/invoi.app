@@ -10,7 +10,7 @@
     </div>
   </header>
   <main
-    class="h-full items-center justify-center bg-blue-50 dark:bg-blue-90 text-white"
+    class="h-full items-center justify-center bg-blue-50 dark:bg-blue-100 text-white"
   >
     <slot />
   </main>

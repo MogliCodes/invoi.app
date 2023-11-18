@@ -1,7 +1,7 @@
 <template>
   <div class="container mx-auto">
     <div class="mb-12">
-      <BaseHeadline class="mb-4" type="h1" text="My invoices" />
+      <BaseHeadline class="mb-4 dark:text-white" type="h1" text="Invoices" />
       <BaseButtonGroup>
         <BaseButton
           variant="yellow"
@@ -9,7 +9,7 @@
           text="Create new invoice"
         />
         <BaseButton
-          variant="secondary"
+          variant="outline"
           to="/invoices/import"
           text="Import invoices"
         />
@@ -28,10 +28,8 @@
         >
         <span class="text-sm font-bold text-secondary-100"> Invoices</span>
       </div>
-      <table class="min-w-full overflow-hidden rounded-lg">
-        <thead
-          class="border-x-2 border-t-2 border-yellow-dark bg-blue-80 text-white"
-        >
+      <table class="min-w-full overflow-hidden rounded-lg dark:text-gray-400">
+        <thead class="bg-blue-90 text-white">
           <tr>
             <th class="px-6 py-5 text-left">Rechnungsnummer</th>
             <th class="px-6 py-5 text-left">Title</th>
@@ -46,14 +44,14 @@
           <tr
             v-for="invoice in invoices"
             :key="invoice?._id"
-            class="card rounded border-2 p-4 odd:bg-white even:bg-[rgba(0,0,0,0.05)]"
+            class="rounded p-4 bg-white even:bg-gray-200 dark:even:bg-blue-90 dark:odd:bg-blue-80"
           >
-            <td class="border-r-2 px-6 py-3">
+            <td class="px-6 py-3">
               {{ invoice?.nr }}
             </td>
-            <td class="border-r-2 px-6 py-3">{{ invoice.title }}</td>
-            <td class="border-r-2 px-6 py-3">{{ invoice.client }}</td>
-            <td class="border-r-2 px-6 py-3">
+            <td class="px-6 py-3">{{ invoice.title }}</td>
+            <td class="px-6 py-3">{{ invoice.client }}</td>
+            <td class="px-6 py-3">
               {{
                 new Date(invoice.date)
                   .toLocaleDateString("en-GB", {
@@ -65,9 +63,9 @@
                   .join(".")
               }}
             </td>
-            <td class="border-r-2 px-6 py-3">{{ invoice.total }}</td>
-            <td class="border-r-2 px-6 py-3">{{ invoice.taxes }}</td>
-            <td class="border-r-2 px-6 py-3">{{ invoice.totalWithTaxes }}</td>
+            <td class="px-6 py-3">{{ invoice.total }}</td>
+            <td class="px-6 py-3">{{ invoice.taxes }}</td>
+            <td class="px-6 py-3">{{ invoice.totalWithTaxes }}</td>
           </tr>
         </tbody>
       </table>
@@ -93,6 +91,7 @@ const { data: invoices } = useFetch<Invoice[]>(
   `http://localhost:8000/api/invoice`,
   {
     headers: {
+      userId: authStore.userId,
       Authorization: `Bearer ${authStore.accessToken}`,
     },
   }
@@ -102,6 +101,7 @@ const { data: invoiceCount } = useFetch<Invoice[]>(
   `http://localhost:8000/api/invoice/count`,
   {
     headers: {
+      userId: authStore.userId,
       Authorization: `Bearer ${authStore.accessToken}`,
     },
   }

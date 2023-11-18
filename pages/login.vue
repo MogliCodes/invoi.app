@@ -22,7 +22,12 @@
             >
             <BaseInput v-model="password" type="password" />
           </div>
-          <BaseButton variant="yellow" text="Login" @click="login" />
+          <BaseButton
+            class="w-full"
+            variant="yellow"
+            text="Login"
+            @click="login"
+          />
         </div>
       </div>
       <div class="w-1/2 h-full flex items-center px-12 pb-24">

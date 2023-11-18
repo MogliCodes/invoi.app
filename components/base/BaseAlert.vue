@@ -19,7 +19,7 @@ const colorClass = computed(() => {
 
 <template>
   <div
-    class="absolute inset-x-12 top-4 z-10 block rounded-lg p-4 shadow-2xl"
+    class="absolute inset-x-6 top-4 z-10 block rounded-lg p-4 shadow-2xl"
     :class="colorClass"
   >
     {{ props.message }}

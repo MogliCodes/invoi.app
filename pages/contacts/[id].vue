@@ -1,34 +1,54 @@
 <template>
   <section>
-    <BaseHeadline
-      class="mb-8"
-      :text="`${contact?.firstname} ${contact?.lastname}`"
-    />
-    <div class="flex w-1/2 flex-col items-start gap-4">
-      <BaseInput
-        v-model="firstname"
-        class="bg-white dark:text-black"
-        type="text"
+    <div class="w-2/3">
+      <BaseHeadline
+        type="h1"
+        class="mb-8 dark:text-white"
+        :text="`${contact?.firstname} ${contact?.lastname}`"
       />
-      <BaseInput
-        v-model="lastname"
-        class="bg-white dark:text-black"
-        type="text"
-      />
-      <BaseInput v-model="dob" class="bg-white dark:text-black" type="date" />
-      <BaseInput
-        v-model="street"
-        class="bg-white dark:text-black"
-        type="text"
-      />
-      <BaseInput v-model="zip" class="bg-white dark:text-black" type="text" />
-      <BaseInput v-model="city" class="bg-white dark:text-black" type="text" />
-      <BaseButton @click="patchContact" text="Save contact" />
+      <BaseHeadline type="h2" text="Contact information" />
+      <BaseBox v-if="contact">
+        <div class="flex w-2/3 flex-col items-start gap-4">
+          <BaseInput
+            v-if="firstname"
+            v-model="firstname"
+            class="bg-white dark:text-black"
+            type="text"
+          />
+          <BaseInput
+            v-if="lastname"
+            v-model="lastname"
+            class="bg-white dark:text-black"
+            type="text"
+          />
+          <BaseInput
+            v-if="dob"
+            v-model="dob"
+            class="bg-white dark:text-black"
+            type="date"
+          />
+          <BaseInput
+            v-if="street"
+            v-model="street"
+            class="bg-white dark:text-black"
+            type="text"
+          />
+          <BaseInput
+            v-if="zip"
+            v-model="zip"
+            class="bg-white dark:text-black"
+            type="text"
+          />
+          <BaseInput
+            v-if="city"
+            v-model="city"
+            class="bg-white dark:text-black"
+            type="text"
+          />
+          <BaseButton @click="patchContact" text="Save contact" />
+        </div>
+      </BaseBox>
     </div>
-    <pre>{{ firstname }}</pre>
-    <pre>{{ lastname }}</pre>
-    <pre>{{ dob }}</pre>
-    <pre>{{ street }}</pre>
   </section>
 </template>
 
@@ -82,10 +102,10 @@ async function patchContact() {
     console.error(error);
   }
 }
-const firstname = ref(contact?.value?.firstname);
-const lastname = ref(contact?.value?.lastname);
-const dob = ref(contact?.value?.dob);
-const street = ref(contact?.value?.street);
-const zip = ref(contact?.value?.zip);
-const city = ref(contact?.value?.city);
+const firstname = computed(() => contact?.value?.firstname);
+const lastname = computed(() => contact?.value?.lastname);
+const dob = computed(() => contact?.value?.dob);
+const street = computed(() => contact?.value?.street);
+const zip = computed(() => contact?.value?.zip);
+const city = computed(() => contact?.value?.city);
 </script>

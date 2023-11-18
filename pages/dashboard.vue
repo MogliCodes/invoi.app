@@ -46,7 +46,7 @@
               <span class="text-xl dark:text-white">Contacts</span>
             </div>
             <UIcon
-              class="h-20 w-20 text-blue-80 dark:text-gray-600"
+              class="h-20 w-20 text-blue-80 text-gray-300 dark:text-gray-600"
               name="i-heroicons-user-circle"
             />
           </div>
@@ -61,7 +61,7 @@
               <span class="text-xl dark:text-white">Invoices</span>
             </div>
             <UIcon
-              class="h-20 w-20 text-blue-80 dark:text-gray-600"
+              class="h-20 w-20 text-blue-80 text-gray-300 dark:text-gray-600"
               name="i-heroicons-document-chart-bar"
             />
           </div>
@@ -74,7 +74,7 @@
               <span class="text-xl dark:text-white">Clients</span>
             </div>
             <UIcon
-              class="h-20 w-20 text-blue-80 dark:text-gray-600"
+              class="h-20 w-20 text-gray-300 dark:text-gray-600"
               name="i-heroicons-building-office"
             />
           </div>
@@ -132,7 +132,7 @@
 
 <script setup lang="ts">
 import { useAuthStore } from "~/stores/auth.store";
-import BaseText from "~/BaseText/BaseText.vue";
+import BaseText from "~/components/BaseText/BaseText.vue";
 
 const authStore = useAuthStore();
 const userId = authStore.userId;

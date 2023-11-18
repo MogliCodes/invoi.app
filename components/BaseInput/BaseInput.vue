@@ -1,10 +1,14 @@
 <template>
   <input
-    class="rounded-lg focus:outline-0 focus:border-2 focus:border-yellow-normal border-2 border-gray-200 bg-gray-100 p-2 text-yellow-dark w-full dark:border-white dark:border-opacity-20 dark:focus:border-yellow-300 dark:placeholder-gray-600 dark:bg-black dark:bg-opacity-20 font-inherit dark:text-gray-100"
+    class="font-inherit w-full rounded-lg border-2 border-gray-200 bg-gray-100 text-yellow-dark focus:border-2 focus:border-yellow-normal focus:outline-0 dark:border-white dark:border-opacity-20 dark:bg-black dark:bg-opacity-20 dark:text-gray-100 dark:placeholder-gray-600 dark:focus:border-yellow-300"
+    :class="[
+      { 'text-sm': props.type === 'file' },
+      props.size === 'md' ? 'p-2' : 'p-1 text-sm',
+    ]"
     :type="props.type"
+    :placeholder="props.placeholder || modelValue"
     @input="updateValue"
     :value="modelValue"
-    :placeholder="props.placeholder"
   />
 </template>
 
@@ -13,12 +17,14 @@ type Props = {
   placeholder?: string;
   modelValue?: string;
   type?: "text" | "file" | "date" | "password";
+  size?: "sm" | "md";
 };
 
 const props = withDefaults(defineProps<Props>(), {
   placeholder: "",
   modelValue: "",
   type: "text",
+  size: "md",
 });
 const emit = defineEmits(["update:modelValue"]);
 const updateValue = (event: any) => {

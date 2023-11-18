@@ -17,10 +17,8 @@
             >{{ clients?.length }} Clients</span
           >
         </div>
-        <table class="min-w-full overflow-hidden rounded-lg">
-          <thead
-            class="border-x-2 border-t-2 border-yellow-dark bg-blue-80 text-white"
-          >
+        <table class="min-w-full overflow-hidden rounded-lg dark:text-gray-400">
+          <thead class="bg-blue-90 text-white">
             <th class="text-left px-6 py-5">Company</th>
             <th class="text-left px-6 py-5">Street</th>
             <th class="text-left px-6 py-5">Zip</th>
@@ -31,7 +29,7 @@
             <tr
               v-for="client in clients"
               :key="client.id"
-              class="card rounded border-2 p-4 even:bg-[rgba(0,0,0,0.05)]"
+              class="rounded p-4 bg-white even:bg-gray-200 dark:even:bg-blue-90 dark:odd:bg-blue-80"
             >
               <td class="px-6 py-3">{{ client.company }}</td>
               <td class="px-6 py-3">{{ client.street }}</td>

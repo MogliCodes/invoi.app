@@ -1,9 +1,7 @@
 <template>
   <section class="h-screen">
     <div class="flex h-full">
-      <div
-        class="w-1/2 flex justify-center flex-col h-full bg-blue-100 py-12 px-24"
-      >
+      <div class="w-1/2 flex justify-center flex-col h-full py-12 px-24">
         <div class="pb-12">
           <BaseHeadline
             class="mb-8 text-blue-80 dark:text-white"

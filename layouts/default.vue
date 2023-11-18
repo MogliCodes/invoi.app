@@ -10,7 +10,7 @@
         :message="alertStore.alertMessage"
         :type="alertStore.alertType"
       />
-      <div class="fixed top-4 right-12 flex gap-1 justify-center items-center">
+      <div class="fixed top-4 right-6 flex gap-1 justify-center items-center">
         <div
           class="bg-white dark:bg-blue-90 hover:bg-gray-50 transition flex items-center justify-center rounded-lg w-9 h-9"
         >
@@ -51,6 +51,7 @@
         </div>
       </div>
     </main>
+    <div style="height: 2000px"></div>
   </div>
 </template>
 
