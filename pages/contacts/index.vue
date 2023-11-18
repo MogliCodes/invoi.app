@@ -44,7 +44,7 @@
               :options="bulkActionOptions"
             />
             <div
-              class="text-sm border-2 bg-yellow-400 border-yellow-400 rounded-lg py-1 px-2"
+              class="rounded-lg border-2 border-yellow-400 bg-yellow-400 px-2 py-1 text-sm"
               @click="executeBulkAction"
             >
               Apply
@@ -55,7 +55,6 @@
               v-model.number="pageSize"
               color="white"
               :options="pageSizeOptions"
-              @change="reloadData"
             />
           </div>
           <UPagination
@@ -88,13 +87,10 @@
       </div>
     </section>
     <section class="w-full">
-      <div
-        v-if="!contacts && !contacts?.length"
-        class="flex flex-col items-start gap-4"
-      >
+      <div v-if="!contacts.length" class="flex flex-col items-start gap-4">
         <p>No contacts created yet! Start creating your first contact.</p>
       </div>
-      <div>
+      <div v-else>
         <div class="max-w-full overflow-x-auto rounded-lg shadow-lg">
           <table
             class="min-w-full overflow-hidden rounded-lg dark:text-gray-400"
@@ -120,7 +116,7 @@
             <tbody>
               <tr
                 v-for="contact in contacts"
-                :key="contact.id"
+                :key="contact._id"
                 class="rounded bg-white p-4 even:bg-gray-200 dark:odd:bg-blue-80 dark:even:bg-blue-90"
               >
                 <td class="py-3 pl-6">
@@ -221,7 +217,7 @@
           <p class="mb-8">
             Are you sure you want to delete the entries with the following ids?
           </p>
-          <div class="word-wrap mb-8 break-all bg-black p-1 text-gray-200">
+          <div class="mb-8 break-all bg-black p-1 text-gray-200">
             {{ selectedContacts.toString() }}
           </div>
           <div class="flex justify-center gap-4">
@@ -234,9 +230,6 @@
           </div>
         </section>
       </div>
-      <template #footer>
-        <Placeholder class="h-8" />
-      </template>
     </UModal>
   </div>
 </template>
@@ -244,11 +237,22 @@
 <script setup lang="ts">
 import { useAuthStore } from "~/stores/auth.store";
 const authStore = useAuthStore();
+
+type Contact = {
+  _id: string;
+  firstname: string;
+  lastname: string;
+  city: string;
+  street: string;
+  zip: string;
+  dob: string;
+  user: string;
+};
+
+/** ================
+ * Pagination
+ ================ */
 const page = ref(1);
-const pages = computed(() =>
-  Math.ceil(parseInt(contactCount.value as any) / pageSize.value)
-);
-const items = ref(Array(55));
 const pageSizeOptions = [10, 20, 30, 40, 50];
 const pageSize = ref(pageSizeOptions[1]);
 const startRange = computed(
@@ -256,12 +260,16 @@ const startRange = computed(
 );
 const endRange = computed(() => pageSize.value * page.value);
 
+/** ================
+ * Data fetching
+ ================ */
 const {
   data: contacts,
-  execute,
   refresh: refreshContacts,
 }: {
-  data: Ref<Array<{}>>;
+  data: Ref<Array<Contact>>;
+  execute: () => void;
+  refresh: () => void;
 } = useFetch(`http://localhost:8000/api/contact`, {
   params: {
     page,
@@ -273,7 +281,10 @@ const {
   },
 });
 
-const { data: contactCount, refresh: refreshContactsCount } = useFetch(
+const {
+  data: contactCount,
+  refresh: refreshContactsCount,
+}: { data: Ref<number>; refresh: () => void } = useFetch(
   `http://localhost:8000/api/contact/count`,
   {
     headers: {
@@ -283,21 +294,21 @@ const { data: contactCount, refresh: refreshContactsCount } = useFetch(
   }
 );
 
-function reloadData() {
-  console.log("reloadData");
-  execute();
-}
-
+/** ================
+ * Actions
+ ================ */
 const isOpen = ref(false);
 const currentContactId = ref();
+const selectedContacts: Ref<string[]> = ref([]);
+const bulkAction = ref();
+const bulkActionOptions = ["Delete"];
+const selectAll = ref(false);
 
-function initiateDeletion(contactId) {
+function initiateDeletion(contactId: string): void {
   isOpen.value = true;
   currentContactId.value = contactId;
 }
-
 async function deleteContact() {
-  console.log("DELETE CONTACT FUNC");
   try {
     await useFetch(`/api/contacts?id=${currentContactId.value}`, {
       method: "DELETE",
@@ -313,19 +324,15 @@ async function deleteContact() {
     console.error(error);
   }
 }
-
-const selectedContacts: Ref<string[]> = ref([]);
 function toggleSelectAll() {
   !selectedContacts.value.length
     ? (selectedContacts.value = contacts.value.map((contact) => contact._id))
     : (selectedContacts.value = []);
 }
-
-function isSelectedContact(contactId: number): boolean {
+function isSelectedContact(contactId: string): boolean {
   return selectedContacts.value.includes(contactId);
 }
-
-function toggleSelection(contactId: number): void {
+function toggleSelection(contactId: string): void {
   isSelectedContact(contactId)
     ? selectedContacts.value.splice(
         selectedContacts.value.indexOf(contactId),
@@ -333,11 +340,6 @@ function toggleSelection(contactId: number): void {
       )
     : selectedContacts.value.push(contactId);
 }
-
-const bulkAction = ref();
-const bulkActionOptions = ["Delete"];
-const selectAll = ref(false);
-
 async function bulkDelete() {
   try {
     await $fetch(`/api/contacts/bulk/delete`, {
@@ -357,10 +359,9 @@ async function bulkDelete() {
   }
 }
 function executeBulkAction() {
-  console.log("bulkAction", bulkAction.value.toLowerCase());
   switch (bulkAction.value.toLowerCase()) {
     case "delete":
-      initiateDeletion();
+      initiateDeletion("");
       break;
   }
 }
