@@ -41,6 +41,7 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const STYLE_MAPS = {
+  disabled: "bg-gray-100 text-gray-700 cursor-not-allowed",
   red: "bg-red-500 text-red-100",
   yellow: "border-2 border-yellow-normal bg-yellow-normal text-yellow-dark",
   amber: "bg-yellow-400 text-yellow-900",
@@ -55,5 +56,9 @@ const SIZE_MAP = {
   lg: "px-9 py-6",
 };
 
-const buttonClasses = STYLE_MAPS[props.variant] + " " + SIZE_MAP[props.size];
+const buttonClasses = computed(() => {
+  return props.disabled
+    ? STYLE_MAPS.disabled + " " + SIZE_MAP[props.size]
+    : STYLE_MAPS[props.variant] + " " + SIZE_MAP[props.size];
+});
 </script>
