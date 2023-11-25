@@ -15,8 +15,8 @@
 <script setup lang="ts">
 type Props = {
   placeholder?: string;
-  modelValue?: string;
-  type?: "text" | "file" | "date" | "password";
+  modelValue?: string | number;
+  type?: "text" | "file" | "date" | "password" | "number";
   size?: "sm" | "md";
 };
 
