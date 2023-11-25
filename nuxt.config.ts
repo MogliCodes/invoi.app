@@ -1,5 +1,10 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+  runtimeConfig: {
+    public: {
+      apiBaseUrl: process.env.API_BASE_URL,
+    },
+  },
   devtools: true,
   modules: ["@nuxt/ui", "@nuxtjs/supabase", "@pinia/nuxt"],
   supabase: {

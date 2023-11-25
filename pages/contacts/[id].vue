@@ -58,11 +58,20 @@ import { useAlertStore } from "~/stores/alert";
 
 const authStore = useAuthStore();
 const alertStore = useAlertStore();
-const userId = authStore.userId;
 const accessToken = authStore.accessToken;
 const route = useRoute();
 
-const { data: contact } = useFetch(
+type Contact = {
+  firstname: string;
+  lastname: string;
+  dob: string;
+  street: string;
+  city: string;
+  zip: string;
+  user: string;
+};
+
+const { data: contact } = useFetch<Contact>(
   `http://localhost:8000/api/contact/${route.params.id}`,
   {
     headers: {
@@ -102,10 +111,19 @@ async function patchContact() {
     console.error(error);
   }
 }
-const firstname = computed(() => contact?.value?.firstname);
-const lastname = computed(() => contact?.value?.lastname);
-const dob = computed(() => contact?.value?.dob);
-const street = computed(() => contact?.value?.street);
-const zip = computed(() => contact?.value?.zip);
-const city = computed(() => contact?.value?.city);
+const firstname = ref(contact?.value?.firstname);
+const lastname = ref(contact?.value?.lastname);
+const dob = ref(formatDateForInput(contact?.value?.dob));
+const street = ref(contact?.value?.street);
+const zip = ref(contact?.value?.zip);
+const city = ref(contact?.value?.city);
+
+function formatDateForInput(dateString: string) {
+  const date = new Date(dateString);
+  const year = date.getFullYear();
+  const month = (date.getMonth() + 1).toString().padStart(2, "0"); // Months are zero-indexed
+  const day = date.getDate().toString().padStart(2, "0");
+
+  return `${year}-${month}-${day}`;
+}
 </script>

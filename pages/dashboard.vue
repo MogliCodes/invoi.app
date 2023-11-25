@@ -1,7 +1,8 @@
 <template>
   <div class="w-full">
     <section
-      class="relative bg-yellow-300 text-yellow-950 rounded-lg overflow-hidden p-12 mb-6"
+      v-if="showTourTeaser"
+      class="relative mb-6 overflow-hidden rounded-lg bg-yellow-300 p-12 text-yellow-950 shadow-lg"
     >
       <div class="w-2/3">
         <BaseHeadline
@@ -9,66 +10,72 @@
           type="h1"
           text="Professinal invoices made easy"
         />
-        <p class="text-xl mb-6">
+        <p class="mb-6 text-xl">
           Explore the simplicity of creating invoices with our quick tour. Learn
           easy steps to effortlessly generate invoices and enhance your
           invoicing experience. Take the tutorial now for a hassle-free
           invoicing journey.
         </p>
-        <BaseButton text="Start the tour" variant="yellowDark" />
+        <BaseButton text="Start the tour" variant="amber" />
         <div
-          class="w-9 h-9 bg-yellow-400 absolute top-6 right-6 flex justify-center items-center rounded-lg"
+          class="absolute right-6 top-6 flex h-9 w-9 items-center justify-center rounded-lg bg-yellow-400"
         >
-          <UIcon class="text-2xl" name="i-heroicons-x-mark" />
+          <UIcon
+            @click="showTourTeaser = false"
+            class="text-2xl"
+            name="i-heroicons-x-mark"
+          />
         </div>
         <UIcon
-          class="absolute w-[300px] h-[300px] right-10 -bottom-10"
+          class="absolute -bottom-10 right-10 h-[300px] w-[300px]"
           name="i-heroicons-document-chart-bar"
         />
       </div>
     </section>
     <div class="mb-6">
       <BaseHeadline
-        class="font-bold font-syne mb-3 text-gray-400 text-2xl"
+        class="mb-3 font-syne text-2xl font-bold text-gray-400"
         type="h2"
         text="Overview"
       />
       <BaseBox>
         <div class="grid grid-cols-3 gap-3">
-          <div
-            class="border-r-2 dark:border-gray-600 pr-3 flex justify-between"
+          <NuxtLink
+            to="/contacts"
+            class="flex justify-between border-r-2 pr-3 dark:border-gray-600"
           >
             <div>
               <span
-                class="font-bold text-secondary-100 text-5xl font-syne block mb-2"
+                class="mb-2 block font-syne text-5xl font-bold text-secondary-100"
                 >{{ contactCount }}</span
               >
               <span class="text-xl dark:text-white">Contacts</span>
             </div>
             <UIcon
-              class="h-20 w-20 text-blue-80 text-gray-300 dark:text-gray-600"
+              class="h-20 w-20 text-gray-300 dark:text-gray-600"
               name="i-heroicons-user-circle"
             />
-          </div>
-          <div
-            class="border-r-2 dark:border-gray-600 px-3 flex justify-between"
+          </NuxtLink>
+          <NuxtLink
+            to="/invoices"
+            class="flex justify-between border-r-2 px-3 dark:border-gray-600"
           >
             <div>
               <span
-                class="font-bold text-secondary-100 text-5xl font-syne block mb-2"
+                class="mb-2 block font-syne text-5xl font-bold text-secondary-100"
                 >{{ invoiceCount }}</span
               >
               <span class="text-xl dark:text-white">Invoices</span>
             </div>
             <UIcon
-              class="h-20 w-20 text-blue-80 text-gray-300 dark:text-gray-600"
+              class="h-20 w-20 text-gray-300 dark:text-gray-600"
               name="i-heroicons-document-chart-bar"
             />
-          </div>
-          <div class="pl-3 flex justify-between">
+          </NuxtLink>
+          <NuxtLink to="/clients" class="flex justify-between pl-3">
             <div>
               <span
-                class="font-bold text-secondary-100 text-5xl font-syne block mb-2"
+                class="mb-2 block font-syne text-5xl font-bold text-secondary-100"
                 >{{ clientCount }}</span
               >
               <span class="text-xl dark:text-white">Clients</span>
@@ -77,13 +84,13 @@
               class="h-20 w-20 text-gray-300 dark:text-gray-600"
               name="i-heroicons-building-office"
             />
-          </div>
+          </NuxtLink>
         </div>
       </BaseBox>
     </div>
     <div class="mb-6">
       <BaseHeadline
-        class="font-bold font-syne mb-3 text-gray-400 text-2xl"
+        class="mb-3 font-syne text-2xl font-bold text-gray-400"
         type="h2"
         text="Upcoming payments"
       />
@@ -106,7 +113,7 @@
     </div>
     <div class="mb-6">
       <BaseHeadline
-        class="font-bold font-syne mb-3 text-gray-400 text-2xl"
+        class="mb-3 font-syne text-2xl font-bold text-gray-400"
         text="Revenues"
         type="h2"
       />
@@ -116,7 +123,7 @@
     </div>
     <div>
       <BaseHeadline
-        class="font-bold font-syne mb-3 text-gray-400 text-2xl"
+        class="mb-3 font-syne text-2xl font-bold text-gray-400"
         text="User Data"
         type="h2"
       />
@@ -180,7 +187,5 @@ const { data: clientCount } = useFetch(
   }
 );
 
-const welcomeMessage = computed<string>(() => {
-  return `Welcome back ${data.value?.username}`;
-});
+const showTourTeaser = ref(true);
 </script>

@@ -48,6 +48,7 @@
     "@nuxt/ui": "^2.10.0",
     "@pinia/nuxt": "^0.4.11",
     "pinia": "^2.1.6",
-    "solid": "link:@heroicons/vue/20/solid"
+    "solid": "link:@heroicons/vue/20/solid",
+    "sortablejs": "^1.15.0"
   }
 }

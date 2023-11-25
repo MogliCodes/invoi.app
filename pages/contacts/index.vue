@@ -13,7 +13,20 @@
           text="Import contacts"
           variant="outline"
         />
+        <BaseButton
+          to="/contacts/categories"
+          text="Manage categories"
+          variant="outline"
+        />
       </div>
+    </section>
+    <section class="mb-6 w-full flex gap-3">
+      <BaseInput
+        v-model="searchQuery"
+        placeholder="Search …"
+        class=""
+      ></BaseInput>
+      <BaseButton text="Search" @click="searchContact" />
     </section>
     <section class="mb-2 w-full">
       <div class="flex w-full items-center justify-between gap-8">
@@ -37,19 +50,6 @@
           </div>
         </div>
         <div class="flex gap-6">
-          <div class="flex items-center gap-3">
-            <USelect
-              v-model="bulkAction"
-              color="white"
-              :options="bulkActionOptions"
-            />
-            <div
-              class="rounded-lg border-2 border-yellow-400 bg-yellow-400 px-2 py-1 text-sm"
-              @click="executeBulkAction"
-            >
-              Apply
-            </div>
-          </div>
           <div>
             <USelect
               v-model.number="pageSize"
@@ -87,7 +87,7 @@
       </div>
     </section>
     <section class="w-full">
-      <div v-if="!contacts.length" class="flex flex-col items-start gap-4">
+      <div v-if="!contacts?.length" class="flex flex-col items-start gap-4">
         <p>No contacts created yet! Start creating your first contact.</p>
       </div>
       <div v-else>
@@ -110,6 +110,7 @@
                 <th class="px-6 py-5 text-left">Street</th>
                 <th class="px-6 py-5 text-left">Zip</th>
                 <th class="px-6 py-5 text-left">City</th>
+                <th class="px-6 py-5 text-left">Categories</th>
                 <th class="px-6 py-5 text-left">Action</th>
               </tr>
             </thead>
@@ -145,6 +146,18 @@
                 <td class="px-6 py-3">{{ contact.zip }}</td>
                 <td class="px-6 py-3">{{ contact.city }}</td>
                 <td class="px-6 py-3">
+                  <div class="flex gap-2">
+                    <span
+                      class="rounded-full text-sm py-1 px-3 bg-blue-500 text-blue-100"
+                      >Categorie 1</span
+                    >
+                    <span
+                      class="rounded-full text-sm py-1 px-3 bg-amber-600 text-amber-100"
+                      >Categorie 2</span
+                    >
+                  </div>
+                </td>
+                <td class="px-6 py-3">
                   <span class="flex gap-2">
                     <NuxtLink :to="`/contacts/${contact._id}`">
                       <UIcon
@@ -164,7 +177,21 @@
           </table>
         </div>
       </div>
-      <div class="flex justify-end py-4">
+      <div class="flex justify-between py-4">
+        <div class="flex items-center gap-2">
+          <USelectMenu
+            class="cursor-pointer"
+            size="xl"
+            v-model="bulkAction"
+            color="white"
+            :options="bulkActionOptions"
+          >
+            <template #label>
+              {{ bulkAction }}
+            </template>
+          </USelectMenu>
+          <BaseButton size="sm" @click="executeBulkAction" text="Apply" />
+        </div>
         <UPagination
           v-model.number="page"
           size="sm"
@@ -201,7 +228,6 @@
           <UIcon class="text-2xl text-red-900" name="i-heroicons-trash" />
         </div>
         <BaseHeadline class="mb-2" type="h3" text="Confirm delete" />
-
         <section v-if="currentContactId">
           <p class="mb-8">Are you sure you want to delete this entry?</p>
           <div class="flex gap-4">
@@ -300,9 +326,38 @@ const {
 const isOpen = ref(false);
 const currentContactId = ref();
 const selectedContacts: Ref<string[]> = ref([]);
-const bulkAction = ref();
-const bulkActionOptions = ["Delete"];
+const bulkActionOptions = [
+  "Choose an action",
+  "Delete",
+  "Archive",
+  "Copy",
+  "Move",
+];
+const bulkAction = ref(bulkActionOptions[0]);
 const selectAll = ref(false);
+const searchQuery = ref("");
+
+function searchContact() {
+  const {
+    data: contactSearchResult,
+  }: {
+    data: Ref<Array<Contact>>;
+    execute: () => void;
+    refresh: () => void;
+  } = useFetch(
+    `http://localhost:8000/api/contact?search=${searchQuery.value}`,
+    {
+      params: {
+        page,
+        pageSize,
+      },
+      headers: {
+        Authorization: `Bearer ${authStore.accessToken}`,
+        ClientId: authStore.userId,
+      },
+    }
+  );
+}
 
 function initiateDeletion(contactId: string): void {
   isOpen.value = true;
