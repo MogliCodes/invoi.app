@@ -11,20 +11,21 @@
     <BaseHeadline type="h2" text="Invoice details" />
     <BaseBox class="mb-6 flex gap-6">
       <div class="w-1/2">
-        <div>
-          <label class="dark:text-white" for="">Client</label>
+        <div v-if="clients && selectedClient">
+          <div>
+            <label class="dark:text-white" for="">Client</label>
+          </div>
+          <USelectMenu
+            v-model="selectedClient"
+            class="mb-3"
+            option-attribute="company"
+            :options="clients"
+          >
+            <template #label>
+              {{ selectedClient?.company }}
+            </template>
+          </USelectMenu>
         </div>
-        <USelectMenu
-          v-if="clients"
-          v-model="selectedClient"
-          class="mb-3"
-          option-attribute="company"
-          :options="clients"
-        >
-          <template #label>
-            {{ selectedClient?.company }}
-          </template>
-        </USelectMenu>
         <div>
           <label class="dark:text-white" for="">Invoice titel</label>
           <BaseInput
@@ -35,7 +36,7 @@
         </div>
       </div>
       <div class="flex w-1/2 flex-col gap-3">
-        <div>
+        <div v-if="invoiceNumber">
           <label class="dark:text-white" for="">Invoice number</label>
           <BaseInput
             v-model="invoiceNumber"
@@ -44,7 +45,7 @@
           />
         </div>
         <div>
-          <label class="dark:text-white" for="">Invoice date</label>
+          <label class="dark:text-white" for="">Date</label>
 
           <BaseInput
             v-model="invoiceDate"
@@ -52,6 +53,34 @@
             size="sm"
             placeholder="invoiceDate"
           />
+        </div>
+        <div>
+          <label class="dark:text-white" for="">Performance period</label>
+          <div class="flex gap-2">
+            <BaseInput
+              v-model="performancePeriodStart"
+              type="date"
+              size="sm"
+              placeholder="invoiceDate"
+            /><BaseInput
+              v-model="performancePeriodEnd"
+              type="date"
+              size="sm"
+              placeholder="invoiceDate"
+            />
+          </div>
+        </div>
+        <div>
+          <label class="dark:text-white" for="">Taxes</label>
+          <USelectMenu
+            v-if="clients"
+            v-model="selectedTaxes"
+            multiple
+            class="mb-3"
+            placeholder="Select people"
+            :options="taxOptions"
+          >
+          </USelectMenu>
         </div>
         <div>
           <UCheckbox v-model="hasTaxes" name="taxes" label="Add taxes" />
@@ -64,13 +93,13 @@
         <thead class="bg-blue-90 text-white">
           <tr>
             <th></th>
-            <th class="px-6 py-5 text-left w-1/12">Position</th>
-            <th class="px-6 py-5 text-left w-7/12">Description</th>
-            <th class="px-6 py-5 text-left w-1/12">
+            <th class="w-1/12 px-6 py-5 text-left">Position</th>
+            <th class="w-7/12 px-6 py-5 text-left">Description</th>
+            <th class="w-1/12 px-6 py-5 text-left">
               <span contenteditable>Preis</span>
             </th>
-            <th class="px-6 py-5 text-left w-1/12">Faktor</th>
-            <th class="px-6 py-5 text-right w-2/12">Gesamtpreis</th>
+            <th class="w-1/12 px-6 py-5 text-left">Faktor</th>
+            <th class="w-2/12 px-6 py-5 text-right">Gesamtpreis</th>
           </tr>
         </thead>
         <tbody id="rows">
@@ -80,16 +109,16 @@
             class="relative rounded bg-white p-4 even:bg-gray-200 dark:odd:bg-blue-80 dark:even:bg-blue-90"
           >
             <td
-              class="add-row-btn absolute -left-5 top-2 flex h-10 w-10 scale-50 cursor-pointer items-center justify-center rounded-full bg-secondary-100 opacity-0 transition-all"
+              class="add-row-btn z-100 absolute -left-5 translate-y-1/2 bottom-0 flex h-10 w-10 scale-50 cursor-pointer items-center justify-center rounded-full bg-secondary-100 opacity-0 transition-all"
               @click="insertRow(index)"
             >
               <UIcon name="i-heroicons-plus" class="text-xl text-white" />
             </td>
-            <td class="px-6 py-3 w-1/12">{{ row.position }}</td>
-            <td class="px-6 py-3 w-7/12">
-              <UTextarea v-model="row.description" :rows="1" autoresize />
+            <td class="w-1/12 px-6 py-3">{{ row.position }}</td>
+            <td class="w-7/12 px-6 py-3">
+              <RichTextEditor :content="row.description"></RichTextEditor>
             </td>
-            <td class="px-6 py-3 w-1/12">
+            <td class="w-1/12 px-6 py-3 align-top">
               <BaseInput
                 v-model.number="row.hours"
                 class="w-auto"
@@ -98,7 +127,7 @@
                 @change="updateRowTotal(index)"
               />
             </td>
-            <td class="px-6 py-3 w-1/12">
+            <td class="w-1/12 px-6 py-3 align-top">
               <BaseInput
                 v-model.number="row.factor"
                 class="w-auto"
@@ -107,7 +136,7 @@
                 @change="updateRowTotal(index)"
               />
             </td>
-            <td class="px-6 py-3 text-right w-2/12">
+            <td class="w-2/12 px-6 py-3 text-right align-top">
               <span
                 >{{
                   row.total.toFixed(2).replace(".", ",").toLocaleString()
@@ -128,6 +157,9 @@
                 €</span
               >
             </td>
+          </tr>
+          <tr class="px-6 py-3 text-right" v-for="tax in selectedTaxes">
+            <td class="px-6 py-3 text-right">{{ tax }}</td>
           </tr>
           <tr v-if="hasTaxes" class="bg-gray-600 text-white dark:bg-gray-900">
             <td colspan="5" class="px-6 py-3">Mwst.</td>
@@ -167,7 +199,7 @@
           :disabled="!isValidInvoice"
           variant="yellow"
           text="Create invoice"
-          @click="createContact"
+          @click="createInvoice"
         />
         <BaseButton
           variant="outline"
@@ -183,7 +215,7 @@
     >
       <div class="h-full w-full">
         <div class="a4 mx-auto bg-white">
-          <div v-html="invoicePreviewHtml"></div>
+          <div ref="preview" v-html="invoicePreviewHtml"></div>
         </div>
       </div>
     </section>
@@ -193,16 +225,28 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useSortable } from "@vueuse/integrations/useSortable";
+import { onClickOutside } from "@vueuse/core";
 import { useAuthStore } from "~/stores/auth.store";
 import { useAlertStore } from "~/stores/alert";
 const alertStore = useAlertStore();
 const authStore = useAuthStore();
 const accessToken = authStore.accessToken;
 const showPreview = ref(false);
+const preview = ref(null);
+
+onClickOutside(preview, () => (showPreview.value = false));
 
 type Client = {
+  _id: string;
   company: string;
+  street: string;
+  zip: string;
+  city: string;
+  user: string;
 };
+
+const taxOptions = ["7%", "19%"];
+const selectedTaxes = ref([]);
 
 /* ==============
  * Data fetching
@@ -217,7 +261,7 @@ const { data: clients } = useFetch<Array<Client>>(
   }
 );
 
-const { data: generatedInvoiceNumber } = useFetch<Array<Client>>(
+const { data: generatedInvoiceNumber } = useFetch<string>(
   `http://localhost:8000/api/invoice/number`,
   {
     headers: {
@@ -230,11 +274,16 @@ const { data: generatedInvoiceNumber } = useFetch<Array<Client>>(
 /* ==============
  * Invoice data
  ============== */
-const selectedClient = ref(clients?.value?.[0]);
+watch(clients, (newVal) => {
+  selectedClient.value = newVal?.[0];
+});
+const selectedClient: Ref<Client | null> = ref(clients?.value?.[0] || null);
 const currentDate = new Date().toLocaleDateString("en-CA");
 const invoiceTitle = ref();
 const invoiceDate = ref(currentDate);
-const invoiceNumber = ref(generatedInvoiceNumber.value);
+const performancePeriodStart = ref(currentDate);
+const performancePeriodEnd = ref(currentDate);
+const invoiceNumber: Ref<string> = ref(generatedInvoiceNumber.value || "");
 const hasTaxes: Ref<boolean> = ref(true);
 const rows = ref([
   { position: 1, description: "description", hours: 0, factor: 0, total: 0 },
@@ -247,7 +296,7 @@ const totalAmount = computed(() => {
   );
 });
 const taxes = computed(() => {
-  return hasTaxes.value ? totalAmount.value * 0.19 : totalAmount.value * 0;
+  return hasTaxes.value ? totalAmount.value * 0.19 : 0;
 });
 const totalWithTaxes = computed(() => {
   return hasTaxes.value ? totalAmount.value + taxes.value : totalAmount.value;
@@ -291,12 +340,14 @@ function updateRowTotal(index: number): void {
   rows.value[index].total = rows.value[index].hours * rows.value[index].factor;
 }
 
-async function createContact() {
+async function createInvoice() {
   const invoiceToCreate = {
     nr: invoiceNumber.value,
     client: selectedClient.value?._id,
     title: invoiceTitle.value,
     date: invoiceDate.value,
+    performancePeriodStart: performancePeriodStart.value,
+    performancePeriodEnd: performancePeriodEnd.value,
     taxes: taxes.value,
     total: totalAmount.value,
     totalWithTaxes: totalWithTaxes.value,
@@ -318,7 +369,7 @@ async function createContact() {
       setTimeout(() => {
         alertStore.resetAlert();
       }, 5000);
-      navigateTo("/contacts");
+      navigateTo("/invoices");
     }
     console.log(res);
   } catch (error) {
@@ -329,6 +380,7 @@ async function createContact() {
 const invoicePreviewHtml = ref();
 async function getInvoicePreview() {
   const { data } = useFetch("../invoice-template.html");
+  console.log("data html");
   invoicePreviewHtml.value = data.value;
   console.log(invoicePreviewHtml.value);
   showPreview.value = true;
@@ -337,13 +389,13 @@ async function getInvoicePreview() {
 
 <style>
 .a4 {
-  aspect-ratio: 210 / 297;
-  max-height: 100%;
-  max-width: 100%;
+  height: 297mm;
+  width: 210mm;
 }
 tr:hover .add-row-btn {
   opacity: 1;
-  transform: scale(1);
+  transform: scale(1) translateY(50%);
   transform-origin: center;
+  z-index: 100;
 }
 </style>
