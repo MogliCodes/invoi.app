@@ -1,6 +1,6 @@
 <template>
   <div class="container mx-auto">
-    <BaseHeadline class="mb-4 dark:text-white" type="h1" text="Proposals" />
+    <BaseHeadline class="mb-4 dark:text-white" type="h1" text="Expenses" />
     <BaseButton to="/invoice/create" text="Create new proposals" />
   </div>
 </template>

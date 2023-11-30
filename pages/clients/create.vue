@@ -1,51 +1,19 @@
 <template>
   <div class="container mx-auto">
-    <BaseHeadline
-      class="mb-8 dark:text-white"
-      type="h1"
-      text="Create contact"
-    />
+    <BaseHeadline class="mb-8 dark:text-white" type="h1" text="Create client" />
     <div class="grid grid-cols-2">
       <BaseBox>
         <form @submit.prevent="createContact">
           <BaseText
             type="h3"
             class="block mb-8 text-2xl font-bold dark:text-white"
-            >Contact base information</BaseText
+            >Client base information</BaseText
           >
           <div class="mb-3">
             <BaseText
               ><label class="block" for="username">First name</label></BaseText
             >
             <BaseInput v-model="firstname" />
-          </div>
-          <div class="mb-3">
-            <BaseText
-              ><label class="block" for="username">Last name</label></BaseText
-            >
-            <BaseInput v-model="lastname" />
-          </div>
-          <div class="mb-3">
-            <BaseText><label class="block" for="username">DOB</label></BaseText>
-            <BaseInput v-model="dob" />
-          </div>
-          <div class="mb-3">
-            <BaseText
-              ><label class="block" for="username">Street</label></BaseText
-            >
-            <BaseInput v-model="street" />
-          </div>
-          <div class="mb-3">
-            <BaseText
-              ><label class="block" for="username">ZIP Code</label></BaseText
-            >
-            <BaseInput v-model="zipcode" />
-          </div>
-          <div class="mb-3">
-            <BaseText
-              ><label class="block" for="username">City</label></BaseText
-            >
-            <BaseInput v-model="city" />
           </div>
           <BaseButton type="submit" text="Create contact" />
         </form>

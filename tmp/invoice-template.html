@@ -1,0 +1,293 @@
+<!doctype html>
+<html>
+
+<head>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <meta charset="utf-8">
+    <title>A simple, clean, and responsive HTML invoice template</title>
+    <style>
+        .invoice-box table {
+            width: 100%;
+            line-height: inherit;
+            text-align: left;
+        }
+
+        .invoice-box table td {
+            padding: 5px;
+            vertical-align: top;
+        }
+
+        .invoice-box table tr.top table td {
+            padding-bottom: 20px;
+        }
+
+        .invoice-box table tr.top table td.title {
+            font-size: 45px;
+            line-height: 45px;
+            color: #333;
+        }
+
+        .invoice-box table tr.information table td {
+            padding-bottom: 40px;
+        }
+
+        .invoice-box table tr.heading td {
+            background: #eee;
+            border-bottom: 1px solid #ddd;
+            font-weight: bold;
+        }
+
+        .invoice-box table tr.details td {
+            padding-bottom: 20px;
+        }
+
+        .invoice-box table tr.item td {
+            border-bottom: 1px solid #eee;
+        }
+
+        .invoice-box table tr.item.last td {
+            border-bottom: none;
+        }
+
+        .invoice-box table tr.total td:nth-child(2) {
+            border-top: 2px solid #eee;
+            font-weight: bold;
+        }
+
+        @media only screen and (max-width: 600px) {
+            .invoice-box table tr.top table td {
+                width: 100%;
+                display: block;
+                text-align: center;
+            }
+
+            .invoice-box table tr.information table td {
+                width: 100%;
+                display: block;
+                text-align: center;
+            }
+        }
+        /** RTL **/
+        .rtl {
+            direction: rtl;
+            font-family: Tahoma, 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+        }
+        .rtl table {
+            text-align: right;
+        }
+        .rtl table tr td:nth-child(2) {
+            text-align: left;
+        }
+    </style>
+    <style>
+        html,
+        body {
+            border: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        body {
+            font-family: 'IBM Plex Sans', sans-serif;
+        }
+
+        .text-blue {
+            color: rgb(0, 44, 67);
+        }
+
+        .bg-blue {
+            background-color: rgb(0, 44, 67);
+            color: rgb(255, 255, 255);
+        }
+
+        .text-right {
+            text-align: right;
+        }
+
+        .invoice-box {
+            max-width: 210mm;
+            min-height: 297mm;
+            margin: auto;
+            padding: 30px;
+            border: 1px solid #eee;
+            box-shadow: 0 0 10px rgba(0, 0, 0, .15);
+            font-size: 8pt;
+            line-height: 10pt;
+            font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+            color: #555;
+            position: relative;
+        }
+
+        .sender {
+            border-bottom: 1px solid rgb(0, 44, 67);
+            font-size: 8pt;
+            padding-bottom: 3px;
+            position: absolute;
+            left: 15mm;
+            top: 27.528mm;
+            width: 55mm;
+            display: block;
+        }
+
+        .recipient {
+            background-color: #eee;
+            color: rgb(0, 44, 67);
+            padding: 2mm;
+            position: absolute;
+            left: 15mm;
+            top: 34mm;
+            width: 65mm;
+            height: 25mm;
+        }
+
+        .logo {
+            position: absolute;
+            top: 12mm;
+            right: 15mm;
+            max-width: 25mm;
+        }
+
+        .logo img {
+            max-width: 25mm;
+        }
+
+        .info {
+            position: absolute;
+            top: 95mm;
+            left: 15mm;
+        }
+
+        .subject {
+            position: absolute;
+            left: 15mm;
+            top: 143mm;
+        }
+
+        .billing-content {
+            background: rgba(0, 0, 0, 0.05);
+            position: absolute;
+            left: 15mm;
+            right: 15mm;
+            top: 165mm;
+            max-width: calc(297mm - 30mm);
+        }
+
+        .my-info {
+            color: rgb(0, 44, 67);
+            text-align: right;
+            position: absolute;
+            top: 32mm;
+            right: 15mm;
+        }
+
+        table {
+            border-collapse: collapse;
+        }
+
+        td {
+            border: 1px solid #fff;
+            padding: 1px;
+        }
+
+        h1 {
+            line-height: 24px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="invoice-box">
+    <div>
+        <div class="logo">
+            <img width="100px" src="https://www.dennisfink.de/home/docs/img/df_schriftzug_rechts.svg" alt="">
+        </div>
+    </div>
+    <div class="my-info">
+        <span><b>Dennis Fink</b></span><br>
+        <span>Krefelder Straße 24</span><br>
+        <span>50670 Köln</span><br><br>
+        <span>0160 609 1990</span>
+        <span>kontakt@dennisfink.de</span><br>
+        <span>dennisfink.de</span><br><br>
+        <span><b>Volksbank Düren</b></span><br>
+        <span>IBAN: DE95 3956 0201 0306 9820 10</span><br>
+        <span>BIC: GENODED1DUE</span><br><br>
+        <span><b>Steuernummer</b></span><br>
+        <span>218/5061/4268</span>
+    </div>
+    <div class="sender text-blue">
+        <span class="sender__name">Dennis Fink</span> | <span class="sender__street">Krefelder Str. 24</span> | 50670 Köln
+    </div>
+    <div class="recipient">
+        <span><b>{{client}}</b></span>
+    </div>
+
+    <div class="info">
+        <div>
+            <strong class="text-blue">Leistungszeitraum</strong><br>
+            <span>{{dateRangeStart}} – {{dateRangeEnd}}</span>
+        </div>
+        <div>
+            <strong class="text-blue">Rechnungsdatum:</strong><br>
+            <span>{{date}}</span>
+        </div>
+        <div>
+            <strong class="text-blue">Rechnungsnummer:</strong><br>
+            <span>{{nr}}</span>
+        </div>
+        <div>
+            <strong class="text-blue">Projektnummer:</strong><br>
+            <span>---</span>
+        </div>
+    </div>
+
+    <div class="subject">
+        <h1 class="text-blue">Rechnung: {{title}}</h1>
+    </div>
+
+    <div class="billing-content">
+        <table class="">
+            <thead>
+            <th>Position</th>
+            <th>Leistung</th>
+            <th>Stundensatz</th>
+            <th>Faktor</th>
+            <th>Gesamtpreis</th>
+            </thead>
+            <tbody>
+            {{#each items}}
+            <tr>
+                <td>{{this.nr}}</td>
+                <td>{{this.description}}</td>
+                <td class="text-right">{{this.hourlyRate}} €</td>
+                <td class="text-right">{{this.factor}}</td>
+                <td class="text-right">{{this.total}} €</td>
+            </tr>
+            {{/each}}
+            </tbody>
+            <tfoot>
+            <tr>
+                <td class=""></td>
+                <td class="" colspan="3">Zwischensumme Netto</td>
+                <td class="text-right">{{this.billingTotal}} €</td>
+            </tr>
+            <tr>
+                <td class=""></td>
+                <td class="" colspan="3">MwSt. 19%</td>
+                <td class="text-right">{{this.billingTaxes}} €</td>
+            </tr>
+            <tr>
+                <td class="bg-blue"></td>
+                <td class="bg-blue" colspan="3"><strong>Brutto-Rechnungsbetrag</strong></td>
+                <td class="text-right bg-blue"><strong>{{this.billingTotalWithTaxes}} €</strong></td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+
+</div>
+</body>
+
+</html>
