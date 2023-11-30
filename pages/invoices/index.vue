@@ -148,6 +148,7 @@
 
 <script setup lang="ts">
 import { useAuthStore } from "~/stores/auth.store";
+import { a as useRuntimeConfig } from "~/.output/server/chunks/nitro/node-server.mjs";
 
 const authStore = useAuthStore();
 
@@ -159,7 +160,8 @@ type Invoice = {
   taxes: string;
   totalWithTaxes: string;
 };
-
+const config = useRuntimeConfig();
+const backendBaseUrl = config.public.backendBaseUrl;
 const { data: invoices } = useFetch<Invoice[]>(
   `${backendBaseUrl}/api/invoice`,
   {
