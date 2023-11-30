@@ -3,15 +3,25 @@ type Props = {
   message: string;
   type: "error" | "info" | "success";
 };
-defineProps<Props>();
+const props = defineProps<Props>();
+
+const colorClass = computed(() => {
+  switch (props.type) {
+    case "error":
+      return `bg-red-300 text-red-900`;
+    case "info":
+      return `bg-sky-300 text-sky-900`;
+    case "success":
+      return `bg-green-400 text-green-900`;
+  }
+});
 </script>
 
 <template>
   <div
-    class="border-2-yellow-darky fixed inset-x-4 top-4 z-10 block rounded bg-yellow-normal p-4 text-yellow-dark shadow-2xl"
+    class="absolute inset-x-6 top-4 z-10 block rounded-lg p-4 shadow-2xl"
+    :class="colorClass"
   >
-    {{ message }}
+    {{ props.message }}
   </div>
 </template>
-
-<style scoped></style>

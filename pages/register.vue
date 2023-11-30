@@ -1,45 +1,49 @@
 <template>
-  <div>
-    <BaseAlert
-      v-if="showAlert"
-      :message="`A user with this E-Mail address already exists. Please use another one.`"
-    />
-    <div class="container mx-auto flex justify-center">
-      <div class="flex flex-col items-center">
-        <BaseHeadline
-          class="mb-8"
-          text="Sign up for  a free account"
-          type="h1"
-        />
-        <div
-          class="border-2-white border-2-opacity-30 rounded border-2 bg-white bg-opacity-5 p-8"
-        >
-          <div class="mb-3">
-            <label class="block" for="username">Username</label>
-            <BaseInput v-model="username" />
-          </div>
-          <div class="mb-3">
-            <label class="block" for="username">E-Mail</label>
-            <BaseInput v-model="email" />
-          </div>
-          <div class="mb-3">
-            <label class="block" for="password">Password</label>
-            <BaseInput
-              ref="passwordInput"
-              v-model="password"
-              :type="isPasswordVisible ? 'text' : 'password'"
-            />
-            <p>{{ isSufficientPassword }}</p>
-            <p @click="togglePassword">Show password</p>
-          </div>
-          <BaseButton variant="yellow" text="Register" @click="register" />
+  <section class="h-screen">
+    <div class="flex h-full">
+      <div class="flex h-full w-1/2 flex-col justify-center px-24 py-12">
+        <div class="pb-12">
+          <BaseHeadline
+            class="mb-8 text-blue-80 dark:text-white"
+            text="Sign up for  a free account"
+            type="h1"
+          />
+          <p class="w-6/12 text-xl text-slate-600 dark:text-white">
+            If you already have an account you can
+            <NuxtLink class="text-yellow-normal" to="/login"
+              >login here</NuxtLink
+            >
+          </p>
+        </div>
+        <div class="flex w-full flex-col gap-3">
+          <BaseInput v-model="username" placeholder="Username" />
+          <BaseInput v-model="email" placeholder="E-Mail" />
+          <BaseInput
+            ref="passwordInput"
+            v-model="password"
+            placeholder="Password"
+            :type="isPasswordVisible ? 'text' : 'password'"
+          />
+          <BaseButton
+            class="w-full"
+            variant="yellow"
+            text="Register"
+            @click="register"
+          />
+          <UDivider label="OR" />
         </div>
       </div>
+      <div class="flex h-full w-1/2 items-center px-12 pb-24">
+        <img src="/img/invoi-illu.svg" alt="" />
+      </div>
     </div>
-  </div>
+  </section>
 </template>
 
 <script setup lang="ts">
+import BaseInput from "~/components/BaseInput/BaseInput.vue";
+import BaseButton from "~/components/base/BaseButton.vue";
+
 const username: Ref<string> = ref("");
 const email: Ref<string> = ref("");
 const password: Ref<string> = ref("");

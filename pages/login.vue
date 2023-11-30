@@ -1,24 +1,40 @@
 <template>
-  <div class="flex h-full items-center">
-    <div class="container mx-auto">
-      <div class="flex justify-center gap-8">
-        <div
-          class="border-2-white border-2-opacity-30 rounded border-2 bg-white bg-opacity-5 p-8"
-        >
-          <h1 class="mb-6 text-4xl">Login</h1>
+  <section class="h-screen">
+    <div class="flex h-full">
+      <div
+        class="flex h-full w-1/2 flex-col justify-center px-24 py-12 dark:bg-blue-100"
+      >
+        <div class="w-full">
+          <h1
+            class="mb-6 font-syne text-4xl font-extrabold text-blue-70 dark:text-white"
+          >
+            Login
+          </h1>
           <div class="mb-3">
-            <label class="block" for="username">Username</label>
+            <label class="block text-gray-500 dark:text-gray-100" for="username"
+              >Username</label
+            >
             <BaseInput v-model="username" type="text" />
           </div>
           <div class="mb-3">
-            <label class="block" for="password">Password</label>
+            <label class="block text-gray-500 dark:text-gray-100" for="password"
+              >Password</label
+            >
             <BaseInput v-model="password" type="password" />
           </div>
-          <BaseButton variant="yellow" text="Login" @click="login" />
+          <BaseButton
+            class="w-full"
+            variant="yellow"
+            text="Login"
+            @click="login"
+          />
         </div>
       </div>
+      <div class="flex h-full w-1/2 items-center px-12 pb-24">
+        <img src="/img/invoi-illu.svg" alt="" />
+      </div>
     </div>
-  </div>
+  </section>
 </template>
 
 <script setup lang="ts">
@@ -48,6 +64,7 @@ async function login() {
     });
     authStore.setAccessToken(data.value.token);
     authStore.setUserId(data.value.id);
+    authStore.setUserName(data.value.username);
     authStore.setUserLoggedIn(true);
     const accessToken = useCookie("accessToken");
     accessToken.value = data.value.token;

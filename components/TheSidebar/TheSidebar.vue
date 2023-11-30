@@ -1,48 +1,62 @@
 <template>
-  <aside class="flex flex-row bg-blue-dark-100 px-6 py-12 sm:w-1/6 sm:flex-col">
-    <div class="sm:mb-12 ml-6">
-      <span class="text-xl font-bold text-white">Invoi.app</span>
-    </div>
-    <nav>
-      <ul class="flex items-center sm:block">
-        <li
-          class="inline-block sm:block"
-          :key="index"
-          v-for="(item, index) in navItems"
+  <aside class="fixed inset-y-0 z-20 w-2/12 bg-blue-90">
+    <div class="px-6 py-12">
+      <div class="ml-6 sm:mb-6">
+        <span class="text-md font-syne font-extrabold text-white"
+          >invoi.app</span
         >
-          <NuxtLink
-            class="transition-all hover:bg-blue-80 inline-block rounded-lg border-2 border-blue-100 px-6 py-4 font-medium text-white focus:border-2 focus:border-yellow-normal focus:outline-0 sm:block"
-            active-class="bg-yellow-normal text-yellow-dark focus:border-yellow-100 hover:!bg-yellow-110"
-            :to="item.to"
-            >{{ item.text }}</NuxtLink
+      </div>
+      <nav>
+        <ul class="flex items-center sm:block">
+          <li
+            v-for="(item, index) in navItems"
+            :key="index"
+            class="inline-block sm:block"
           >
-        </li>
-      </ul>
-    </nav>
+            <BaseMenuItem
+              on-dark-bg
+              :to="item.to"
+              :text="item.text"
+              :icon="item.icon"
+            />
+          </li>
+        </ul>
+      </nav>
+    </div>
   </aside>
 </template>
 
 <script setup lang="ts">
 const navItems = [
   {
+    icon: "i-heroicons-home",
     to: "/dashboard",
     text: "Dashboard",
   },
   {
+    icon: "i-heroicons-user-circle",
     to: "/contacts",
     text: "Contacts",
   },
   {
+    icon: "i-heroicons-building-office",
     to: "/clients",
     text: "Clients",
   },
   {
+    icon: "i-heroicons-banknotes",
     to: "/invoices",
     text: "Invoices",
   },
   {
+    icon: "i-heroicons-document",
     to: "/proposals",
     text: "Proposals",
+  },
+  {
+    icon: "i-heroicons-credit-card",
+    to: "/expenses",
+    text: "Expenses",
   },
 ];
 </script>
