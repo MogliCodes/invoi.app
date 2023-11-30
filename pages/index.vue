@@ -20,7 +20,7 @@
           <BaseButton variant="outline" to="/login" text="Login" />
         </div>
       </div>
-      <div class="w-1/2 h-full flex items-center px-12 pb-24">
+      <div class="flex h-full w-1/2 items-center px-12 pb-24">
         <img src="/img/invoi-illu.svg" alt="" />
       </div>
     </div>
@@ -53,10 +53,12 @@
           <BaseText class="text-gray-300">
             Efficiently organize your network by seamlessly managing contacts.
             Our user-friendly platform ensures smooth communication and easy
-            access to essential information. Enhance your professional
-            relationships and streamline your workflow with our straightforward
-            contact management feature
+            access to essential information.
           </BaseText>
+          <br /><br />
+          <NuxtLink class="text-yellow-400" to="/#manage-contacts"
+            >Learn more</NuxtLink
+          >
         </div>
         <div class="p-12">
           <UIcon
@@ -67,9 +69,12 @@
           <BaseText class="text-gray-300">
             Simplify your financial management with our intuitive expense
             tracking feature. Easily categorize and analyze your expenditures,
-            gaining valuable insights into your budget. Take control of your
-            finances and make informed decisions effortlessly
+            gaining valuable insights into your budget.
           </BaseText>
+          <br /><br />
+          <NuxtLink class="text-yellow-400" to="/#track-expenses"
+            >Learn more</NuxtLink
+          >
         </div>
       </div>
     </div>
@@ -78,7 +83,7 @@
     <div class="container mx-auto grid grid-cols-2 gap-12">
       <div>
         <BaseHeadline
-          class="text-secondary-100 mb-24"
+          class="mb-24 text-secondary-100"
           type="h1"
           text="Features"
         />
@@ -87,20 +92,39 @@
           type="h2"
           text="Create invoices in seconds"
         />
-        <p class="text-gray-800 text-xl">
+        <p class="text-xl text-gray-800">
           Create professional invoices in seconds, tailored to your brand, and
           leave the tedious paperwork behind. Elevate your business with
           seamless invoicing at your fingertips.
         </p>
       </div>
-      <video
-        autoplay
-        loop
-        class="rounded-lg overflow-hidden shadow-lg"
-        src="video/feature-create-invoice.mp4"
-      ></video>
     </div>
   </section>
+  <footer class="w-full bg-blue-90 py-12 text-white">
+    <div class="container mx-auto flex justify-between">
+      <div class="w-1/5">
+        <BaseText
+          text-color="text-white"
+          text-color-dark-mode="dark:text-white"
+        >
+          invoi is an easy and flexible accounting and resource planning app for
+          freelancers and small businesses.
+        </BaseText>
+      </div>
+      <div class="w-1/5">
+        <BaseHeadline type="h2" text="invoi" />
+        <ul class="flex flex-col gap-2">
+          <li>About us</li>
+          <li>Pricing</li>
+          <li>Legal</li>
+          <li>Data Privacy</li>
+        </ul>
+      </div>
+      <div class="w-1/5">
+        <BaseHeadline text="invoi" />
+      </div>
+    </div>
+  </footer>
 </template>
 
 <script setup lang="ts">

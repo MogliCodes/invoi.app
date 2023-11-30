@@ -2,11 +2,11 @@
   <section class="h-screen">
     <div class="flex h-full">
       <div
-        class="w-1/2 flex justify-center flex-col h-full dark:bg-blue-100 py-12 px-24"
+        class="flex h-full w-1/2 flex-col justify-center px-24 py-12 dark:bg-blue-100"
       >
         <div class="w-full">
           <h1
-            class="mb-6 text-4xl text-blue-70 dark:text-white font-syne font-extrabold"
+            class="mb-6 font-syne text-4xl font-extrabold text-blue-70 dark:text-white"
           >
             Login
           </h1>
@@ -30,7 +30,7 @@
           />
         </div>
       </div>
-      <div class="w-1/2 h-full flex items-center px-12 pb-24">
+      <div class="flex h-full w-1/2 items-center px-12 pb-24">
         <img src="/img/invoi-illu.svg" alt="" />
       </div>
     </div>

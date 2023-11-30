@@ -10,13 +10,11 @@ router.post(
 );
 
 async function createInvoice(event: H3Event) {
-  console.log("createInvoice nuxt server");
+  const config = useRuntimeConfig();
+  const backendBaseUrl = config.public.backendBaseUrl;
   const cookies = parseCookies(event);
   const body = await readBody(event);
-  console.log("cookies", cookies);
-  console.log("body", body);
-  console.log("event", event);
-  const res: any = await $fetch("http://localhost:8000/api/invoice", {
+  const res: any = await $fetch(`${backendBaseUrl}/api/invoice`, {
     method: "POST",
     body,
     headers: {

@@ -45,7 +45,7 @@
             class="bg-white dark:text-black"
             type="text"
           />
-          <BaseButton @click="patchContact" text="Save contact" />
+          <BaseButton text="Save contact" @click="patchContact" />
         </div>
       </BaseBox>
     </div>
@@ -72,7 +72,7 @@ type Contact = {
 };
 
 const { data: contact } = useFetch<Contact>(
-  `http://localhost:8000/api/contact/${route.params.id}`,
+  `${backendBaseUrl}/api/contact/${route.params.id}`,
   {
     headers: {
       Authorization: `Bearer ${authStore.accessToken}`,

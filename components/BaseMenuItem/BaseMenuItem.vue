@@ -4,7 +4,7 @@
     :to="to"
     :class="[commonClasses, classes]"
   >
-    <UIcon class="text-xl" v-if="icon" :name="icon" />
+    <UIcon v-if="icon" class="text-xl" :name="icon" />
     <span v-if="text">{{ text }}</span>
   </NuxtLink>
 </template>

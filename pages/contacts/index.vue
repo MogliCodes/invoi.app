@@ -20,7 +20,7 @@
         />
       </div>
     </section>
-    <section class="mb-6 w-full flex gap-3">
+    <section class="mb-6 flex w-full gap-3">
       <BaseInput
         v-model="searchQuery"
         placeholder="Search …"
@@ -148,11 +148,11 @@
                 <td class="px-6 py-3">
                   <div class="flex gap-2">
                     <span
-                      class="rounded-full text-sm py-1 px-3 bg-blue-500 text-blue-100"
+                      class="rounded-full bg-blue-500 px-3 py-1 text-sm text-blue-100"
                       >Categorie 1</span
                     >
                     <span
-                      class="rounded-full text-sm py-1 px-3 bg-amber-600 text-amber-100"
+                      class="rounded-full bg-amber-600 px-3 py-1 text-sm text-amber-100"
                       >Categorie 2</span
                     >
                   </div>
@@ -180,9 +180,9 @@
       <div class="flex justify-between py-4">
         <div class="flex items-center gap-2">
           <USelectMenu
+            v-model="bulkAction"
             class="cursor-pointer"
             size="xl"
-            v-model="bulkAction"
             color="white"
             :options="bulkActionOptions"
           >
@@ -190,7 +190,7 @@
               {{ bulkAction }}
             </template>
           </USelectMenu>
-          <BaseButton size="sm" @click="executeBulkAction" text="Apply" />
+          <BaseButton size="sm" text="Apply" @click="executeBulkAction" />
         </div>
         <UPagination
           v-model.number="page"
@@ -289,6 +289,8 @@ const endRange = computed(() => pageSize.value * page.value);
 /** ================
  * Data fetching
  ================ */
+const config = useRuntimeConfig();
+const backendBaseUrl = config.public.backendBaseUrl;
 const {
   data: contacts,
   refresh: refreshContacts,
@@ -296,7 +298,7 @@ const {
   data: Ref<Array<Contact>>;
   execute: () => void;
   refresh: () => void;
-} = useFetch(`http://localhost:8000/api/contact`, {
+} = useFetch(`${backendBaseUrl}/api/contact`, {
   params: {
     page,
     pageSize,
@@ -311,7 +313,7 @@ const {
   data: contactCount,
   refresh: refreshContactsCount,
 }: { data: Ref<number>; refresh: () => void } = useFetch(
-  `http://localhost:8000/api/contact/count`,
+  `${backendBaseUrl}/api/contact/count`,
   {
     headers: {
       Authorization: `Bearer ${authStore.accessToken}`,
@@ -344,19 +346,16 @@ function searchContact() {
     data: Ref<Array<Contact>>;
     execute: () => void;
     refresh: () => void;
-  } = useFetch(
-    `http://localhost:8000/api/contact?search=${searchQuery.value}`,
-    {
-      params: {
-        page,
-        pageSize,
-      },
-      headers: {
-        Authorization: `Bearer ${authStore.accessToken}`,
-        ClientId: authStore.userId,
-      },
-    }
-  );
+  } = useFetch(`${backendBaseUrl}/api/contact?search=${searchQuery.value}`, {
+    params: {
+      page,
+      pageSize,
+    },
+    headers: {
+      Authorization: `Bearer ${authStore.accessToken}`,
+      ClientId: authStore.userId,
+    },
+  });
 }
 
 function initiateDeletion(contactId: string): void {

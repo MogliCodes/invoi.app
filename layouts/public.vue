@@ -3,14 +3,14 @@
     <div class="container mx-auto flex justify-between">
       <NuxtLink
         to="/"
-        class="text-md font-extrabold text-blue-90 dark:text-white font-syne"
+        class="text-md font-syne font-extrabold text-blue-90 dark:text-white"
         >invoi.app</NuxtLink
       >
       <ColorModeButton />
     </div>
   </header>
   <main
-    class="h-full items-center justify-center bg-blue-50 dark:bg-blue-100 text-white"
+    class="h-full items-center justify-center bg-blue-50 text-white dark:bg-blue-100"
   >
     <slot />
   </main>

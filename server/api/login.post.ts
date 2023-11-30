@@ -1,6 +1,6 @@
 export default defineEventHandler(async (event) => {
   const body = await readBody(event);
-  const res: any = await $fetch("http://localhost:8000/api/auth/login", {
+  const res: any = await $fetch("${backendBaseUrl}/api/auth/login", {
     method: "POST",
     body,
   });

@@ -6,7 +6,7 @@
         <form @submit.prevent="createContact">
           <BaseText
             type="h3"
-            class="block mb-8 text-2xl font-bold dark:text-white"
+            class="mb-8 block text-2xl font-bold dark:text-white"
             >Client base information</BaseText
           >
           <div class="mb-3">

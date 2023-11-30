@@ -1,5 +1,5 @@
 <template>
-  <table class="table-auto w-full rounded-lg overflow-hidden">
+  <table class="w-full table-auto overflow-hidden rounded-lg">
     <thead class="bg-blue-80">
       <tr>
         <slot name="head"></slot>

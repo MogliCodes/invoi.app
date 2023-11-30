@@ -1,9 +1,9 @@
 <template>
   <section class="h-screen">
     <div class="flex h-full">
-      <div class="w-1/2 h-full flex items-center px-12 pb-24"></div>
+      <div class="flex h-full w-1/2 items-center px-12 pb-24"></div>
       <div
-        class="w-1/2 flex justify-center flex-col h-full bg-blue-100 py-12 px-24"
+        class="flex h-full w-1/2 flex-col justify-center bg-blue-100 px-24 py-12"
       >
         <div class="pb-12">
           <BaseHeadline
@@ -11,20 +11,20 @@
             text="Sign up for  a free account"
             type="h1"
           />
-          <p class="text-xl text-slate-600 dark:text-white w-6/12">
+          <p class="w-6/12 text-xl text-slate-600 dark:text-white">
             If you already have an account you can
             <NuxtLink class="text-yellow-normal" to="/login"
               >login here</NuxtLink
             >
           </p>
         </div>
-        <div class="w-full flex flex-col gap-3">
-          <BaseInput placeholder="Username" v-model="username" />
-          <BaseInput placeholder="E-Mail" v-model="email" />
+        <div class="flex w-full flex-col gap-3">
+          <BaseInput v-model="username" placeholder="Username" />
+          <BaseInput v-model="email" placeholder="E-Mail" />
           <BaseInput
-            placeholder="Password"
             ref="passwordInput"
             v-model="password"
+            placeholder="Password"
             :type="isPasswordVisible ? 'text' : 'password'"
           />
           <BaseButton

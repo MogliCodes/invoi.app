@@ -21,9 +21,9 @@
           class="absolute right-6 top-6 flex h-9 w-9 items-center justify-center rounded-lg bg-yellow-400"
         >
           <UIcon
-            @click="showTourTeaser = false"
             class="text-2xl"
             name="i-heroicons-x-mark"
+            @click="showTourTeaser = false"
           />
         </div>
         <UIcon
@@ -147,45 +147,34 @@ const userId = authStore.userId;
 type UserData = {
   username: string;
 };
+const config = useRuntimeConfig();
+const backendBaseUrl = config.public.backendBaseUrl;
+const { data } = useFetch<UserData>(`${backendBaseUrl}/api/user/${userId}`, {
+  headers: {
+    Authorization: `Bearer ${authStore.accessToken}`,
+  },
+});
 
-const { data } = useFetch<UserData>(
-  `http://localhost:8000/api/user/${userId}`,
-  {
-    headers: {
-      Authorization: `Bearer ${authStore.accessToken}`,
-    },
-  }
-);
+const { data: contactCount } = useFetch(`${backendBaseUrl}/api/contact/count`, {
+  headers: {
+    Authorization: `Bearer ${authStore.accessToken}`,
+    ClientId: authStore.userId,
+  },
+});
 
-const { data: contactCount } = useFetch(
-  `http://localhost:8000/api/contact/count`,
-  {
-    headers: {
-      Authorization: `Bearer ${authStore.accessToken}`,
-      ClientId: authStore.userId,
-    },
-  }
-);
+const { data: invoiceCount } = useFetch(`${backendBaseUrl}/api/invoice/count`, {
+  headers: {
+    Authorization: `Bearer ${authStore.accessToken}`,
+    ClientId: authStore.userId,
+  },
+});
 
-const { data: invoiceCount } = useFetch(
-  `http://localhost:8000/api/invoice/count`,
-  {
-    headers: {
-      Authorization: `Bearer ${authStore.accessToken}`,
-      ClientId: authStore.userId,
-    },
-  }
-);
-
-const { data: clientCount } = useFetch(
-  `http://localhost:8000/api/client/count`,
-  {
-    headers: {
-      Authorization: `Bearer ${authStore.accessToken}`,
-      ClientId: authStore.userId,
-    },
-  }
-);
+const { data: clientCount } = useFetch(`${backendBaseUrl}/api/client/count`, {
+  headers: {
+    Authorization: `Bearer ${authStore.accessToken}`,
+    ClientId: authStore.userId,
+  },
+});
 
 const showTourTeaser = ref(true);
 </script>

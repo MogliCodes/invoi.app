@@ -1,6 +1,6 @@
 <template>
   <div
-    class="fixed shadow-xl right-4 py-3 rounded-lg px-4 top-4 bg-green-50 text-green-100"
+    class="fixed right-4 top-4 rounded-lg bg-green-50 px-4 py-3 text-green-100 shadow-xl"
   >
     <span v-if="props.message">{{ props.message }}</span>
   </div>

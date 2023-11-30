@@ -23,7 +23,7 @@ const isDark = computed({
     />
 
     <template #fallback>
-      <div class="w-9 h-9" />
+      <div class="h-9 w-9" />
     </template>
   </ClientOnly>
 </template>

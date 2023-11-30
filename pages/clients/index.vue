@@ -13,23 +13,23 @@
       </div>
       <div>
         <div class="mb-2">
-          <span class="text-secondary-100 text-sm font-bold"
+          <span class="text-sm font-bold text-secondary-100"
             >{{ clients?.length }} Clients</span
           >
         </div>
         <table class="min-w-full overflow-hidden rounded-lg dark:text-gray-400">
           <thead class="bg-blue-90 text-white">
-            <th class="text-left px-6 py-5">Company</th>
-            <th class="text-left px-6 py-5">Street</th>
-            <th class="text-left px-6 py-5">Zip</th>
-            <th class="text-left px-6 py-5">City</th>
-            <th class="text-left px-6 py-5">Tax ID</th>
+            <th class="px-6 py-5 text-left">Company</th>
+            <th class="px-6 py-5 text-left">Street</th>
+            <th class="px-6 py-5 text-left">Zip</th>
+            <th class="px-6 py-5 text-left">City</th>
+            <th class="px-6 py-5 text-left">Tax ID</th>
           </thead>
           <tbody>
             <tr
               v-for="client in clients"
               :key="client.id"
-              class="rounded p-4 bg-white even:bg-gray-200 dark:even:bg-blue-90 dark:odd:bg-blue-80"
+              class="rounded bg-white p-4 even:bg-gray-200 dark:odd:bg-blue-80 dark:even:bg-blue-90"
             >
               <td class="px-6 py-3">{{ client.company }}</td>
               <td class="px-6 py-3">{{ client.street }}</td>
@@ -45,9 +45,10 @@
 </template>
 <script setup lang="ts">
 import { useAuthStore } from "~/stores/auth.store";
-
+const config = useRuntimeConfig();
+const backendBaseUrl = config.public.backendBaseUrl;
 const authStore = useAuthStore();
-const { data: clients } = useFetch(`http://localhost:8000/api/client`, {
+const { data: clients } = useFetch(`${backendBaseUrl}/api/client`, {
   headers: {
     Authorization: `Bearer ${authStore.accessToken}`,
     ClientId: authStore.userId,

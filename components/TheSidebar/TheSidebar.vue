@@ -1,17 +1,17 @@
 <template>
-  <aside class="fixed top-0 bottom-0 z-20 bg-blue-90 w-2/12">
+  <aside class="fixed inset-y-0 z-20 w-2/12 bg-blue-90">
     <div class="px-6 py-12">
-      <div class="sm:mb-6 ml-6">
-        <span class="text-md font-extrabold text-white font-syne"
+      <div class="ml-6 sm:mb-6">
+        <span class="text-md font-syne font-extrabold text-white"
           >invoi.app</span
         >
       </div>
       <nav>
         <ul class="flex items-center sm:block">
           <li
-            class="inline-block sm:block"
-            :key="index"
             v-for="(item, index) in navItems"
+            :key="index"
+            class="inline-block sm:block"
           >
             <BaseMenuItem
               on-dark-bg

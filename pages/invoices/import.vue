@@ -31,13 +31,16 @@
 import { useAlertStore } from "~/stores/alert";
 const alertStore = useAlertStore();
 const fileInput: Ref<HTMLInputElement | null> = ref(null);
+const config = useRuntimeConfig();
+const backendBaseUrl = config.public.backendBaseUrl;
+
 async function handleFileUpload() {
   if (!fileInput.value) return;
   const file = fileInput.value?.files?.[0];
   if (file) {
     const formData = new FormData();
     formData.append("csvFile", file);
-    const res = await $fetch("http://localhost:8000/api/invoice/import", {
+    const res = await $fetch(`${backendBaseUrl}/api/invoice/import`, {
       method: "POST",
       body: formData,
     });
@@ -56,7 +59,7 @@ async function handlePdfUpload() {
   if (file) {
     const formData = new FormData();
     formData.append("pdfFile", file);
-    await $fetch("http://localhost:8000/api/invoice/import/pdf", {
+    await $fetch(`${backendBaseUrl}/api/invoice/import/pdf`, {
       method: "POST",
       body: formData,
     });

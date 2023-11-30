@@ -16,7 +16,7 @@ async function useFetchWrapper(
     // TODO: Handle response
     return await useFetch(url, {
       method,
-      body: payload ? payload : null,
+      body: payload || null,
       headers,
     });
   } catch (error) {

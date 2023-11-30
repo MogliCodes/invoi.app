@@ -10,7 +10,7 @@
       <BaseBox>
         <div class="w-2/3">
           <BaseHeadline
-            class="dark:text-white mb-4"
+            class="mb-4 dark:text-white"
             type="h3"
             text="How to import your own data"
           />

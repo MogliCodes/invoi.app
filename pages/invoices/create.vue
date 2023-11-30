@@ -109,7 +109,7 @@
             class="relative rounded bg-white p-4 even:bg-gray-200 dark:odd:bg-blue-80 dark:even:bg-blue-90"
           >
             <td
-              class="add-row-btn z-100 absolute -left-5 translate-y-1/2 bottom-0 flex h-10 w-10 scale-50 cursor-pointer items-center justify-center rounded-full bg-secondary-100 opacity-0 transition-all"
+              class="add-row-btn z-100 absolute -left-5 bottom-0 flex h-10 w-10 translate-y-1/2 scale-50 cursor-pointer items-center justify-center rounded-full bg-secondary-100 opacity-0 transition-all"
               @click="insertRow(index)"
             >
               <UIcon name="i-heroicons-plus" class="text-xl text-white" />
@@ -158,7 +158,7 @@
               >
             </td>
           </tr>
-          <tr class="px-6 py-3 text-right" v-for="tax in selectedTaxes">
+          <tr v-for="tax in selectedTaxes" class="px-6 py-3 text-right">
             <td class="px-6 py-3 text-right">{{ tax }}</td>
           </tr>
           <tr v-if="hasTaxes" class="bg-gray-600 text-white dark:bg-gray-900">
@@ -251,8 +251,11 @@ const selectedTaxes = ref([]);
 /* ==============
  * Data fetching
  ============== */
+const config = useRuntimeConfig();
+const backendBaseUrl = config.public.backendBaseUrl;
+
 const { data: clients } = useFetch<Array<Client>>(
-  `http://localhost:8000/api/client`,
+  `${backendBaseUrl}/api/client`,
   {
     headers: {
       Authorization: `Bearer ${authStore.accessToken}`,
@@ -262,7 +265,7 @@ const { data: clients } = useFetch<Array<Client>>(
 );
 
 const { data: generatedInvoiceNumber } = useFetch<string>(
-  `http://localhost:8000/api/invoice/number`,
+  `${backendBaseUrl}/api/invoice/number`,
   {
     headers: {
       Authorization: `Bearer ${authStore.accessToken}`,

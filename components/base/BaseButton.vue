@@ -6,7 +6,7 @@
     :class="[
       buttonClasses,
       disabled
-        ? 'hover:cursor-not-allowed pointer-events-none bg-gray-300 !border-gray-300 !text-gray-400'
+        ? 'pointer-events-none !border-gray-300 bg-gray-300 !text-gray-400 hover:cursor-not-allowed'
         : 'cursor-pointer',
     ]"
   >

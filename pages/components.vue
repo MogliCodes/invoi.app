@@ -34,7 +34,7 @@
     </div>
   </section>
   <section>
-    <div class="container mx-auto flex start gap-2">
+    <div class="start container mx-auto flex gap-2">
       <BaseMenuItem
         size="sm"
         to="/"
@@ -43,7 +43,7 @@
       />
       <BaseMenuItem size="sm" to="/" icon="i-heroicons-cog-6-tooth" />
     </div>
-    <div class="bg-blue-90 container mx-auto flex start">
+    <div class="start container mx-auto flex bg-blue-90">
       <BaseMenuItem
         size="sm"
         on-dark-bg
@@ -54,11 +54,11 @@
     </div>
   </section>
   <section>
-    <div class="container mx-auto flex start gap-2">
+    <div class="start container mx-auto flex gap-2">
       <BaseMenuItem to="/" icon="i-heroicons-cog-6-tooth" text="Dashboard" />
       <BaseMenuItem to="/" icon="i-heroicons-cog-6-tooth" />
     </div>
-    <div class="bg-blue-90 container mx-auto flex start">
+    <div class="start container mx-auto flex bg-blue-90">
       <BaseMenuItem
         on-dark-bg
         to="/"
@@ -68,7 +68,7 @@
     </div>
   </section>
   <section>
-    <div class="container mx-auto flex start gap-2">
+    <div class="start container mx-auto flex gap-2">
       <BaseMenuItem
         size="lg"
         to="/"
@@ -77,7 +77,7 @@
       />
       <BaseMenuItem size="lg" to="/" icon="i-heroicons-cog-6-tooth" />
     </div>
-    <div class="bg-blue-90 container mx-auto flex start">
+    <div class="start container mx-auto flex bg-blue-90">
       <BaseMenuItem
         size="lg"
         on-dark-bg
