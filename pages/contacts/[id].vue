@@ -55,7 +55,6 @@
 <script setup lang="ts">
 import { useAuthStore } from "~/stores/auth.store";
 import { useAlertStore } from "~/stores/alert";
-import { a as useRuntimeConfig } from "~/.output/server/chunks/nitro/node-server.mjs";
 
 const authStore = useAuthStore();
 const alertStore = useAlertStore();
