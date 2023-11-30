@@ -55,6 +55,7 @@
 <script setup lang="ts">
 import { useAuthStore } from "~/stores/auth.store";
 import { useAlertStore } from "~/stores/alert";
+import { a as useRuntimeConfig } from "~/.output/server/chunks/nitro/node-server.mjs";
 
 const authStore = useAuthStore();
 const alertStore = useAlertStore();
@@ -70,7 +71,8 @@ type Contact = {
   zip: string;
   user: string;
 };
-
+const config = useRuntimeConfig();
+const backendBaseUrl = config.public.backendBaseUrl;
 const { data: contact } = useFetch<Contact>(
   `${backendBaseUrl}/api/contact/${route.params.id}`,
   {
