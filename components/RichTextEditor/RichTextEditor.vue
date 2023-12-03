@@ -94,7 +94,7 @@
         redo
       </button>
     </div>
-    <div v-if="props.content && editor" class="editor p-2">
+    <div v-if="props.modelValue && editor" class="editor p-2">
       <editor-content :editor="editor" />
     </div>
   </div>
@@ -106,20 +106,37 @@ import { Editor, EditorContent } from "@tiptap/vue-3";
 import StarterKit from "@tiptap/starter-kit";
 
 type Props = {
-  content: string;
+  modelValue: string;
 };
 const props = defineProps<Props>();
-const editor = ref(null);
+const emit = defineEmits(["update:modelValue"]);
+const editor: Ref<Editor | null> = ref(null);
+
+watch(
+  () => props.modelValue,
+  (value) => {
+    const isSame = editor.value?.getHTML() === value;
+    if (isSame) {
+      return;
+    }
+    editor.value?.commands.setContent(`<p>${value}</p>`);
+    emit("update:modelValue", editor.value?.getHTML() || "");
+  }
+);
 
 onMounted(() => {
   editor.value = new Editor({
-    content: `<p>${props.content}</p>`,
+    content: `<p>${props.modelValue}</p>`,
     extensions: [StarterKit],
+  });
+
+  editor.value.on("update", () => {
+    emit("update:modelValue", editor.value?.getHTML() || "");
   });
 });
 
 onBeforeUnmount(() => {
-  editor.value.destroy();
+  editor.value?.destroy();
 });
 </script>
 

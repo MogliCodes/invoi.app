@@ -31,6 +31,8 @@ router.delete(
 );
 
 async function createContact(event: H3Event) {
+  const config = useRuntimeConfig();
+  const backendBaseUrl = config.public.backendBaseUrl;
   const cookies = parseCookies(event);
   const body = await readBody(event);
   const res: any = await $fetch(`${backendBaseUrl}/api/contact`, {

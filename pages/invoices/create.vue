@@ -36,7 +36,7 @@
         </div>
       </div>
       <div class="flex w-1/2 flex-col gap-3">
-        <div v-if="invoiceNumber">
+        <div>
           <label class="dark:text-white" for="">Invoice number</label>
           <BaseInput
             v-model="invoiceNumber"
@@ -116,7 +116,7 @@
             </td>
             <td class="w-1/12 px-6 py-3">{{ row.position }}</td>
             <td class="w-7/12 px-6 py-3">
-              <RichTextEditor :content="row.description"></RichTextEditor>
+              <RichTextEditor v-model="row.description"></RichTextEditor>
             </td>
             <td class="w-1/12 px-6 py-3 align-top">
               <BaseInput

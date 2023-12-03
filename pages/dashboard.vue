@@ -130,6 +130,9 @@
       <BaseBox>
         <BaseText>
           <pre>{{ data }}</pre>
+          <button class="break-all text-left" @click="copy(accessToken)">
+            {{ authStore.accessToken }}
+          </button>
         </BaseText>
       </BaseBox>
     </div>
@@ -140,9 +143,12 @@
 <script setup lang="ts">
 import { useAuthStore } from "~/stores/auth.store";
 import BaseText from "~/components/BaseText/BaseText.vue";
+import { useClipboard } from "@vueuse/core";
 
 const authStore = useAuthStore();
 const userId = authStore.userId;
+const accessToken = ref(authStore.accessToken);
+const { copy } = useClipboard({ accessToken });
 
 type UserData = {
   username: string;
