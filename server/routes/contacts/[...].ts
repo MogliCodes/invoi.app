@@ -35,7 +35,7 @@ async function createContact(event: H3Event) {
   const backendBaseUrl = config.public.BACKEND_BASE_URL;
   const cookies = parseCookies(event);
   const body = await readBody(event);
-  const res: any = await $fetch(`${backendBaseUrl}/api/contact`, {
+  const res: any = await $fetch(`${backendBaseUrl}/restapi/contact`, {
     method: "POST",
     body,
     headers: {
@@ -53,13 +53,16 @@ async function patchContact(event: H3Event) {
   console.log("query", query);
   const cookies = parseCookies(event);
   const body = await readBody(event);
-  const res: any = await $fetch(`${backendBaseUrl}/api/contact/${query.id}`, {
-    method: "PATCH",
-    body,
-    headers: {
-      authorization: cookies.accessToken,
-    },
-  });
+  const res: any = await $fetch(
+    `${backendBaseUrl}/restapi/contact/${query.id}`,
+    {
+      method: "PATCH",
+      body,
+      headers: {
+        authorization: cookies.accessToken,
+      },
+    }
+  );
 
   return res;
 }
@@ -72,13 +75,16 @@ async function deleteContact(event: H3Event) {
   const cookies = parseCookies(event);
   const body = await readBody(event);
 
-  const res: any = await $fetch(`${backendBaseUrl}/api/contact/${query.id}`, {
-    method: "DELETE",
-    headers: {
-      authorization: cookies.accessToken,
-    },
-    body,
-  });
+  const res: any = await $fetch(
+    `${backendBaseUrl}/restapi/contact/${query.id}`,
+    {
+      method: "DELETE",
+      headers: {
+        authorization: cookies.accessToken,
+      },
+      body,
+    }
+  );
   return res;
 }
 
@@ -91,14 +97,17 @@ async function bulkDeleteContact(event: H3Event) {
   console.log("NUXT SERVER BULK DELETE", body);
   console.log("NUXT SERVER BULK QWHSKHSKJHJKSHFKJSHFJS", body);
   const cookies = parseCookies(event);
-  const res: any = await $fetch(`${backendBaseUrl}/api/contact/bulk/delete`, {
-    method: "POST",
-    headers: {
-      userId: cookies.userId,
-      authorization: cookies.accessToken,
-    },
-    body,
-  });
+  const res: any = await $fetch(
+    `${backendBaseUrl}/restapi/contact/bulk/delete`,
+    {
+      method: "POST",
+      headers: {
+        userId: cookies.userId,
+        authorization: cookies.accessToken,
+      },
+      body,
+    }
+  );
   return res;
 }
 
