@@ -54,7 +54,7 @@ const password = ref(null);
 
 async function login() {
   try {
-    const { data } = await useFetch("/nitro/login", {
+    const { data } = await useFetch("/api/login", {
       method: "POST",
       body: {
         username,
