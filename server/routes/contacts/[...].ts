@@ -32,7 +32,7 @@ router.delete(
 
 async function createContact(event: H3Event) {
   const config = useRuntimeConfig();
-  const backendBaseUrl = config.public.backendBaseUrl;
+  const backendBaseUrl = config.public.BACKEND_BASE_URL;
   const cookies = parseCookies(event);
   const body = await readBody(event);
   const res: any = await $fetch(`${backendBaseUrl}/api/contact`, {
@@ -48,7 +48,7 @@ async function createContact(event: H3Event) {
 
 async function patchContact(event: H3Event) {
   const config = useRuntimeConfig();
-  const backendBaseUrl = config.public.backendBaseUrl;
+  const backendBaseUrl = config.public.BACKEND_BASE_URL;
   const query = getQuery(event);
   console.log("query", query);
   const cookies = parseCookies(event);
@@ -66,7 +66,7 @@ async function patchContact(event: H3Event) {
 
 async function deleteContact(event: H3Event) {
   const config = useRuntimeConfig();
-  const backendBaseUrl = config.public.backendBaseUrl;
+  const backendBaseUrl = config.public.BACKEND_BASE_URL;
   const query = getQuery(event);
   console.log("NUXT SERVER  DELETE", query);
   const cookies = parseCookies(event);
@@ -84,7 +84,7 @@ async function deleteContact(event: H3Event) {
 
 async function bulkDeleteContact(event: H3Event) {
   const config = useRuntimeConfig();
-  const backendBaseUrl = config.public.backendBaseUrl;
+  const backendBaseUrl = config.public.BACKEND_BASE_URL;
   const query = getQuery(event);
   const body = await readBody(event);
   console.log("NUXT SERVER BULK DELETE", query);

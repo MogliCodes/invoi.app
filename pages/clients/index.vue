@@ -46,7 +46,7 @@
 <script setup lang="ts">
 import { useAuthStore } from "~/stores/auth.store";
 const config = useRuntimeConfig();
-const backendBaseUrl = config.public.backendBaseUrl;
+const backendBaseUrl = config.public.BACKEND_BASE_URL;
 const authStore = useAuthStore();
 const { data: clients } = useFetch(`${backendBaseUrl}/api/client`, {
   headers: {

@@ -238,7 +238,7 @@ const selectedTaxes = ref([]);
  * Data fetching
  ============== */
 const config = useRuntimeConfig();
-const backendBaseUrl = config.public.backendBaseUrl;
+const backendBaseUrl = config.public.BACKEND_BASE_URL;
 
 const { data: clients } = useFetch<Array<Client>>(
   `${backendBaseUrl}/api/client`,
@@ -346,7 +346,7 @@ async function createInvoice() {
   };
   try {
     isPending.value = true;
-    const { data, pending, error, status } = await useFetch("/api/invoices", {
+    const { data, pending, error, status } = await useFetch("/invoices", {
       method: "POST",
       body: invoiceToCreate,
       credentials: "include",

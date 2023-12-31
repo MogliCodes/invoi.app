@@ -25,7 +25,7 @@ router.post(
 
 async function createInvoice(event: H3Event) {
   const config = useRuntimeConfig();
-  const backendBaseUrl = config.public.backendBaseUrl;
+  const backendBaseUrl = config.public.BACKEND_BASE_URL;
   const cookies = parseCookies(event);
   const body = await readBody(event);
   const res: any = await $fetch(`${backendBaseUrl}/api/invoice`, {
@@ -41,7 +41,7 @@ async function createInvoice(event: H3Event) {
 
 async function deleteInvoice(event: H3Event) {
   const config = useRuntimeConfig();
-  const backendBaseUrl = config.public.backendBaseUrl;
+  const backendBaseUrl = config.public.BACKEND_BASE_URL;
   const query = getQuery(event);
   const cookies = parseCookies(event);
   const res: any = await $fetch(`${backendBaseUrl}/api/invoice/${query.id}`, {
@@ -57,7 +57,7 @@ async function deleteInvoice(event: H3Event) {
 
 async function bulkDeleteInvoice(event: H3Event) {
   const config = useRuntimeConfig();
-  const backendBaseUrl = config.public.backendBaseUrl;
+  const backendBaseUrl = config.public.BACKEND_BASE_URL;
   const cookies = parseCookies(event);
   const body = await readBody(event);
   console.log(body);

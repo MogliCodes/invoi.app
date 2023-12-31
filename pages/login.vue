@@ -54,7 +54,7 @@ const password = ref(null);
 
 async function login() {
   try {
-    const { data } = await useFetch("/api/login", {
+    const { data } = await useFetch("/login", {
       method: "POST",
       body: {
         username,

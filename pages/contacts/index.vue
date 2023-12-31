@@ -290,7 +290,7 @@ const endRange = computed(() => pageSize.value * page.value);
  * Data fetching
  ================ */
 const config = useRuntimeConfig();
-const backendBaseUrl = config.public.backendBaseUrl;
+const backendBaseUrl = config.public.BACKEND_BASE_URL;
 const {
   data: contacts,
   refresh: refreshContacts,

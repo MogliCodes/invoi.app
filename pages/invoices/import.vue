@@ -32,7 +32,7 @@ import { useAlertStore } from "~/stores/alert";
 const alertStore = useAlertStore();
 const fileInput: Ref<HTMLInputElement | null> = ref(null);
 const config = useRuntimeConfig();
-const backendBaseUrl = config.public.backendBaseUrl;
+const backendBaseUrl = config.public.BACKEND_BASE_URL;
 
 async function handleFileUpload() {
   if (!fileInput.value) return;

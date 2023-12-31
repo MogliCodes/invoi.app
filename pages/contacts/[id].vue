@@ -71,7 +71,7 @@ type Contact = {
   user: string;
 };
 const config = useRuntimeConfig();
-const backendBaseUrl = config.public.backendBaseUrl;
+const backendBaseUrl = config.public.BACKEND_BASE_URL;
 const { data: contact } = useFetch<Contact>(
   `${backendBaseUrl}/api/contact/${route.params.id}`,
   {

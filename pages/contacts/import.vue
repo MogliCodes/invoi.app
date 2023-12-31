@@ -56,7 +56,7 @@ const config = useRuntimeConfig();
 const authStore = useAuthStore();
 const userId = authStore.userId;
 const accessToken = authStore.accessToken;
-const backendBaseUrl = config.public.backendBaseUrl;
+const backendBaseUrl = config.public.BACKEND_BASE_URL;
 
 async function createDemoContacts() {
   console.log("TEST");

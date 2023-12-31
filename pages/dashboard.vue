@@ -154,7 +154,7 @@ type UserData = {
   username: string;
 };
 const config = useRuntimeConfig();
-const backendBaseUrl = config.public.backendBaseUrl;
+const backendBaseUrl = config.public.BACKEND_BASE_URL;
 const { data } = useFetch<UserData>(`${backendBaseUrl}/api/user/${userId}`, {
   headers: {
     Authorization: `Bearer ${authStore.accessToken}`,
