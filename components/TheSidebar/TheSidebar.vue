@@ -49,7 +49,7 @@ const navItems = [
     text: "Invoices",
   },
   {
-    icon: "i-heroicons-document",
+    icon: "i-heroicons-document-text",
     to: "/proposals",
     text: "Proposals",
   },
@@ -57,6 +57,11 @@ const navItems = [
     icon: "i-heroicons-credit-card",
     to: "/expenses",
     text: "Expenses",
+  },
+  {
+    icon: "i-heroicons-clock",
+    to: "/time-recording",
+    text: "Time recording",
   },
 ];
 </script>

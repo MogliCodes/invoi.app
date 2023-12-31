@@ -51,7 +51,7 @@ const authStore = useAuthStore();
 const { data: clients } = useFetch(`${backendBaseUrl}/api/client`, {
   headers: {
     Authorization: `Bearer ${authStore.accessToken}`,
-    ClientId: authStore.userId,
+    userid: authStore.userId,
   },
 });
 </script>

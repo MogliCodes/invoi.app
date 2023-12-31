@@ -8,6 +8,7 @@
       <BaseAlert
         v-if="alertStore.isActive"
         :message="alertStore.alertMessage"
+        :link="alertStore.alertLink"
         :type="alertStore.alertType"
       />
       <div class="fixed right-6 top-4 flex items-center justify-center gap-1">

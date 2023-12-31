@@ -30,6 +30,17 @@
           <BaseInput v-model="zip" placeholder="ZIP" />
           <BaseInput v-model="city" placeholder="City" />
           <BaseInput v-model="phone" placeholder="Phone" />
+          <BaseInput v-model="taxId" placeholder="taxId" />
+        </div>
+        <BaseHeadline
+          class="mb-2 text-xl font-bold dark:text-white"
+          text="Bank information"
+          type="h3"
+        />
+        <div class="mb-6 flex w-2/3 flex-col gap-3">
+          <BaseInput v-model="bankName" placeholder="Bank name" />
+          <BaseInput v-model="iban" placeholder="IBAN" />
+          <BaseInput v-model="bic" placeholder="BIC" />
         </div>
         <BaseButton text="Save settings" />
       </BaseBox>
@@ -87,4 +98,9 @@ const street = ref("");
 const zip = ref("");
 const city = ref("");
 const phone = ref("");
+const taxId = ref("");
+
+const bankName = ref("");
+const iban = ref("");
+const bic = ref("");
 </script>

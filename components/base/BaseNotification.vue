@@ -7,5 +7,5 @@
 </template>
 
 <script setup lang="ts">
-const props = defineProps<{ message: string }>();
+const props = defineProps<{ message: string; link: string }>();
 </script>

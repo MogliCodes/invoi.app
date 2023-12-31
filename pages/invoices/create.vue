@@ -137,12 +137,7 @@
               />
             </td>
             <td class="w-2/12 px-6 py-3 text-right align-top">
-              <span
-                >{{
-                  row.total.toFixed(2).replace(".", ",").toLocaleString()
-                }}
-                €</span
-              >
+              <span>{{ formatCurrencyAmount(row.total) }}</span>
             </td>
           </tr>
         </tbody>
@@ -150,12 +145,7 @@
           <tr class="bg-gray-500 text-white dark:bg-gray-800">
             <td colspan="5" class="px-6 py-3">Gesamt</td>
             <td class="px-6 py-3 text-right">
-              <span
-                >{{
-                  totalAmount.toFixed(2).replace(".", ",").toLocaleString()
-                }}
-                €</span
-              >
+              <span>{{ formatCurrencyAmount(totalAmount) }}</span>
             </td>
           </tr>
           <tr v-for="tax in selectedTaxes" class="px-6 py-3 text-right">
@@ -164,12 +154,7 @@
           <tr v-if="hasTaxes" class="bg-gray-600 text-white dark:bg-gray-900">
             <td colspan="5" class="px-6 py-3">Mwst.</td>
             <td class="px-6 py-3 text-right">
-              <span
-                >{{
-                  taxes.toFixed(2).replace(".", ",").toLocaleString()
-                }}
-                €</span
-              >
+              <span>{{ formatCurrencyAmount(taxes) }}</span>
             </td>
           </tr>
           <tr class="bg-blue-80 text-white">
@@ -177,17 +162,7 @@
               <span class="font-bold">Brutto-Rechnungssumme</span>
             </td>
             <td class="px-6 py-5 text-right">
-              <span
-                >{{
-                  totalWithTaxes
-                    .toLocaleString("de-DE", {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2,
-                    })
-                    .replace(/\.(?=.*\.)/, ",")
-                }}
-                €</span
-              >
+              <span>{{ formatCurrencyAmount(totalWithTaxes) }}</span>
             </td>
           </tr>
         </tfoot>
@@ -219,6 +194,16 @@
         </div>
       </div>
     </section>
+    <section
+      v-if="isPending"
+      class="z-100 fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
+    >
+      <div
+        class="flex h-14 w-14 animate-spin items-center justify-center rounded-full bg-white"
+      >
+        <UIcon class="text-4xl" name="i-heroicons-arrow-path" />
+      </div>
+    </section>
   </div>
 </template>
 
@@ -228,6 +213,7 @@ import { useSortable } from "@vueuse/integrations/useSortable";
 import { onClickOutside } from "@vueuse/core";
 import { useAuthStore } from "~/stores/auth.store";
 import { useAlertStore } from "~/stores/alert";
+import { formatAmountToCent } from "~/utils/utils";
 const alertStore = useAlertStore();
 const authStore = useAuthStore();
 const accessToken = authStore.accessToken;
@@ -259,7 +245,7 @@ const { data: clients } = useFetch<Array<Client>>(
   {
     headers: {
       Authorization: `Bearer ${authStore.accessToken}`,
-      ClientId: authStore.userId,
+      userid: authStore.userId,
     },
   }
 );
@@ -280,6 +266,7 @@ const { data: generatedInvoiceNumber } = useFetch<string>(
 watch(clients, (newVal) => {
   selectedClient.value = newVal?.[0];
 });
+const isPending = ref(false);
 const selectedClient: Ref<Client | null> = ref(clients?.value?.[0] || null);
 const currentDate = new Date().toLocaleDateString("en-CA");
 const invoiceTitle = ref();
@@ -351,30 +338,36 @@ async function createInvoice() {
     date: invoiceDate.value,
     performancePeriodStart: performancePeriodStart.value,
     performancePeriodEnd: performancePeriodEnd.value,
-    taxes: taxes.value,
-    total: totalAmount.value,
-    totalWithTaxes: totalWithTaxes.value,
+    taxes: formatAmountToCent(taxes.value),
+    total: formatAmountToCent(totalAmount.value),
+    totalWithTaxes: formatAmountToCent(totalWithTaxes.value),
     items: JSON.stringify(rows.value),
     user: authStore.userId,
   };
   try {
-    const res = await $fetch("/api/invoices", {
+    isPending.value = true;
+    const { data, pending, error, status } = await useFetch("/api/invoices", {
       method: "POST",
       body: invoiceToCreate,
       credentials: "include",
+      lazy: true,
       headers: {
         authorization: `Bearer ${accessToken}`,
       },
     });
-
-    if (res.status === 201) {
-      alertStore.setAlert("success", res.message);
+    status === "success" ? (isPending.value = false) : (isPending.value = true);
+    console.log("status", status);
+    console.log("data", data);
+    console.log("pending", pending);
+    console.log("error", error);
+    if (!pending.value && !error.value && data) {
+      alertStore.setAlert("success", data.value.message);
+      alertStore.setAlertLink(data.value.link);
       setTimeout(() => {
         alertStore.resetAlert();
       }, 5000);
       navigateTo("/invoices");
     }
-    console.log(res);
   } catch (error) {
     console.error(error);
   }
@@ -382,7 +375,7 @@ async function createInvoice() {
 
 const invoicePreviewHtml = ref();
 async function getInvoicePreview() {
-  const { data } = useFetch("../invoice-template.html");
+  const { data } = useFetch("../invoice-template-single.html");
   console.log("data html");
   invoicePreviewHtml.value = data.value;
   console.log(invoicePreviewHtml.value);

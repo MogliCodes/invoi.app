@@ -2,6 +2,7 @@
 type Props = {
   message: string;
   type: "error" | "info" | "success";
+  link: string;
 };
 const props = defineProps<Props>();
 
@@ -22,6 +23,7 @@ const colorClass = computed(() => {
     class="absolute inset-x-6 top-4 z-10 block rounded-lg p-4 shadow-2xl"
     :class="colorClass"
   >
-    {{ props.message }}
+    <span>{{ props.message }}</span>
+    <nuxt-link :to="props.link">{{ props.link }}</nuxt-link>
   </div>
 </template>

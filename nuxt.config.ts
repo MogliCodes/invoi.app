@@ -21,4 +21,7 @@ export default defineNuxtConfig({
   pinia: {
     autoImports: ["defineStore"],
   },
+  nitro: {
+    preset: "node-server",
+  },
 });

@@ -39,7 +39,10 @@
             voluptates?
           </BaseText>
           <div class="flex gap-4">
-            <BaseButton text="Create demo data" />
+            <BaseButton
+              @click.native="createDemoContacts"
+              text="Create demo data"
+            />
             <BaseButton variant="red" text="Delete demo contacts" />
           </div>
         </div>
@@ -47,4 +50,22 @@
     </div>
   </section>
 </template>
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { useAuthStore } from "~/stores/auth.store";
+const config = useRuntimeConfig();
+const authStore = useAuthStore();
+const userId = authStore.userId;
+const accessToken = authStore.accessToken;
+const backendBaseUrl = config.public.backendBaseUrl;
+
+async function createDemoContacts() {
+  console.log("TEST");
+  useFetch(`${backendBaseUrl}/api/contact/demo`, {
+    method: "POST",
+    headers: {
+      userId: userId,
+      authorization: `Bearer ${accessToken}`,
+    },
+  });
+}
+</script>

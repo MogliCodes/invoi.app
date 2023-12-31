@@ -151,9 +151,19 @@
                 }}
               </td>
               <td class="px-6 py-3">{{ invoice?.status || "unpaid" }}</td>
-              <td class="px-6 py-3">{{ invoice.total }}</td>
-              <td class="px-6 py-3">{{ invoice.taxes }}</td>
-              <td class="px-6 py-3">{{ invoice.totalWithTaxes }}</td>
+              <td class="px-6 py-3">
+                {{ formatCurrencyAmount(formatCentToAmount(invoice.total)) }}
+              </td>
+              <td class="px-6 py-3">
+                {{ formatCurrencyAmount(formatCentToAmount(invoice?.taxes)) }}
+              </td>
+              <td class="px-6 py-3">
+                {{
+                  formatCurrencyAmount(
+                    formatCentToAmount(invoice?.totalWithTaxes)
+                  )
+                }}
+              </td>
               <td class="px-6 py-3">
                 <span class="flex gap-2">
                   <NuxtLink :to="`/invoices/${invoice._id}`">
@@ -236,7 +246,6 @@
 
 <script setup lang="ts">
 import { useAuthStore } from "~/stores/auth.store";
-
 const authStore = useAuthStore();
 
 type Invoice = {

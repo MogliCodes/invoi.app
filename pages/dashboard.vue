@@ -164,21 +164,21 @@ const { data } = useFetch<UserData>(`${backendBaseUrl}/api/user/${userId}`, {
 const { data: contactCount } = useFetch(`${backendBaseUrl}/api/contact/count`, {
   headers: {
     Authorization: `Bearer ${authStore.accessToken}`,
-    ClientId: authStore.userId,
+    UserId: authStore.userId,
   },
 });
 
 const { data: invoiceCount } = useFetch(`${backendBaseUrl}/api/invoice/count`, {
   headers: {
     Authorization: `Bearer ${authStore.accessToken}`,
-    ClientId: authStore.userId,
+    UserId: authStore.userId,
   },
 });
 
 const { data: clientCount } = useFetch(`${backendBaseUrl}/api/client/count`, {
   headers: {
     Authorization: `Bearer ${authStore.accessToken}`,
-    ClientId: authStore.userId,
+    UserId: authStore.userId,
   },
 });
 
