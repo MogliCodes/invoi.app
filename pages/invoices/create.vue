@@ -346,7 +346,7 @@ async function createInvoice() {
   };
   try {
     isPending.value = true;
-    const { data, pending, error, status } = await useFetch("/api/invoices", {
+    const { data, pending, error, status } = await useFetch("/nitro/invoices", {
       method: "POST",
       body: invoiceToCreate,
       credentials: "include",
