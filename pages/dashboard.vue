@@ -88,39 +88,6 @@
         </div>
       </BaseBox>
     </div>
-    <div class="mb-6">
-      <BaseHeadline
-        class="mb-3 font-syne text-2xl font-bold text-gray-400"
-        type="h2"
-        text="Upcoming payments"
-      />
-      <BaseBox class="flex flex-col gap-6">
-        <div class="flex justify-between gap-6">
-          <BaseText>Rheinenergie</BaseText>
-          <BaseText>Strom & Gas</BaseText>
-          <BaseText>17.11.2023</BaseText>
-          <BaseText>149,99 €</BaseText>
-          <BaseText>1679,43 €</BaseText>
-        </div>
-        <div class="flex justify-between gap-6">
-          <BaseText>Rheinenergie</BaseText>
-          <BaseText>Strom & Gas</BaseText>
-          <BaseText>17.11.2023</BaseText>
-          <BaseText>149,99 €</BaseText>
-          <BaseText>1679,43 €</BaseText>
-        </div>
-      </BaseBox>
-    </div>
-    <div class="mb-6">
-      <BaseHeadline
-        class="mb-3 font-syne text-2xl font-bold text-gray-400"
-        text="Revenues"
-        type="h2"
-      />
-      <BaseBox class="aspect-video">
-        <BaseText>lorem</BaseText>
-      </BaseBox>
-    </div>
     <div>
       <BaseHeadline
         class="mb-3 font-syne text-2xl font-bold text-gray-400"
@@ -155,32 +122,44 @@ type UserData = {
 };
 const config = useRuntimeConfig();
 const backendBaseUrl = config.public.BACKEND_BASE_URL;
-const { data } = useFetch<UserData>(`${backendBaseUrl}/api/user/${userId}`, {
-  headers: {
-    Authorization: `Bearer ${authStore.accessToken}`,
-  },
-});
+const { data } = useFetch<UserData>(
+  `${backendBaseUrl}/restapi/user/${userId}`,
+  {
+    headers: {
+      Authorization: `Bearer ${authStore.accessToken}`,
+    },
+  }
+);
 
-const { data: contactCount } = useFetch(`${backendBaseUrl}/api/contact/count`, {
-  headers: {
-    Authorization: `Bearer ${authStore.accessToken}`,
-    UserId: authStore.userId,
-  },
-});
+const { data: contactCount } = useFetch(
+  `${backendBaseUrl}/restapi/contact/count`,
+  {
+    headers: {
+      Authorization: `Bearer ${authStore.accessToken}`,
+      UserId: authStore.userId,
+    },
+  }
+);
 
-const { data: invoiceCount } = useFetch(`${backendBaseUrl}/api/invoice/count`, {
-  headers: {
-    Authorization: `Bearer ${authStore.accessToken}`,
-    UserId: authStore.userId,
-  },
-});
+const { data: invoiceCount } = useFetch(
+  `${backendBaseUrl}/restapi/invoice/count`,
+  {
+    headers: {
+      Authorization: `Bearer ${authStore.accessToken}`,
+      UserId: authStore.userId,
+    },
+  }
+);
 
-const { data: clientCount } = useFetch(`${backendBaseUrl}/api/client/count`, {
-  headers: {
-    Authorization: `Bearer ${authStore.accessToken}`,
-    UserId: authStore.userId,
-  },
-});
+const { data: clientCount } = useFetch(
+  `${backendBaseUrl}/restapi/client/count`,
+  {
+    headers: {
+      Authorization: `Bearer ${authStore.accessToken}`,
+      UserId: authStore.userId,
+    },
+  }
+);
 
 const showTourTeaser = ref(true);
 </script>

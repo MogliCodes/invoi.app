@@ -48,7 +48,7 @@ import { useAuthStore } from "~/stores/auth.store";
 const config = useRuntimeConfig();
 const backendBaseUrl = config.public.BACKEND_BASE_URL;
 const authStore = useAuthStore();
-const { data: clients } = useFetch(`${backendBaseUrl}/api/client`, {
+const { data: clients } = useFetch(`${backendBaseUrl}/restapi/client`, {
   headers: {
     Authorization: `Bearer ${authStore.accessToken}`,
     userid: authStore.userId,

@@ -259,7 +259,7 @@ type Invoice = {
 const config = useRuntimeConfig();
 const backendBaseUrl = config.public.BACKEND_BASE_URL;
 const { data: invoices, refresh: refreshInvoices } = useFetch<Invoice[]>(
-  `${backendBaseUrl}/api/invoice`,
+  `${backendBaseUrl}/restapi/invoice`,
   {
     headers: {
       userId: authStore.userId,
@@ -270,7 +270,7 @@ const { data: invoices, refresh: refreshInvoices } = useFetch<Invoice[]>(
 
 const { data: invoiceCount, refresh: refreshInvoiceCount } = useFetch<
   Invoice[]
->(`${backendBaseUrl}/api/invoice/count`, {
+>(`${backendBaseUrl}/restapi/invoice/count`, {
   headers: {
     userId: authStore.userId,
     Authorization: `Bearer ${authStore.accessToken}`,

@@ -5,7 +5,7 @@
     "lint": "eslint --ext .js,.ts,.vue --ignore-path .gitignore .",
     "lint:fix": "eslint --ext .js,.ts,.vue --ignore-path .gitignore . --fix",
     "build": "nuxt build",
-    "dev": "nuxt dev",
+    "dev": "NODE_ENV=development nuxt dev",
     "start": "nuxt start",
     "generate": "nuxt generate",
     "preview": "nuxt preview",

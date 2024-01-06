@@ -3,7 +3,7 @@
     <BaseHeadline class="mb-8 dark:text-white" type="h1" text="Create client" />
     <div class="grid grid-cols-2">
       <BaseBox>
-        <form @submit.prevent="createContact">
+        <form @submit.prevent="createClient">
           <BaseText
             type="h3"
             class="mb-8 block text-2xl font-bold dark:text-white"
@@ -11,9 +11,29 @@
           >
           <div class="mb-3">
             <BaseText
-              ><label class="block" for="username">First name</label></BaseText
+              ><label class="block" for="username"
+                >Company name</label
+              ></BaseText
             >
-            <BaseInput v-model="firstname" />
+            <BaseInput v-model="company" />
+          </div>
+          <div class="mb-3">
+            <BaseText
+              ><label class="block" for="username">Street</label></BaseText
+            >
+            <BaseInput v-model="street" />
+          </div>
+          <div class="mb-3">
+            <BaseText
+              ><label class="block" for="username">ZIP Code</label></BaseText
+            >
+            <BaseInput v-model="zipcode" />
+          </div>
+          <div class="mb-3">
+            <BaseText
+              ><label class="block" for="username">City</label></BaseText
+            >
+            <BaseInput v-model="city" />
           </div>
           <BaseButton type="submit" text="Create contact" />
         </form>
@@ -31,18 +51,15 @@ const authStore = useAuthStore();
 const alertStore = useAlertStore();
 const userId = authStore.userId;
 const accessToken = authStore.accessToken;
-const firstname: Ref<string> = ref("");
-const lastname: Ref<string> = ref("");
-const dob: Ref<string> = ref("");
+
+const company: Ref<string> = ref("");
 const street: Ref<string> = ref("");
 const zipcode: Ref<string> = ref("");
 const city: Ref<string> = ref("");
 
-const contact = computed(() => {
+const client = computed(() => {
   return {
-    firstname: firstname.value,
-    lastname: lastname.value,
-    dob: new Date(dob.value),
+    company: company.value,
     street: street.value,
     zip: zipcode.value,
     city: city.value,
@@ -52,23 +69,23 @@ const contact = computed(() => {
 
 const showNotification = ref(false);
 const notificationMessage = ref("");
-async function createContact() {
+async function createClient() {
   try {
-    const res = await $fetch("/api/contacts", {
+    const res = await $fetch("/api/clients", {
       method: "POST",
-      body: contact.value,
+      body: client.value,
       credentials: "include",
       headers: {
         authorization: `Bearer ${accessToken}`,
       },
     });
-
+    console.log("res", res);
     if (res.status === 201) {
       alertStore.setAlert("success", res.message);
       setTimeout(() => {
         alertStore.resetAlert();
       }, 5000);
-      navigateTo("/contacts");
+      navigateTo("/clients");
     }
     console.log(res);
   } catch (error) {

@@ -73,7 +73,7 @@ type Contact = {
 const config = useRuntimeConfig();
 const backendBaseUrl = config.public.BACKEND_BASE_URL;
 const { data: contact } = useFetch<Contact>(
-  `${backendBaseUrl}/api/contact/${route.params.id}`,
+  `${backendBaseUrl}/restapi/contact/${route.params.id}`,
   {
     headers: {
       Authorization: `Bearer ${authStore.accessToken}`,

@@ -60,7 +60,7 @@ const backendBaseUrl = config.public.BACKEND_BASE_URL;
 
 async function createDemoContacts() {
   console.log("TEST");
-  useFetch(`${backendBaseUrl}/api/contact/demo`, {
+  useFetch(`${backendBaseUrl}/restapi/contact/demo`, {
     method: "POST",
     headers: {
       userId: userId,

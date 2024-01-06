@@ -65,7 +65,7 @@ function togglePassword() {
 
 async function register() {
   try {
-    const { data, error } = await useFetch("/register", {
+    const { data, error } = await useFetch("/api/register", {
       method: "POST",
       body: {
         username,

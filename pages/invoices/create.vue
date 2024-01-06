@@ -241,7 +241,7 @@ const config = useRuntimeConfig();
 const backendBaseUrl = config.public.BACKEND_BASE_URL;
 
 const { data: clients } = useFetch<Array<Client>>(
-  `${backendBaseUrl}/api/client`,
+  `${backendBaseUrl}/restapi/client`,
   {
     headers: {
       Authorization: `Bearer ${authStore.accessToken}`,
@@ -251,7 +251,7 @@ const { data: clients } = useFetch<Array<Client>>(
 );
 
 const { data: generatedInvoiceNumber } = useFetch<string>(
-  `${backendBaseUrl}/api/invoice/number`,
+  `${backendBaseUrl}/restapi/invoice/number`,
   {
     headers: {
       Authorization: `Bearer ${authStore.accessToken}`,
@@ -346,7 +346,7 @@ async function createInvoice() {
   };
   try {
     isPending.value = true;
-    const { data, pending, error, status } = await useFetch("/invoices", {
+    const { data, pending, error, status } = await useFetch("/api/invoices", {
       method: "POST",
       body: invoiceToCreate,
       credentials: "include",

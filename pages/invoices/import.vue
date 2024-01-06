@@ -40,7 +40,7 @@ async function handleFileUpload() {
   if (file) {
     const formData = new FormData();
     formData.append("csvFile", file);
-    const res = await $fetch(`${backendBaseUrl}/api/invoice/import`, {
+    const res = await $fetch(`${backendBaseUrl}/restapi/invoice/import`, {
       method: "POST",
       body: formData,
     });
@@ -59,7 +59,7 @@ async function handlePdfUpload() {
   if (file) {
     const formData = new FormData();
     formData.append("pdfFile", file);
-    await $fetch(`${backendBaseUrl}/api/invoice/import/pdf`, {
+    await $fetch(`${backendBaseUrl}/restapi/invoice/import/pdf`, {
       method: "POST",
       body: formData,
     });

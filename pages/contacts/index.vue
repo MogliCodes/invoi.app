@@ -230,7 +230,7 @@
         <BaseHeadline class="mb-2" type="h3" text="Confirm delete" />
         <section v-if="currentContactId">
           <p class="mb-8">Are you sure you want to delete this entry?</p>
-          <div class="flex gap-4">
+          <div class="flex justify-center gap-4">
             <BaseButton variant="red" text="Delete" @click="deleteContact()" />
             <BaseButton
               variant="outline"
@@ -298,7 +298,7 @@ const {
   data: Ref<Array<Contact>>;
   execute: () => void;
   refresh: () => void;
-} = useFetch(`${backendBaseUrl}/api/contact`, {
+} = useFetch(`${backendBaseUrl}/restapi/contact`, {
   params: {
     page,
     pageSize,
@@ -313,7 +313,7 @@ const {
   data: contactCount,
   refresh: refreshContactsCount,
 }: { data: Ref<number>; refresh: () => void } = useFetch(
-  `${backendBaseUrl}/api/contact/count`,
+  `${backendBaseUrl}/restapi/contact/count`,
   {
     headers: {
       Authorization: `Bearer ${authStore.accessToken}`,
@@ -346,16 +346,19 @@ function searchContact() {
     data: Ref<Array<Contact>>;
     execute: () => void;
     refresh: () => void;
-  } = useFetch(`${backendBaseUrl}/api/contact?search=${searchQuery.value}`, {
-    params: {
-      page,
-      pageSize,
-    },
-    headers: {
-      Authorization: `Bearer ${authStore.accessToken}`,
-      ClientId: authStore.userId,
-    },
-  });
+  } = useFetch(
+    `${backendBaseUrl}/restapi/contact?search=${searchQuery.value}`,
+    {
+      params: {
+        page,
+        pageSize,
+      },
+      headers: {
+        Authorization: `Bearer ${authStore.accessToken}`,
+        ClientId: authStore.userId,
+      },
+    }
+  );
 }
 
 function initiateDeletion(contactId: string): void {

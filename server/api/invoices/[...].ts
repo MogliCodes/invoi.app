@@ -79,4 +79,4 @@ async function bulkDeleteInvoice(event: H3Event) {
   return res;
 }
 
-export default useBase("/restapi/invoices", router.handler);
+export default useBase("/api/invoices", router.handler);
