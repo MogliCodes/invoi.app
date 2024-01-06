@@ -330,6 +330,18 @@ function updateRowTotal(index: number): void {
   rows.value[index].total = rows.value[index].hours * rows.value[index].factor;
 }
 
+const formattedRows = computed(() => {
+  return rows.value.map((row) => {
+    return {
+      position: row.position,
+      description: row.description,
+      hours: formatAmountToCent(row.hours),
+      factor: row.factor.toFixed(2),
+      total: formatAmountToCent(row.total),
+    };
+  });
+});
+
 async function createInvoice() {
   const invoiceToCreate = {
     nr: invoiceNumber.value,
@@ -341,7 +353,7 @@ async function createInvoice() {
     taxes: formatAmountToCent(taxes.value),
     total: formatAmountToCent(totalAmount.value),
     totalWithTaxes: formatAmountToCent(totalWithTaxes.value),
-    items: JSON.stringify(rows.value),
+    items: JSON.stringify(formattedRows.value),
     user: authStore.userId,
   };
   try {
