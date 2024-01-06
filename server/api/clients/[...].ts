@@ -9,6 +9,13 @@ router.post(
   })
 );
 
+router.patch(
+  "/:id",
+  defineEventHandler(async (event: H3Event) => {
+    return await patchClient(event);
+  })
+);
+
 async function createClient(event: H3Event) {
   const config = useRuntimeConfig();
   const backendBaseUrl = config.public.BACKEND_BASE_URL;
@@ -22,6 +29,27 @@ async function createClient(event: H3Event) {
     },
   });
   console.log("res ", res);
+  return res;
+}
+
+async function patchClient(event: H3Event) {
+  const config = useRuntimeConfig();
+  const backendBaseUrl = config.public.BACKEND_BASE_URL;
+  const query = getQuery(event);
+  console.log("query", query);
+  const cookies = parseCookies(event);
+  const body = await readBody(event);
+  const res: any = await $fetch(
+    `${backendBaseUrl}/restapi/client/${query.id}`,
+    {
+      method: "PATCH",
+      body,
+      headers: {
+        authorization: cookies.accessToken,
+      },
+    }
+  );
+
   return res;
 }
 
