@@ -20,7 +20,7 @@ const colorClass = computed(() => {
 
 <template>
   <div
-    class="absolute inset-x-6 top-4 z-10 block rounded-lg p-4 shadow-2xl"
+    class="fixed z-50 inset-x-6 top-4 block rounded-lg p-4 shadow-2xl"
     :class="colorClass"
   >
     <span>{{ props.message }}</span>
