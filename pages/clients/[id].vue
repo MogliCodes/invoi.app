@@ -33,6 +33,11 @@
             class="bg-white dark:text-black"
             type="text"
           />
+          <BaseInput
+            v-model="taxId"
+            class="bg-white dark:text-black"
+            type="text"
+          />
           <BaseButton text="Save client" @click="patchClient" />
         </div>
       </BaseBox>
@@ -79,6 +84,7 @@ async function patchClient() {
         street: street.value,
         city: city.value,
         zip: zip.value,
+        taxId: taxId.value,
       },
       credentials: "include",
       headers: {
@@ -101,6 +107,7 @@ const company = ref(client?.value?.company);
 const street = ref(client?.value?.street);
 const zip = ref(client?.value?.zip);
 const city = ref(client?.value?.city);
+const taxId = ref(client?.value?.taxId);
 
 watch(
   () => client.value,
@@ -110,6 +117,7 @@ watch(
       street.value = newValue.street;
       zip.value = newValue.zip;
       city.value = newValue.city;
+      taxId.value = newValue.taxId;
     }
   }
 );

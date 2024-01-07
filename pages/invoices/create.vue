@@ -82,8 +82,13 @@
           >
           </USelectMenu>
         </div>
-        <div>
+        <div class="flex flex-col gap-2">
           <UCheckbox v-model="hasTaxes" name="taxes" label="Add taxes" />
+          <UCheckbox
+            v-model="isReverseChargeInvoice"
+            name="taxes"
+            label="Is reverse charge invoice"
+          />
         </div>
       </div>
     </BaseBox>
@@ -279,6 +284,7 @@ const performancePeriodStart = ref(currentDate);
 const performancePeriodEnd = ref(currentDate);
 const invoiceNumber: Ref<string> = ref(generatedInvoiceNumber.value || "");
 const hasTaxes: Ref<boolean> = ref(true);
+const isReverseChargeInvoice: Ref<boolean> = ref(false);
 const rows = ref([
   { position: 1, description: "description", hours: 0, factor: 0, total: 0 },
 ]);
@@ -359,6 +365,7 @@ async function createInvoice() {
     totalWithTaxes: formatAmountToCent(totalWithTaxes.value),
     items: JSON.stringify(formattedRows.value),
     user: authStore.userId,
+    isReverseChargeInvoice: isReverseChargeInvoice.value,
   };
   try {
     isPending.value = true;
