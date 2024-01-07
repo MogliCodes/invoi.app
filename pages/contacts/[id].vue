@@ -107,14 +107,13 @@ async function patchContact() {
       }, 5000);
       navigateTo("/contacts");
     }
-    console.log(res);
   } catch (error) {
     console.error(error);
   }
 }
 const firstname = ref(contact?.value?.firstname);
 const lastname = ref(contact?.value?.lastname);
-const dob = ref(formatDateForInput(contact?.value?.dob));
+const dob = ref(formatDateForInput(contact?.value?.dob || ""));
 const street = ref(contact?.value?.street);
 const zip = ref(contact?.value?.zip);
 const city = ref(contact?.value?.city);
@@ -122,12 +121,14 @@ const city = ref(contact?.value?.city);
 watch(
   () => contact.value,
   (newValue) => {
-    firstname.value = newValue.firstname;
-    lastname.value = newValue.lastname;
-    dob.value = formatDateForInput(newValue.dob);
-    street.value = newValue.street;
-    zip.value = newValue.zip;
-    city.value = newValue.city;
+    if (newValue) {
+      firstname.value = newValue.firstname;
+      lastname.value = newValue.lastname;
+      dob.value = formatDateForInput(newValue.dob);
+      street.value = newValue.street;
+      zip.value = newValue.zip;
+      city.value = newValue.city;
+    }
   }
 );
 

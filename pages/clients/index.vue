@@ -5,10 +5,7 @@
       <BaseButton to="/clients/create" text="Create client" variant="yellow" />
     </div>
     <div class="w-full">
-      <div
-        v-if="!clients && !clients?.length"
-        class="flex flex-col items-start gap-4"
-      >
+      <div v-if="!clients?.length" class="flex flex-col items-start gap-4">
         <p>No clients created yet! Start creating your first contact.</p>
       </div>
       <div>
@@ -38,7 +35,7 @@
           <tbody>
             <tr
               v-for="client in clients"
-              :key="client.id"
+              :key="client._id"
               class="rounded bg-white p-4 even:bg-gray-200 dark:odd:bg-blue-80 dark:even:bg-blue-90"
             >
               <td class="py-3 pl-6">
@@ -63,7 +60,6 @@
                   <UIcon
                     class="cursor-pointer text-xl transition-colors hover:text-gray-400 dark:hover:text-white"
                     name="i-heroicons-trash"
-                    @click="initiateDeletion(client._id)"
                   />
                 </span>
               </td>
@@ -106,17 +102,6 @@ const { data: clients }: AsyncData<Client[], FetchError<any> | null> = useFetch(
  */
 const selectedClients = ref<string[]>([]);
 const selectAll = ref(false);
-
-function initiateDeletion(clientId: string) {
-  alertStore.showAlert({
-    title: "Delete client",
-    message: "Are you sure you want to delete this client?",
-    confirmButtonText: "Delete",
-    onConfirm: () => {
-      deleteClient(clientId);
-    },
-  });
-}
 
 function isSelectedClient(clientId: string) {
   return selectedClients.value.includes(clientId);

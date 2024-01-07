@@ -108,9 +108,9 @@
 </template>
 
 <script setup lang="ts">
+import { useClipboard } from "@vueuse/core";
 import { useAuthStore } from "~/stores/auth.store";
 import BaseText from "~/components/BaseText/BaseText.vue";
-import { useClipboard } from "@vueuse/core";
 
 const authStore = useAuthStore();
 const userId = authStore.userId;

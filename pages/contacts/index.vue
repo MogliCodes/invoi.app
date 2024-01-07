@@ -251,33 +251,27 @@ type Contact = {
 const page = ref(1);
 const pageSizeOptions = [10, 20, 30, 40, 50];
 const pageSize = ref(pageSizeOptions[1]);
-const startRange = computed(
-  () => 1 + pageSize.value * page.value - pageSize.value
-);
-const endRange = computed(() => pageSize.value * page.value);
 
 /** ================
  * Data fetching
  ================ */
 const config = useRuntimeConfig();
 const backendBaseUrl = config.public.BACKEND_BASE_URL;
-const {
-  data: contacts,
-  refresh: refreshContacts,
-}: {
-  data: Ref<Array<Contact>>;
-  execute: () => void;
-  refresh: () => void;
-} = useFetch(`${backendBaseUrl}/restapi/contact`, {
-  params: {
-    page,
-    pageSize,
-  },
-  headers: {
-    Authorization: `Bearer ${authStore.accessToken}`,
-    ClientId: authStore.userId,
-  },
-});
+const { data, refresh: refreshContacts } = useFetch<Contact[]>(
+  `${backendBaseUrl}/restapi/contact`,
+  {
+    params: {
+      page,
+      pageSize,
+    },
+    headers: {
+      Authorization: `Bearer ${authStore.accessToken}`,
+      ClientId: authStore.userId,
+    },
+  }
+);
+
+const contacts: Contact[] | null = data.value;
 
 const {
   data: contactCount,
@@ -307,29 +301,6 @@ const bulkActionOptions = [
 ];
 const bulkAction = ref(bulkActionOptions[0]);
 const selectAll = ref(false);
-const searchQuery = ref("");
-
-function searchContact() {
-  const {
-    data: contactSearchResult,
-  }: {
-    data: Ref<Array<Contact>>;
-    execute: () => void;
-    refresh: () => void;
-  } = useFetch(
-    `${backendBaseUrl}/restapi/contact?search=${searchQuery.value}`,
-    {
-      params: {
-        page,
-        pageSize,
-      },
-      headers: {
-        Authorization: `Bearer ${authStore.accessToken}`,
-        ClientId: authStore.userId,
-      },
-    }
-  );
-}
 
 function initiateDeletion(contactId: string): void {
   isOpen.value = true;
@@ -353,7 +324,7 @@ async function deleteContact() {
 }
 function toggleSelectAll() {
   !selectedContacts.value.length
-    ? (selectedContacts.value = contacts.value.map((contact) => contact._id))
+    ? (selectedContacts.value = contacts?.map((contact) => contact._id) || [])
     : (selectedContacts.value = []);
 }
 function isSelectedContact(contactId: string): boolean {

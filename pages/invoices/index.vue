@@ -239,16 +239,20 @@ import { useAuthStore } from "~/stores/auth.store";
 const authStore = useAuthStore();
 
 type Invoice = {
+  _id: string;
+  title: string;
   nr: string;
   client: string;
   project: string;
   date: Date;
-  taxes: string;
-  totalWithTaxes: string;
+  status: string;
+  total: number;
+  taxes: number;
+  totalWithTaxes: number;
 };
 const config = useRuntimeConfig();
 const backendBaseUrl = config.public.BACKEND_BASE_URL;
-const { data: invoices, refresh: refreshInvoices } = useFetch<Invoice[]>(
+const { data, refresh: refreshInvoices } = useFetch<Invoice[]>(
   `${backendBaseUrl}/restapi/invoice`,
   {
     headers: {
@@ -257,6 +261,8 @@ const { data: invoices, refresh: refreshInvoices } = useFetch<Invoice[]>(
     },
   }
 );
+
+const invoices: Invoice[] | null = data.value;
 
 const { data: invoiceCount, refresh: refreshInvoiceCount } = useFetch<
   Invoice[]
@@ -268,10 +274,6 @@ const { data: invoiceCount, refresh: refreshInvoiceCount } = useFetch<
 });
 
 const showAdvancedFilters = ref(false);
-
-function toggleAdvancedFilters() {
-  showAdvancedFilters.value = !showAdvancedFilters.value;
-}
 
 const isOpen = ref(false);
 const currentInvoiceId = ref("");
@@ -287,8 +289,8 @@ const bulkActionOptions = ref([
 
 function toggleSelectAll() {
   selectAll.value = !selectAll.value;
-  if (selectAll.value) {
-    selectedInvoices.value = invoices.value.map((invoice) => invoice._id);
+  if (selectAll.value && invoices) {
+    selectedInvoices.value = invoices?.map((invoice) => invoice._id);
   } else {
     selectedInvoices.value = [];
   }
@@ -324,10 +326,6 @@ function executeBulkAction(): void {
     default:
       break;
   }
-}
-
-function bulkDelete(): void {
-  isOpen.value = false;
 }
 
 async function deleteInvoice() {

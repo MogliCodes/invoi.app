@@ -51,7 +51,11 @@
         </form>
       </BaseBox>
     </div>
-    <BaseNotification v-if="showNotification" :message="notificationMessage" />
+    <BaseNotification
+      v-if="showNotification"
+      :message="notificationMessage"
+      link=""
+    />
   </div>
 </template>
 <script setup lang="ts">
@@ -102,7 +106,6 @@ async function createContact() {
       }, 5000);
       navigateTo("/contacts");
     }
-    console.log(res);
   } catch (error) {
     console.error(error);
   }

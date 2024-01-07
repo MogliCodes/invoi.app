@@ -39,10 +39,7 @@
             voluptates?
           </BaseText>
           <div class="flex gap-4">
-            <BaseButton
-              @click.native="createDemoContacts"
-              text="Create demo data"
-            />
+            <BaseButton text="Create demo data" @click="createDemoContacts" />
             <BaseButton variant="red" text="Delete demo contacts" />
           </div>
         </div>
@@ -59,11 +56,10 @@ const accessToken = authStore.accessToken;
 const backendBaseUrl = config.public.BACKEND_BASE_URL;
 
 async function createDemoContacts() {
-  console.log("TEST");
   useFetch(`${backendBaseUrl}/restapi/contact/demo`, {
     method: "POST",
     headers: {
-      userId: userId,
+      userId,
       authorization: `Bearer ${accessToken}`,
     },
   });

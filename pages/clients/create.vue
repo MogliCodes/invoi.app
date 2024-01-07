@@ -39,7 +39,11 @@
         </form>
       </BaseBox>
     </div>
-    <BaseNotification v-if="showNotification" :message="notificationMessage" />
+    <BaseNotification
+      v-if="showNotification"
+      :message="notificationMessage"
+      link=""
+    />
   </div>
 </template>
 <script setup lang="ts">
@@ -79,7 +83,6 @@ async function createClient() {
         authorization: `Bearer ${accessToken}`,
       },
     });
-    console.log("res", res);
     if (res.status === 201) {
       alertStore.setAlert("success", res.message);
       setTimeout(() => {
@@ -87,7 +90,6 @@ async function createClient() {
       }, 5000);
       navigateTo("/clients");
     }
-    console.log(res);
   } catch (error) {
     console.error(error);
   }

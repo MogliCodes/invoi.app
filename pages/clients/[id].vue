@@ -105,10 +105,12 @@ const city = ref(client?.value?.city);
 watch(
   () => client.value,
   (newValue) => {
-    company.value = newValue.company;
-    street.value = newValue.street;
-    zip.value = newValue.zip;
-    city.value = newValue.city;
+    if (newValue) {
+      company.value = newValue.company;
+      street.value = newValue.street;
+      zip.value = newValue.zip;
+      city.value = newValue.city;
+    }
   }
 );
 </script>

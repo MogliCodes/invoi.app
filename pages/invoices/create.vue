@@ -109,7 +109,7 @@
             class="relative rounded bg-white p-4 even:bg-gray-200 dark:odd:bg-blue-80 dark:even:bg-blue-90"
           >
             <td
-              class="add-row-btn z-100 absolute -left-5 bottom-0 flex h-10 w-10 translate-y-1/2 scale-50 cursor-pointer items-center justify-center rounded-full bg-secondary-100 opacity-0 transition-all"
+              class="add-row-btn absolute -left-5 bottom-0 flex h-10 w-10 translate-y-1/2 scale-50 cursor-pointer items-center justify-center rounded-full bg-secondary-100 opacity-0 transition-all"
               @click="insertRow(index)"
             >
               <UIcon name="i-heroicons-plus" class="text-xl text-white" />
@@ -148,7 +148,11 @@
               <span>{{ formatCurrencyAmount(totalAmount) }}</span>
             </td>
           </tr>
-          <tr v-for="tax in selectedTaxes" class="px-6 py-3 text-right">
+          <tr
+            v-for="(tax, index) in selectedTaxes"
+            :key="`tax-${index}`"
+            class="px-6 py-3 text-right"
+          >
             <td class="px-6 py-3 text-right">{{ tax }}</td>
           </tr>
           <tr v-if="hasTaxes" class="bg-gray-600 text-white dark:bg-gray-900">
@@ -196,7 +200,7 @@
     </section>
     <section
       v-if="isPending"
-      class="z-100 fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
+      class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
     >
       <div
         class="flex h-14 w-14 animate-spin items-center justify-center rounded-full bg-white"
@@ -264,7 +268,7 @@ const { data: generatedInvoiceNumber } = useFetch<string>(
  * Invoice data
  ============== */
 watch(clients, (newVal) => {
-  selectedClient.value = newVal?.[0];
+  selectedClient.value = newVal?.[0] || null;
 });
 const isPending = ref(false);
 const selectedClient: Ref<Client | null> = ref(clients?.value?.[0] || null);
@@ -368,10 +372,6 @@ async function createInvoice() {
       },
     });
     status === "success" ? (isPending.value = false) : (isPending.value = true);
-    console.log("status", status);
-    console.log("data", data);
-    console.log("pending", pending);
-    console.log("error", error);
     if (!pending.value && !error.value && data) {
       alertStore.setAlert("success", data.value.message);
       alertStore.setAlertLink(data.value.link);
@@ -388,9 +388,7 @@ async function createInvoice() {
 const invoicePreviewHtml = ref();
 async function getInvoicePreview() {
   const { data } = useFetch("../invoice-template-single.html");
-  console.log("data html");
   invoicePreviewHtml.value = data.value;
-  console.log(invoicePreviewHtml.value);
   showPreview.value = true;
 }
 </script>
