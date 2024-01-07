@@ -7,7 +7,7 @@
         :text="`${client?.company}`"
       />
       <BaseHeadline type="h2" text="Client information" />
-      <BaseBox v-if="client">
+      <BaseBox v-if="company && street && zip && city">
         <div class="flex w-2/3 flex-col items-start gap-4">
           <BaseInput
             v-if="company"
@@ -93,7 +93,6 @@ async function patchClient() {
       }, 5000);
       navigateTo("/clients");
     }
-    console.log(res);
   } catch (error) {
     console.error(error);
   }
@@ -102,4 +101,14 @@ const company = ref(client?.value?.company);
 const street = ref(client?.value?.street);
 const zip = ref(client?.value?.zip);
 const city = ref(client?.value?.city);
+
+watch(
+  () => client.value,
+  (newValue) => {
+    company.value = newValue.company;
+    street.value = newValue.street;
+    zip.value = newValue.zip;
+    city.value = newValue.city;
+  }
+);
 </script>

@@ -7,7 +7,7 @@
         :text="`${contact?.firstname} ${contact?.lastname}`"
       />
       <BaseHeadline type="h2" text="Contact information" />
-      <BaseBox v-if="contact">
+      <BaseBox v-if="firstname && lastname && dob && street && zip && city">
         <div class="flex w-2/3 flex-col items-start gap-4">
           <BaseInput
             v-if="firstname"
@@ -118,6 +118,18 @@ const dob = ref(formatDateForInput(contact?.value?.dob));
 const street = ref(contact?.value?.street);
 const zip = ref(contact?.value?.zip);
 const city = ref(contact?.value?.city);
+
+watch(
+  () => contact.value,
+  (newValue) => {
+    firstname.value = newValue.firstname;
+    lastname.value = newValue.lastname;
+    dob.value = formatDateForInput(newValue.dob);
+    street.value = newValue.street;
+    zip.value = newValue.zip;
+    city.value = newValue.city;
+  }
+);
 
 function formatDateForInput(dateString: string) {
   const date = new Date(dateString);

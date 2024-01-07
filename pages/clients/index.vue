@@ -75,9 +75,9 @@
   </div>
 </template>
 <script setup lang="ts">
-import { useAuthStore } from "~/stores/auth.store";
 import type { AsyncData } from "#app";
 import { FetchError } from "ofetch";
+import { useAuthStore } from "~/stores/auth.store";
 
 type Client = {
   _id: string;

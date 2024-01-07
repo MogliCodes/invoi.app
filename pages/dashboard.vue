@@ -130,7 +130,6 @@ const { data } = useFetch<UserData>(
     },
   }
 );
-
 const { data: contactCount } = useFetch(
   `${backendBaseUrl}/restapi/contact/count`,
   {

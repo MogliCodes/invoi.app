@@ -20,14 +20,6 @@
         />
       </div>
     </section>
-    <section class="mb-6 flex w-full gap-3">
-      <BaseInput
-        v-model="searchQuery"
-        placeholder="Search …"
-        class=""
-      ></BaseInput>
-      <BaseButton text="Search" @click="searchContact" />
-    </section>
     <section class="mb-2 w-full">
       <div class="flex w-full items-center justify-between gap-8">
         <div class="flex gap-3">
@@ -35,18 +27,7 @@
             <span class="text-sm font-bold text-secondary-100">{{
               contacts?.length
             }}</span>
-            <span class="text-sm font-bold text-secondary-100"> of </span>
-            <span
-              v-if="contactCount"
-              class="text-sm font-bold text-secondary-100"
-              >{{ contactCount }}</span
-            >
-            <span class="text-sm font-bold text-secondary-100"> Contacts</span>
-          </div>
-          <div>
-            <span class="text-sm font-bold text-secondary-100"
-              >{{ startRange }} to {{ endRange }}</span
-            >
+            <span class="text-sm font-bold text-secondary-100"> Contacts </span>
           </div>
         </div>
         <div class="flex gap-6">
@@ -145,18 +126,7 @@
                 </td>
                 <td class="px-6 py-3">{{ contact.zip }}</td>
                 <td class="px-6 py-3">{{ contact.city }}</td>
-                <td class="px-6 py-3">
-                  <div class="flex gap-2">
-                    <span
-                      class="rounded-full bg-blue-500 px-3 py-1 text-sm text-blue-100"
-                      >Categorie 1</span
-                    >
-                    <span
-                      class="rounded-full bg-amber-600 px-3 py-1 text-sm text-amber-100"
-                      >Categorie 2</span
-                    >
-                  </div>
-                </td>
+                <td class="px-6 py-3"></td>
                 <td class="px-6 py-3">
                   <span class="flex gap-2">
                     <NuxtLink :to="`/contacts/${contact._id}`">

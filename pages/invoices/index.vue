@@ -16,16 +16,6 @@
           />
         </BaseButtonGroup>
       </div>
-      <div class="flex w-1/3 items-center gap-4">
-        <BaseInput placeholder="Search" />
-        <div class="rounded-lg bg-blue-80 p-3">
-          <UIcon
-            class="block p-1 text-xl text-white"
-            name="i-heroicons-adjustments-horizontal"
-            @click="toggleAdvancedFilters"
-          />
-        </div>
-      </div>
     </div>
     <Transition>
       <section v-if="showAdvancedFilters" class="mb-8">
