@@ -54,7 +54,7 @@ const password = ref(null);
 
 async function login() {
   try {
-    const { data } = await useFetch("/api/login", {
+    const response = await $fetch("/api/login", {
       method: "POST",
       body: {
         username,
@@ -62,14 +62,14 @@ async function login() {
         password,
       },
     });
-    authStore.setAccessToken(data.value.token);
-    authStore.setUserId(data.value.id);
-    authStore.setUserName(data.value.username);
+    authStore.setAccessToken(response.token);
+    authStore.setUserId(response.id);
+    authStore.setUserName(response.username);
     authStore.setUserLoggedIn(true);
     const accessToken = useCookie("accessToken");
-    accessToken.value = data.value.token;
+    accessToken.value = response.token;
     const userId = useCookie("userId");
-    userId.value = data.value.id;
+    userId.value = response.id;
     navigateTo("/dashboard");
   } catch (error) {
     console.error("error", error);
