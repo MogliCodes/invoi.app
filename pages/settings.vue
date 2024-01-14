@@ -22,16 +22,62 @@
               placeholder="Username"
             />
           </div>
-          <BaseInput v-model="username" placeholder="Username" />
-          <BaseInput v-model="email" placeholder="E-Mail" />
-          <BaseInput v-model="firstname" placeholder="Firstname" />
-          <BaseInput v-model="lastname" placeholder="Lastname" />
-          <BaseInput v-model="street" placeholder="Street" />
-          <BaseInput v-model="zip" placeholder="ZIP" />
-          <BaseInput v-model="city" placeholder="City" />
-          <BaseInput v-model="phone" placeholder="Phone" />
-          <BaseInput v-model="taxId" placeholder="Steuernummer" />
-          <BaseInput v-model="vatId" placeholder="Umsatzsteuer-ID" />
+          <div>
+            <BaseText>
+              <label for="">Username</label>
+            </BaseText>
+            <BaseInput v-model="username" placeholder="Username" />
+          </div>
+          <div>
+            <BaseText>
+              <label for="">E-Mail</label>
+            </BaseText>
+            <BaseInput v-model="email" placeholder="E-Mail" />
+          </div>
+          <div>
+            <BaseText>
+              <label for="">Firstname</label>
+            </BaseText>
+            <BaseInput v-model="firstname" placeholder="Firstname" />
+          </div>
+          <div>
+            <BaseText><label>Lastname</label></BaseText>
+            <BaseInput v-model="lastname" placeholder="Lastname" />
+          </div>
+          <div>
+            <BaseText>
+              <label for="">Street</label>
+            </BaseText>
+            <BaseInput v-model="street" placeholder="Street" />
+          </div>
+          <div>
+            <BaseText>
+              <label for="">ZIP</label>
+            </BaseText>
+            <BaseInput v-model="zip" placeholder="ZIP" />
+          </div>
+          <div>
+            <BaseText>
+              <label for="">City</label>
+            </BaseText>
+            <BaseInput v-model="city" placeholder="City" />
+          </div>
+          <div>
+            <BaseText><label>Phone</label></BaseText>
+            <BaseInput v-model="phone" placeholder="Phone" />
+          </div>
+          <div>
+            <BaseText>
+              <label>Tax ID</label>
+            </BaseText>
+            <BaseInput v-model="taxId" placeholder="Steuernummer" />
+          </div>
+          <div>
+            <BaseText>
+              <label>VAT ID</label>
+            </BaseText>
+            <BaseInput v-model="vatId" placeholder="Umsatzsteuer-ID" />
+          </div>
         </div>
         <BaseHeadline
           class="mb-2 text-xl font-bold dark:text-white"
@@ -78,6 +124,20 @@
                   v-model="phone"
                   placeholder="Please transfer the amount by"
                 />
+              </div>
+              <div>
+                <label>Additional Text for End of Invoices</label>
+                <textarea
+                  class="p-1 font-inherit w-full rounded-lg border-2 border-gray-200 bg-gray-100 text-yellow-dark focus:border-2 focus:border-yellow-normal focus:outline-0 dark:border-white dark:border-opacity-20 dark:bg-black dark:bg-opacity-20 dark:text-gray-100 dark:placeholder:text-gray-600 dark:focus:border-yellow-300"
+                  rows="3"
+                ></textarea>
+              </div>
+              <div>
+                <label>Additional Text for Reverse Charge Invoices</label>
+                <textarea
+                  class="p-1 font-inherit w-full rounded-lg border-2 border-gray-200 bg-gray-100 text-yellow-dark focus:border-2 focus:border-yellow-normal focus:outline-0 dark:border-white dark:border-opacity-20 dark:bg-black dark:bg-opacity-20 dark:text-gray-100 dark:placeholder:text-gray-600 dark:focus:border-yellow-300"
+                  rows="3"
+                ></textarea>
               </div>
             </div>
           </div>

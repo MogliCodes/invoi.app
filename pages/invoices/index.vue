@@ -127,7 +127,7 @@
                 {{ invoice?.nr }}
               </td>
               <td class="px-6 py-3">{{ invoice.title }}</td>
-              <td class="px-6 py-3">{{ invoice.client }}</td>
+              <td class="px-6 py-3">{{ getClientName(invoice.client) }}</td>
               <td class="px-6 py-3">
                 {{
                   new Date(invoice.date)
@@ -263,7 +263,6 @@ const { data, refresh: refreshInvoices } = useFetch<Invoice[]>(
 );
 
 const invoices: Invoice[] | null = data.value;
-
 const { data: invoiceCount, refresh: refreshInvoiceCount } = useFetch<
   Invoice[]
 >(`${backendBaseUrl}/restapi/invoice/count`, {
@@ -273,8 +272,24 @@ const { data: invoiceCount, refresh: refreshInvoiceCount } = useFetch<
   },
 });
 
-const showAdvancedFilters = ref(false);
+const { data: clients } = useFetch<Client[]>(
+  `${backendBaseUrl}/restapi/client`,
+  {
+    headers: {
+      userId: authStore.userId,
+      Authorization: `Bearer ${authStore.accessToken}`,
+    },
+  }
+);
 
+function getClientName(clientId: string) {
+  const client = clients?.value?.find(
+    (client: Client) => client._id === clientId
+  );
+  return client?.company;
+}
+
+const showAdvancedFilters = ref(false);
 const isOpen = ref(false);
 const currentInvoiceId = ref("");
 const selectedInvoices = ref<string[]>([]);

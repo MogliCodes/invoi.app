@@ -75,15 +75,6 @@ import type { AsyncData } from "#app";
 import { FetchError } from "ofetch";
 import { useAuthStore } from "~/stores/auth.store";
 
-type Client = {
-  _id: string;
-  company: string;
-  street: string;
-  zip: string;
-  city: string;
-  taxId: string;
-};
-
 const config = useRuntimeConfig();
 const backendBaseUrl = config.public.BACKEND_BASE_URL;
 const authStore = useAuthStore();

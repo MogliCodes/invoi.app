@@ -231,15 +231,6 @@ const preview = ref(null);
 
 onClickOutside(preview, () => (showPreview.value = false));
 
-type Client = {
-  _id: string;
-  company: string;
-  street: string;
-  zip: string;
-  city: string;
-  user: string;
-};
-
 const taxOptions = ["7%", "19%"];
 const selectedTaxes = ref([]);
 

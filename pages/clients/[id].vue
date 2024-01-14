@@ -53,16 +53,6 @@ const authStore = useAuthStore();
 const alertStore = useAlertStore();
 const accessToken = authStore.accessToken;
 const route = useRoute();
-
-type Client = {
-  _id: string;
-  company: string;
-  street: string;
-  zip: string;
-  city: string;
-  taxId: string;
-};
-
 const config = useRuntimeConfig();
 const backendBaseUrl = config.public.BACKEND_BASE_URL;
 const { data: client } = useFetch<Client>(
