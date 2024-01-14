@@ -57,9 +57,9 @@ async function login() {
     const response = await $fetch("/api/login", {
       method: "POST",
       body: {
-        username,
-        email,
-        password,
+        username: username.value,
+        email: email.value,
+        password: password.value,
       },
     });
     authStore.setAccessToken(response.token);
