@@ -75,7 +75,7 @@ const showNotification = ref(false);
 const notificationMessage = ref("");
 async function createClient() {
   try {
-    const res = await $fetch("/api/clients", {
+    const res = await $fetch("/api/clients/create", {
       method: "POST",
       body: client.value,
       credentials: "include",

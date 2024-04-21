@@ -5,6 +5,13 @@ const router = createRouter();
 router.post(
   "/",
   defineEventHandler(async (event: H3Event) => {
+    return await getClients(event);
+  })
+);
+
+router.post(
+  "/create",
+  defineEventHandler(async (event: H3Event) => {
     return await createClient(event);
   })
 );
@@ -29,6 +36,19 @@ async function createClient(event: H3Event) {
     },
   });
   console.log("res ", res);
+  return res;
+}
+
+async function getClients(event: H3Event) {
+  const config = useRuntimeConfig();
+  const backendBaseUrl = config.public.BACKEND_BASE_URL;
+  const cookies = parseCookies(event);
+  console.log("getClients");
+  const res: any = await $fetch(`${backendBaseUrl}/restapi/client`, {
+    headers: {
+      authorization: cookies.accessToken,
+    },
+  });
   return res;
 }
 
