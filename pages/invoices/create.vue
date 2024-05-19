@@ -360,7 +360,7 @@ async function createInvoice() {
   };
   try {
     isPending.value = true;
-    const { data, pending, error, status } = await useFetch("/api/invoices", {
+    const response = await $fetch("/api/invoices", {
       method: "POST",
       body: invoiceToCreate,
       credentials: "include",
@@ -369,13 +369,15 @@ async function createInvoice() {
         authorization: `Bearer ${accessToken}`,
       },
     });
-    status === "success" ? (isPending.value = false) : (isPending.value = true);
-    if (!pending.value && !error.value && data) {
-      alertStore.setAlert("success", data.value.message);
-      alertStore.setAlertLink(data.value.link);
-      setTimeout(() => {
-        alertStore.resetAlert();
-      }, 5000);
+    response.status === 201
+      ? (isPending.value = false)
+      : (isPending.value = true);
+    if (response.status === 201) {
+      alertStore.setAlert("success", response.message);
+      alertStore.setAlertLink(response.link);
+      // setTimeout(() => {
+      //   alertStore.resetAlert();
+      // }, 5000);
       navigateTo("/invoices");
     }
   } catch (error) {

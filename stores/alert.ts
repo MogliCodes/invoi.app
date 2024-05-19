@@ -26,6 +26,7 @@ export const useAlertStore = defineStore("alertStore", () => {
     isActive,
     alertType,
     alertMessage,
+    alertLink,
     setAlert,
     setAlertLink,
     resetAlert,

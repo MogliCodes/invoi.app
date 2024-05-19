@@ -24,6 +24,6 @@ const colorClass = computed(() => {
     :class="colorClass"
   >
     <span>{{ props.message }}</span>
-    <nuxt-link :to="props.link">{{ props.link }}</nuxt-link>
+    <a :href="props.link">{{ props.link }}</a>
   </div>
 </template>
