@@ -5,7 +5,6 @@ const router = createRouter();
 router.post(
   "/:id",
   defineEventHandler(async (event: H3Event) => {
-    console.log("getClientById ROUTER");
     return await getClientById(event);
   })
 );
@@ -13,7 +12,6 @@ router.post(
 router.post(
   "/",
   defineEventHandler(async (event: H3Event) => {
-    console.log("getClients ROUTER");
     return await getClients(event);
   })
 );
@@ -44,7 +42,6 @@ async function createClient(event: H3Event) {
       authorization: cookies.accessToken,
     },
   });
-  console.log("res ", res);
   return res;
 }
 
@@ -52,10 +49,10 @@ async function getClients(event: H3Event) {
   const config = useRuntimeConfig();
   const backendBaseUrl = config.public.BACKEND_BASE_URL;
   const cookies = parseCookies(event);
-  console.log("getClients");
   const res: any = await $fetch(`${backendBaseUrl}/restapi/client`, {
     headers: {
       authorization: cookies.accessToken,
+      userid: cookies.userId,
     },
   });
   return res;
@@ -67,9 +64,6 @@ async function getClientById(event: H3Event) {
   const cookies = parseCookies(event);
   const query = getQuery(event);
   const params = getRouterParams(event);
-  console.log("cookies", cookies);
-  console.log("query", query);
-  console.log("params", params);
   const res: any = await $fetch(
     `${backendBaseUrl}/restapi/client/${params.id}`,
     {
@@ -86,7 +80,6 @@ async function patchClient(event: H3Event) {
   const config = useRuntimeConfig();
   const backendBaseUrl = config.public.BACKEND_BASE_URL;
   const query = getQuery(event);
-  console.log("query", query);
   const cookies = parseCookies(event);
   const body = await readBody(event);
   const res: any = await $fetch(
