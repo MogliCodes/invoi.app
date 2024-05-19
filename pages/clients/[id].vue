@@ -55,15 +55,13 @@ const accessToken = authStore.accessToken;
 const route = useRoute();
 const config = useRuntimeConfig();
 const backendBaseUrl = config.public.BACKEND_BASE_URL;
-const { data: client } = useFetch<Client>(
-  `${backendBaseUrl}/restapi/client/${route.params.id}`,
-  {
-    headers: {
-      Authorization: `Bearer ${authStore.accessToken}`,
-      Userid: authStore.userId,
-    },
-  }
-);
+const { data: client } = useFetch<Client>(`/api/clients/${route.params.id}`, {
+  method: "POST",
+  headers: {
+    Authorization: `Bearer ${authStore.accessToken}`,
+    Userid: authStore.userId,
+  },
+});
 
 async function patchClient() {
   try {
