@@ -50,6 +50,7 @@ async function getClients(event: H3Event) {
   const backendBaseUrl = config.public.BACKEND_BASE_URL;
   const cookies = parseCookies(event);
   const res: any = await $fetch(`${backendBaseUrl}/restapi/client`, {
+    method: "GET",
     headers: {
       authorization: cookies.accessToken,
       userid: cookies.userId,
@@ -62,7 +63,6 @@ async function getClientById(event: H3Event) {
   const config = useRuntimeConfig();
   const backendBaseUrl = config.public.BACKEND_BASE_URL;
   const cookies = parseCookies(event);
-  const query = getQuery(event);
   const params = getRouterParams(event);
   const res: any = await $fetch(
     `${backendBaseUrl}/restapi/client/${params.id}`,

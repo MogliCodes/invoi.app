@@ -1,5 +1,5 @@
 <template>
-  <div class="container mx-auto flex flex-col items-start">
+  <div :key="pageSize" class="container mx-auto flex flex-col items-start">
     <section class="mb-12">
       <BaseHeadline class="mb-4 dark:text-white" type="h1" text="Contacts" />
       <div class="flex items-center gap-3">
@@ -25,7 +25,7 @@
         <div class="flex gap-3">
           <div>
             <span class="text-sm font-bold text-secondary-100">{{
-              contacts?.length
+              data?.length
             }}</span>
             <span class="text-sm font-bold text-secondary-100"> Contacts </span>
           </div>
@@ -68,7 +68,7 @@
       </div>
     </section>
     <section class="w-full">
-      <div v-if="!contacts?.length" class="flex flex-col items-start gap-4">
+      <div v-if="!data?.length" class="flex flex-col items-start gap-4">
         <p>No contacts created yet! Start creating your first contact.</p>
       </div>
       <div v-else>
@@ -97,7 +97,7 @@
             </thead>
             <tbody>
               <tr
-                v-for="contact in contacts"
+                v-for="contact in data"
                 :key="contact._id"
                 class="rounded bg-white p-4 even:bg-gray-200 dark:odd:bg-blue-80 dark:even:bg-blue-90"
               >
@@ -258,20 +258,19 @@ const pageSize = ref(pageSizeOptions[1]);
 const config = useRuntimeConfig();
 const backendBaseUrl = config.public.BACKEND_BASE_URL;
 const { data, refresh: refreshContacts } = useFetch<Contact[]>(
-  `${backendBaseUrl}/restapi/contact`,
+  `/api/contacts`,
   {
-    params: {
+    method: "POST",
+    query: {
       page,
       pageSize,
     },
     headers: {
       Authorization: `Bearer ${authStore.accessToken}`,
-      ClientId: authStore.userId,
+      userid: authStore.userId,
     },
   }
 );
-
-const contacts: Contact[] | null = data.value;
 
 const {
   data: contactCount,

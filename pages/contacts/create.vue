@@ -90,7 +90,7 @@ const showNotification = ref(false);
 const notificationMessage = ref("");
 async function createContact() {
   try {
-    const res = await $fetch("/api/contacts", {
+    const res = await $fetch("/api/contacts/create", {
       method: "POST",
       body: contact.value,
       credentials: "include",

@@ -70,11 +70,11 @@ type Contact = {
   zip: string;
   user: string;
 };
-const config = useRuntimeConfig();
-const backendBaseUrl = config.public.BACKEND_BASE_URL;
+
 const { data: contact } = useFetch<Contact>(
-  `${backendBaseUrl}/restapi/contact/${route.params.id}`,
+  `/api/contacts/${route.params.id}`,
   {
+    method: "POST",
     headers: {
       Authorization: `Bearer ${authStore.accessToken}`,
       ClientId: authStore.userId,

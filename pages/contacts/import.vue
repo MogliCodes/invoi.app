@@ -53,10 +53,9 @@ const config = useRuntimeConfig();
 const authStore = useAuthStore();
 const userId = authStore.userId;
 const accessToken = authStore.accessToken;
-const backendBaseUrl = config.public.BACKEND_BASE_URL;
 
 async function createDemoContacts() {
-  useFetch(`${backendBaseUrl}/restapi/contact/demo`, {
+  useFetch(`/api/contacts/demo`, {
     method: "POST",
     headers: {
       userId,
