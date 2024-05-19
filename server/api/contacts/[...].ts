@@ -9,6 +9,13 @@ router.post(
   })
 );
 
+router.post(
+  "/count",
+  defineEventHandler(async (event: H3Event) => {
+    return getContactCount(event);
+  })
+);
+
 router.patch(
   "/:id",
   defineEventHandler(async (event: H3Event) => {
@@ -108,6 +115,22 @@ async function bulkDeleteContact(event: H3Event) {
       body,
     }
   );
+  return res;
+}
+
+async function getContactCount(event: H3Event) {
+  const config = useRuntimeConfig();
+  const body = await readBody(event);
+  const backendBaseUrl = config.public.BACKEND_BASE_URL;
+  const cookies = parseCookies(event);
+  const res: any = await $fetch(`${backendBaseUrl}/restapi/contact/count`, {
+    method: "GET",
+    headers: {
+      authorization: cookies.accessToken,
+      UserId: body.userId,
+    },
+  });
+
   return res;
 }
 

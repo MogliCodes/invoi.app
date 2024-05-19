@@ -130,15 +130,16 @@ const { data } = useFetch<UserData>(
     },
   }
 );
-const { data: contactCount } = useFetch(
-  `${backendBaseUrl}/restapi/contact/count`,
-  {
-    headers: {
-      Authorization: `Bearer ${authStore.accessToken}`,
-      UserId: authStore.userId,
-    },
-  }
-);
+const { data: contactCount } = useFetch(`/api/contacts/count`, {
+  method: "POST",
+  body: {
+    userId: authStore.userId,
+  },
+  headers: {
+    Authorization: `Bearer ${authStore.accessToken}`,
+    UserId: authStore.userId,
+  },
+});
 
 const { data: invoiceCount } = useFetch(
   `${backendBaseUrl}/restapi/invoice/count`,
