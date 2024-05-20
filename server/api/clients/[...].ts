@@ -3,6 +3,13 @@ import { createRouter, defineEventHandler, H3Event, useBase } from "h3";
 const router = createRouter();
 
 router.post(
+  "/count",
+  defineEventHandler(async (event: H3Event) => {
+    return await getClientCount(event);
+  })
+);
+
+router.post(
   "/:id",
   defineEventHandler(async (event: H3Event) => {
     return await getClientById(event);
@@ -30,6 +37,20 @@ router.patch(
   })
 );
 
+async function getClientCount(event: H3Event) {
+  const config = useRuntimeConfig();
+  const backendBaseUrl = config.public.BACKEND_BASE_URL;
+  const cookies = parseCookies(event);
+  const res: any = await $fetch(`${backendBaseUrl}/restapi/client/count`, {
+    method: "GET",
+    headers: {
+      authorization: cookies.accessToken,
+      userid: cookies.userId,
+    },
+  });
+  return res;
+}
+
 async function createClient(event: H3Event) {
   const config = useRuntimeConfig();
   const backendBaseUrl = config.public.BACKEND_BASE_URL;
@@ -42,6 +63,7 @@ async function createClient(event: H3Event) {
       authorization: cookies.accessToken,
     },
   });
+  console.log(res);
   return res;
 }
 

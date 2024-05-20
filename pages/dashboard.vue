@@ -88,48 +88,14 @@
         </div>
       </BaseBox>
     </div>
-    <div>
-      <BaseHeadline
-        class="mb-3 font-syne text-2xl font-bold text-gray-400"
-        text="User Data"
-        type="h2"
-      />
-      <BaseBox>
-        <BaseText>
-          <pre>{{ data }}</pre>
-          <button class="break-all text-left" @click="copy(accessToken)">
-            {{ authStore.accessToken }}
-          </button>
-        </BaseText>
-      </BaseBox>
-    </div>
     <section style="height: 1000px"></section>
   </div>
 </template>
 
 <script setup lang="ts">
-import { useClipboard } from "@vueuse/core";
 import { useAuthStore } from "~/stores/auth.store";
-import BaseText from "~/components/BaseText/BaseText.vue";
-
 const authStore = useAuthStore();
-const userId = authStore.userId;
-const accessToken = ref(authStore.accessToken);
-const { copy } = useClipboard({ accessToken });
 
-type UserData = {
-  username: string;
-};
-const config = useRuntimeConfig();
-const backendBaseUrl = config.public.BACKEND_BASE_URL;
-const { data } = useFetch<UserData>(
-  `${backendBaseUrl}/restapi/user/${userId}`,
-  {
-    headers: {
-      Authorization: `Bearer ${authStore.accessToken}`,
-    },
-  }
-);
 const { data: contactCount } = useFetch(`/api/contacts/count`, {
   method: "POST",
   body: {
@@ -141,25 +107,21 @@ const { data: contactCount } = useFetch(`/api/contacts/count`, {
   },
 });
 
-const { data: invoiceCount } = useFetch(
-  `${backendBaseUrl}/restapi/invoice/count`,
-  {
-    headers: {
-      Authorization: `Bearer ${authStore.accessToken}`,
-      UserId: authStore.userId,
-    },
-  }
-);
+const { data: invoiceCount } = useFetch(`/api/invoices/count`, {
+  method: "POST",
+  headers: {
+    Authorization: `Bearer ${authStore.accessToken}`,
+    UserId: authStore.userId,
+  },
+});
 
-const { data: clientCount } = useFetch(
-  `${backendBaseUrl}/restapi/client/count`,
-  {
-    headers: {
-      Authorization: `Bearer ${authStore.accessToken}`,
-      UserId: authStore.userId,
-    },
-  }
-);
+const { data: clientCount } = useFetch(`/api/clients/count`, {
+  method: "POST",
+  headers: {
+    Authorization: `Bearer ${authStore.accessToken}`,
+    UserId: authStore.userId,
+  },
+});
 
 const showTourTeaser = ref(true);
 </script>

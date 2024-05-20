@@ -3,6 +3,13 @@ import { createRouter, defineEventHandler, H3Event, useBase } from "h3";
 const router = createRouter();
 
 router.post(
+  "/count",
+  defineEventHandler(async (event: H3Event) => {
+    return await getInvoiceCount(event);
+  })
+);
+
+router.post(
   "/",
   defineEventHandler(async (event: H3Event) => {
     return await createInvoice(event);
@@ -22,6 +29,20 @@ router.post(
     return await bulkDeleteInvoice(event);
   })
 );
+
+async function getInvoiceCount(event: H3Event) {
+  const config = useRuntimeConfig();
+  const backendBaseUrl = config.public.BACKEND_BASE_URL;
+  const cookies = parseCookies(event);
+  const res: any = await $fetch(`${backendBaseUrl}/restapi/invoice/count`, {
+    method: "GET",
+    headers: {
+      authorization: cookies.accessToken,
+      userid: cookies.userId,
+    },
+  });
+  return res;
+}
 
 async function createInvoice(event: H3Event) {
   const config = useRuntimeConfig();
