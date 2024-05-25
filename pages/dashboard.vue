@@ -121,6 +121,26 @@
         class="mb-3 font-syne text-2xl font-bold text-gray-400"
         type="h2"
       />
+      <div class="flex gap-5">
+        <BaseBox class="w-1/3">
+          <div class="text-xl">This month</div>
+          <span class="font-syne text-5xl font-bold text-secondary-100">
+            {{ formatCurrencyAmount(currentMonthTaxes / 100) }}
+          </span>
+        </BaseBox>
+        <BaseBox class="w-1/3">
+          <div class="text-xl">This quarter</div>
+          <span class="font-syne text-5xl font-bold text-secondary-100">
+            {{ formatCurrencyAmount(currentQuarterTaxes / 100) }}
+          </span>
+        </BaseBox>
+        <BaseBox class="w-1/3">
+          <div class="text-xl">This year</div>
+          <span class="font-syne text-5xl font-bold text-secondary-100">
+            {{ formatCurrencyAmount(currentYearTaxes / 100) }}
+          </span>
+        </BaseBox>
+      </div>
     </section>
     <section style="height: 1000px"></section>
   </div>
@@ -177,6 +197,30 @@ const { data: currentQuarterRevnue } = useFetch(
 );
 
 const { data: currentYearRevnue } = useFetch(`/api/invoices/revenue/year`, {
+  method: "POST",
+  headers: {
+    Authorization: `Bearer ${authStore.accessToken}`,
+    UserId: authStore.userId,
+  },
+});
+
+const { data: currentMonthTaxes } = useFetch(`/api/invoices/tax/month`, {
+  method: "POST",
+  headers: {
+    Authorization: `Bearer ${authStore.accessToken}`,
+    UserId: authStore.userId,
+  },
+});
+
+const { data: currentQuarterTaxes } = useFetch(`/api/invoices/tax/quarter`, {
+  method: "POST",
+  headers: {
+    Authorization: `Bearer ${authStore.accessToken}`,
+    UserId: authStore.userId,
+  },
+});
+
+const { data: currentYearTaxes } = useFetch(`/api/invoices/tax/year`, {
   method: "POST",
   headers: {
     Authorization: `Bearer ${authStore.accessToken}`,

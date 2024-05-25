@@ -51,6 +51,72 @@ router.post(
   })
 );
 
+router.post(
+  "/tax/month",
+  defineEventHandler(async (event: H3Event) => {
+    return await getCurrentMonthTax(event);
+  })
+);
+
+router.post(
+  "/tax/year",
+  defineEventHandler(async (event: H3Event) => {
+    return await getCurrentYearTax(event);
+  })
+);
+
+router.post(
+  "/tax/quarter",
+  defineEventHandler(async (event: H3Event) => {
+    return await getCurrentQuarterTax(event);
+  })
+);
+
+async function getCurrentMonthTax(event: H3Event) {
+  const config = useRuntimeConfig();
+  const backendBaseUrl = config.public.BACKEND_BASE_URL;
+  const cookies = parseCookies(event);
+  const res: any = await $fetch(`${backendBaseUrl}/restapi/invoice/tax/month`, {
+    method: "GET",
+    headers: {
+      authorization: cookies.accessToken,
+      userid: cookies.userId,
+    },
+  });
+  return res;
+}
+
+async function getCurrentQuarterTax(event: H3Event) {
+  const config = useRuntimeConfig();
+  const backendBaseUrl = config.public.BACKEND_BASE_URL;
+  const cookies = parseCookies(event);
+  const res: any = await $fetch(
+    `${backendBaseUrl}/restapi/invoice/tax/quarter`,
+    {
+      method: "GET",
+      headers: {
+        authorization: cookies.accessToken,
+        userid: cookies.userId,
+      },
+    }
+  );
+  return res;
+}
+
+async function getCurrentYearTax(event: H3Event) {
+  const config = useRuntimeConfig();
+  const backendBaseUrl = config.public.BACKEND_BASE_URL;
+  const cookies = parseCookies(event);
+  const res: any = await $fetch(`${backendBaseUrl}/restapi/invoice/tax/year`, {
+    method: "GET",
+    headers: {
+      authorization: cookies.accessToken,
+      userid: cookies.userId,
+    },
+  });
+  return res;
+}
+
 async function getCurrentMonthRevenue(event: H3Event) {
   const config = useRuntimeConfig();
   const backendBaseUrl = config.public.BACKEND_BASE_URL;
