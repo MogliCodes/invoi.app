@@ -50,7 +50,7 @@
                   icon="i-heroicons-arrow-small-left-20-solid"
                   color="yellow"
                   class="me-2 rtl:[&_span:first-child]:rotate-180"
-                  @click="onClick"
+                  @click="page--"
                 />
               </UTooltip>
             </template>
@@ -60,7 +60,7 @@
                   icon="i-heroicons-arrow-small-right-20-solid"
                   color="yellow"
                   class="ms-2 rtl:[&_span:last-child]:rotate-180"
-                  @click="onClick"
+                  @click="page++"
                 />
               </UTooltip> </template
           ></UPagination>
@@ -323,7 +323,7 @@ async function deleteContact() {
 }
 function toggleSelectAll() {
   !selectedContacts.value.length
-    ? (selectedContacts.value = contacts?.map((contact) => contact._id) || [])
+    ? (selectedContacts.value = data.value?.map((contact) => contact._id) || [])
     : (selectedContacts.value = []);
 }
 function isSelectedContact(contactId: string): boolean {
