@@ -2,7 +2,18 @@
   <div class="container mx-auto flex flex-col items-start">
     <div class="mb-12">
       <BaseHeadline class="mb-4 dark:text-white" type="h1" text="Clients" />
-      <BaseButton to="/clients/create" text="Create client" variant="yellow" />
+      <div class="flex items-center gap-3">
+        <BaseButton
+          to="/clients/create"
+          text="Create client"
+          variant="yellow"
+        />
+        <BaseButton
+          to="/clients/import"
+          text="Import clients"
+          variant="outline"
+        />
+      </div>
     </div>
     <div class="w-full">
       <div v-if="!clients?.length" class="flex flex-col items-start gap-4">

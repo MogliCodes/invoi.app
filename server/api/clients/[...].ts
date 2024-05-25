@@ -10,6 +10,13 @@ router.post(
 );
 
 router.post(
+  "/demo",
+  defineEventHandler(async (event: H3Event) => {
+    return createDemoClients(event);
+  })
+);
+
+router.post(
   "/:id",
   defineEventHandler(async (event: H3Event) => {
     return await getClientById(event);
@@ -43,6 +50,22 @@ async function getClientCount(event: H3Event) {
   const cookies = parseCookies(event);
   const res: any = await $fetch(`${backendBaseUrl}/restapi/client/count`, {
     method: "GET",
+    headers: {
+      authorization: cookies.accessToken,
+      userid: cookies.userId,
+    },
+  });
+  return res;
+}
+
+async function createDemoClients(event: H3Event) {
+  const config = useRuntimeConfig();
+  const backendBaseUrl = config.public.BACKEND_BASE_URL;
+  const cookies = parseCookies(event);
+  const body = await readBody(event);
+  const res: any = await $fetch(`${backendBaseUrl}/restapi/client/demo`, {
+    method: "POST",
+    body,
     headers: {
       authorization: cookies.accessToken,
       userid: cookies.userId,
