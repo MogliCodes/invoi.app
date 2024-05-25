@@ -32,7 +32,7 @@
         />
       </div>
     </section>
-    <div class="mb-6">
+    <section class="mb-6">
       <BaseHeadline
         class="mb-3 font-syne text-2xl font-bold text-gray-400"
         type="h2"
@@ -87,7 +87,41 @@
           </NuxtLink>
         </div>
       </BaseBox>
-    </div>
+    </section>
+    <section class="mb-6">
+      <BaseHeadline
+        class="mb-3 font-syne text-2xl font-bold text-gray-400"
+        type="h2"
+        text="Revenues"
+      />
+      <div class="flex gap-5">
+        <BaseBox class="w-1/3">
+          <div class="text-xl">This month</div>
+          <span class="font-syne text-5xl font-bold text-secondary-100">
+            {{ formatCurrencyAmount(currentMonthRevnue / 100) }}
+          </span>
+        </BaseBox>
+        <BaseBox class="w-1/3">
+          <div class="text-xl">This quarter</div>
+          <span class="font-syne text-5xl font-bold text-secondary-100">
+            {{ formatCurrencyAmount(currentQuarterRevnue / 100) }}
+          </span>
+        </BaseBox>
+        <BaseBox class="w-1/3">
+          <div class="text-xl">This year</div>
+          <span class="font-syne text-5xl font-bold text-secondary-100">
+            {{ formatCurrencyAmount(currentYearRevnue / 100) }}
+          </span>
+        </BaseBox>
+      </div>
+    </section>
+    <section>
+      <BaseHeadline
+        text="Taxes"
+        class="mb-3 font-syne text-2xl font-bold text-gray-400"
+        type="h2"
+      />
+    </section>
     <section style="height: 1000px"></section>
   </div>
 </template>
@@ -116,6 +150,33 @@ const { data: invoiceCount } = useFetch(`/api/invoices/count`, {
 });
 
 const { data: clientCount } = useFetch(`/api/clients/count`, {
+  method: "POST",
+  headers: {
+    Authorization: `Bearer ${authStore.accessToken}`,
+    UserId: authStore.userId,
+  },
+});
+
+const { data: currentMonthRevnue } = useFetch(`/api/invoices/revenue/month`, {
+  method: "POST",
+  headers: {
+    Authorization: `Bearer ${authStore.accessToken}`,
+    UserId: authStore.userId,
+  },
+});
+
+const { data: currentQuarterRevnue } = useFetch(
+  `/api/invoices/revenue/quarter`,
+  {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${authStore.accessToken}`,
+      UserId: authStore.userId,
+    },
+  }
+);
+
+const { data: currentYearRevnue } = useFetch(`/api/invoices/revenue/year`, {
   method: "POST",
   headers: {
     Authorization: `Bearer ${authStore.accessToken}`,
