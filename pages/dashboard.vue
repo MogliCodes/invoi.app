@@ -115,7 +115,7 @@
         </BaseBox>
       </div>
     </section>
-    <section>
+    <section class="mb-6">
       <BaseHeadline
         text="Taxes"
         class="mb-3 font-syne text-2xl font-bold text-gray-400"
@@ -141,6 +141,14 @@
           </span>
         </BaseBox>
       </div>
+    </section>
+    <section>
+      <BaseContainer>
+        <BaseBox>
+          <div class="text-xl">User data</div>
+          <pre> {{ userData }}</pre>
+        </BaseBox>
+      </BaseContainer>
     </section>
     <section style="height: 1000px"></section>
   </div>
@@ -227,6 +235,22 @@ const { data: currentYearTaxes } = useFetch(`/api/invoices/tax/year`, {
     UserId: authStore.userId,
   },
 });
+
+type UserData = {
+  username: string;
+};
+const userId = authStore.userId;
+
+const config = useRuntimeConfig();
+const backendBaseUrl = config.public.BACKEND_BASE_URL;
+const { data: userData } = useFetch<UserData>(
+  `${backendBaseUrl}/restapi/user/${userId}`,
+  {
+    headers: {
+      Authorization: `Bearer ${authStore.accessToken}`,
+    },
+  }
+);
 
 const showTourTeaser = ref(true);
 </script>

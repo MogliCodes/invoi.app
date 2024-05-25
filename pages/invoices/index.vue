@@ -140,7 +140,11 @@
                     .join(".")
                 }}
               </td>
-              <td class="px-6 py-3">{{ invoice?.status || "unpaid" }}</td>
+              <td class="px-6 py-3">
+                <span class="bg-red-400 py-1 px-2 rounded text-red-900">{{
+                  invoice?.status || "unpaid"
+                }}</span>
+              </td>
               <td class="px-6 py-3">
                 {{ formatCurrencyAmount(formatCentToAmount(invoice.total)) }}
               </td>
@@ -162,6 +166,15 @@
                       name="i-heroicons-eye"
                     />
                   </NuxtLink>
+                  <a
+                    download
+                    href="file://Users/dennisfink/Workspace/MogliCodes/invoi/invoi-backend/tmp/2025/2025-001_ACME-GmbH_Test.pdf"
+                  >
+                    <UIcon
+                      class="cursor-pointer text-xl transition-colors hover:text-gray-400 dark:hover:text-white"
+                      name="i-heroicons-document-text"
+                    />
+                  </a>
                   <UIcon
                     class="cursor-pointer text-xl transition-colors hover:text-gray-400 dark:hover:text-white"
                     name="i-heroicons-trash"
@@ -249,6 +262,7 @@ type Invoice = {
   total: number;
   taxes: number;
   totalWithTaxes: number;
+  storagePath: string;
 };
 const config = useRuntimeConfig();
 const backendBaseUrl = config.public.BACKEND_BASE_URL;

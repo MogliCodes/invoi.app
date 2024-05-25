@@ -375,9 +375,9 @@ async function createInvoice() {
     if (response.status === 201) {
       alertStore.setAlert("success", response.message);
       alertStore.setAlertLink(response.link);
-      // setTimeout(() => {
-      //   alertStore.resetAlert();
-      // }, 5000);
+      setTimeout(() => {
+        alertStore.resetAlert();
+      }, 5000);
       navigateTo("/invoices");
     }
   } catch (error) {

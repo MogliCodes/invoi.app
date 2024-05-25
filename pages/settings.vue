@@ -203,6 +203,9 @@ async function updateSettings() {
       bankName: bankName.value,
       iban: iban.value,
       bic: bic.value,
+      user: authStore.userId,
+      currency: "EUR",
+      language: "de",
     },
   });
   console.log(res);
