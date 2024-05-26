@@ -103,6 +103,7 @@
 <script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount } from "vue";
 import { Editor, EditorContent } from "@tiptap/vue-3";
+// eslint-disable-next-line import/no-named-as-default
 import StarterKit from "@tiptap/starter-kit";
 
 type Props = {

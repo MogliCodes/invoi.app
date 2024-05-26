@@ -141,7 +141,7 @@
                 }}
               </td>
               <td class="px-6 py-3">
-                <span class="bg-red-400 py-1 px-2 rounded text-red-900">{{
+                <span class="rounded bg-red-400 px-2 py-1 text-red-900">{{
                   invoice?.status || "unpaid"
                 }}</span>
               </td>

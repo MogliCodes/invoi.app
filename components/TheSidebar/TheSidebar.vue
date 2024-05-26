@@ -1,6 +1,6 @@
 <template>
   <aside class="fixed inset-y-0 z-20 w-2/12 bg-blue-90">
-    <div class="px-6 py-12 flex flex-col justify-between h-full">
+    <div class="flex h-full flex-col justify-between px-6 py-12">
       <div>
         <div class="ml-6 sm:mb-6">
           <span class="text-md font-syne font-extrabold text-white"

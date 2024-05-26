@@ -77,5 +77,5 @@ function toggleUserMenu() {
   isUserMenuActive.value = !isUserMenuActive.value;
 }
 const userMenu = ref(null);
-onClickOutside(userMenu, (event) => (isUserMenuActive.value = false));
+onClickOutside(userMenu, () => (isUserMenuActive.value = false));
 </script>

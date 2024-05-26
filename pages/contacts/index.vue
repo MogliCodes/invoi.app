@@ -44,7 +44,7 @@
             :page-count="pageSize"
             :total="contactCount"
           >
-            <template #prev="{ onClick }">
+            <template #prev>
               <UTooltip text="Previous page">
                 <UButton
                   icon="i-heroicons-arrow-small-left-20-solid"
@@ -54,7 +54,7 @@
                 />
               </UTooltip>
             </template>
-            <template #next="{ onClick }">
+            <template #next>
               <UTooltip text="Next page">
                 <UButton
                   icon="i-heroicons-arrow-small-right-20-solid"

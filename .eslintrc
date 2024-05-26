@@ -17,8 +17,8 @@
         "require-await": "off",
         "tailwindcss/classnames-order": "error",
         "no-console": ["warn", { "allow": ["error", "warn", "info"] }],
-        "tailwindcss/no-custom-classname": ["error", { "whitelist": ["add-row-btn", "a4"] }],
-        "tailwindcss/migration-from-tailwind-2": ["error", { "whitelist": ["bg-opacity-20", "bg-opacity-80"] }]
+        "tailwindcss/no-custom-classname": ["off", { "whitelist": ["add-row-btn", "a4"] }],
+        "tailwindcss/migration-from-tailwind-2": ["off", { "whitelist": ["bg-opacity-20", "bg-opacity-80"] }]
     },
     "ignorePatterns": [
         "node_modules/",

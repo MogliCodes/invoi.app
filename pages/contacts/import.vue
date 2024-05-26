@@ -49,7 +49,6 @@
 </template>
 <script setup lang="ts">
 import { useAuthStore } from "~/stores/auth.store";
-const config = useRuntimeConfig();
 const authStore = useAuthStore();
 const userId = authStore.userId;
 const accessToken = authStore.accessToken;

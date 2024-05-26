@@ -86,7 +86,6 @@ async function createClient(event: H3Event) {
       authorization: cookies.accessToken,
     },
   });
-  console.log(res);
   return res;
 }
 

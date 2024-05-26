@@ -222,7 +222,6 @@ async function bulkDeleteInvoice(event: H3Event) {
   const backendBaseUrl = config.public.BACKEND_BASE_URL;
   const cookies = parseCookies(event);
   const body = await readBody(event);
-  console.log(body);
   const res: any = await $fetch(
     `${backendBaseUrl}/restapi/invoice/bulk/delete`,
     {

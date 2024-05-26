@@ -49,8 +49,6 @@ const email: Ref<string> = ref("");
 const password: Ref<string> = ref("");
 const userAlreadyExists = ref(false);
 const showAlert = ref(userAlreadyExists);
-const regex = /^(?=.*[a-zA-Z0-9])(?=.*[\W_]).{8,}$/;
-const isSufficientPassword = computed(() => regex.test(password.value));
 const isPasswordVisible = ref(false);
 
 definePageMeta({
@@ -58,14 +56,10 @@ definePageMeta({
 });
 
 const passwordInput = ref(null);
-function togglePassword() {
-  isPasswordVisible.value = !isPasswordVisible.value;
-  console.log(passwordInput.value.$el.type);
-}
 
 async function register() {
   try {
-    const { data, error } = await useFetch("/api/register", {
+    const { error } = await useFetch("/api/register", {
       method: "POST",
       body: {
         username,
@@ -73,11 +67,8 @@ async function register() {
         password,
       },
     });
-    console.log(data);
     if (error.value) {
-      const { statusCode, statusMessage, data } = error.value;
-      // eslint-disable-next-line no-console
-      console.log(statusCode, statusMessage, data);
+      const { statusCode } = error.value;
       if (statusCode === 409) userAlreadyExists.value = true;
       setTimeout(() => {
         showAlert.value = false;

@@ -53,8 +53,6 @@ const authStore = useAuthStore();
 const alertStore = useAlertStore();
 const accessToken = authStore.accessToken;
 const route = useRoute();
-const config = useRuntimeConfig();
-const backendBaseUrl = config.public.BACKEND_BASE_URL;
 const { data: client } = useFetch<Client>(`/api/clients/${route.params.id}`, {
   method: "POST",
   headers: {

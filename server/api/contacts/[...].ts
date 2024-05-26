@@ -12,7 +12,6 @@ router.post(
 router.post(
   "/demo",
   defineEventHandler(async (event: H3Event) => {
-    console.log("create demo");
     return await createDemoContacts(event);
   })
 );
@@ -58,6 +57,23 @@ router.delete(
     return await deleteContact(event);
   })
 );
+
+// async function callApi(event: H3Event, url: string) {
+//   const config = useRuntimeConfig();
+//   const backendBaseUrl = config.public.BACKEND_BASE_URL;
+//   const cookies = parseCookies(event);
+//   const body = await readBody(event);
+//   const { resource, method, resourceId } = body;
+//   const res: any = await $fetch(`${backendBaseUrl}${resource}`, {
+//     method,
+//     headers: {
+//       authorization: cookies.accessToken,
+//       userid: cookies.userId,
+//     },
+//     body: resourceId,
+//   });
+//   return res;
+// }
 
 async function getContacts(event: H3Event) {
   const config = useRuntimeConfig();
