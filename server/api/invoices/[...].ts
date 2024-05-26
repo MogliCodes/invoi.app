@@ -3,6 +3,14 @@ import { createRouter, defineEventHandler, H3Event, useBase } from "h3";
 const router = createRouter();
 
 router.post(
+  "/get",
+  defineEventHandler(async (event: H3Event) => {
+    console.log("in get invoices");
+    return await getInvoices(event);
+  })
+);
+
+router.post(
   "/count",
   defineEventHandler(async (event: H3Event) => {
     return await getInvoiceCount(event);
@@ -71,6 +79,22 @@ router.post(
     return await getCurrentQuarterTax(event);
   })
 );
+
+async function getInvoices(event: H3Event) {
+  const config = useRuntimeConfig();
+  const backendBaseUrl = config.public.BACKEND_BASE_URL;
+  const cookies = parseCookies(event);
+  const body = await readBody(event);
+  const res: any = await $fetch(`${backendBaseUrl}/restapi/invoice`, {
+    method: "GET",
+    body,
+    headers: {
+      authorization: cookies.accessToken,
+      userid: cookies.userId,
+    },
+  });
+  return res;
+}
 
 async function getCurrentMonthTax(event: H3Event) {
   const config = useRuntimeConfig();
