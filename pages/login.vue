@@ -41,11 +41,12 @@
 import BaseInput from "~/components/BaseInput/BaseInput.vue";
 import BaseButton from "~/components/base/BaseButton.vue";
 import { useAuthStore } from "~/stores/auth.store";
+import { useAlertStore } from "~/stores/alert";
 
 definePageMeta({
   layout: "public",
 });
-
+const alertStore = useAlertStore();
 const authStore = useAuthStore();
 
 const username = ref(null);
@@ -53,8 +54,9 @@ const email = ref(null);
 const password = ref(null);
 
 async function login() {
+  let response;
   try {
-    const response = await $fetch("/api/login", {
+    response = await $fetch("/api/login", {
       method: "POST",
       body: {
         username: username.value,
@@ -62,16 +64,25 @@ async function login() {
         password: password.value,
       },
     });
+    console.log("response", response);
     authStore.setAccessToken(response.token);
     authStore.setUserId(response.id);
     authStore.setUserName(response.username);
     authStore.setUserLoggedIn(true);
+
     const accessToken = useCookie("accessToken");
     accessToken.value = response.token;
     const userId = useCookie("userId");
     userId.value = response.id;
     navigateTo("/dashboard");
   } catch (error) {
+    console.log("response", response);
+    if (response.statusCode === 401) {
+      console.log("in if");
+      alertStore.setAlert("error", response.message);
+    } else {
+      navigateTo("/dashboard");
+    }
     console.error("error", error);
   }
 }

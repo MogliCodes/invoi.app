@@ -96,19 +96,19 @@
       />
       <div class="flex gap-5">
         <BaseBox class="w-1/3">
-          <div class="text-xl">This month</div>
+          <div class="text-xl dark:text-white">This month</div>
           <span class="font-syne text-5xl font-bold text-secondary-100">
             {{ formatCurrencyAmount(currentMonthRevnue / 100) }}
           </span>
         </BaseBox>
         <BaseBox class="w-1/3">
-          <div class="text-xl">This quarter</div>
+          <div class="text-xl dark:text-white">This quarter</div>
           <span class="font-syne text-5xl font-bold text-secondary-100">
             {{ formatCurrencyAmount(currentQuarterRevnue / 100) }}
           </span>
         </BaseBox>
         <BaseBox class="w-1/3">
-          <div class="text-xl">This year</div>
+          <div class="text-xl dark:text-white">This year</div>
           <span class="font-syne text-5xl font-bold text-secondary-100">
             {{ formatCurrencyAmount(currentYearRevnue / 100) }}
           </span>
@@ -123,19 +123,19 @@
       />
       <div class="flex gap-5">
         <BaseBox class="w-1/3">
-          <div class="text-xl">This month</div>
+          <div class="text-xl dark:text-white">This month</div>
           <span class="font-syne text-5xl font-bold text-secondary-100">
             {{ formatCurrencyAmount(currentMonthTaxes / 100) }}
           </span>
         </BaseBox>
         <BaseBox class="w-1/3">
-          <div class="text-xl">This quarter</div>
+          <div class="text-xl dark:text-white">This quarter</div>
           <span class="font-syne text-5xl font-bold text-secondary-100">
             {{ formatCurrencyAmount(currentQuarterTaxes / 100) }}
           </span>
         </BaseBox>
         <BaseBox class="w-1/3">
-          <div class="text-xl">This year</div>
+          <div class="text-xl dark:text-white">This year</div>
           <span class="font-syne text-5xl font-bold text-secondary-100">
             {{ formatCurrencyAmount(currentYearTaxes / 100) }}
           </span>
@@ -145,8 +145,8 @@
     <section>
       <BaseContainer>
         <BaseBox>
-          <div class="text-xl">User data</div>
-          <pre> {{ userData }}</pre>
+          <div class="text-xl dark:text-white">User data</div>
+          <pre class="dark:text-white"> {{ userData }}</pre>
         </BaseBox>
       </BaseContainer>
     </section>
