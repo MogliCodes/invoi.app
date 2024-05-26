@@ -5,6 +5,7 @@
   "scripts": {
     "lint": "eslint --ext .js,.ts,.vue --ignore-path .gitignore .",
     "lint:fix": "eslint --ext .js,.ts,.vue --ignore-path .gitignore . --fix",
+    "test": "vitest",
     "build": "nuxt build",
     "dev": "NODE_ENV=development nuxt dev",
     "start": "nuxt start",
