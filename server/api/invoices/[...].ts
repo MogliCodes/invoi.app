@@ -17,6 +17,20 @@ router.post(
   })
 );
 
+router.patch(
+  "/:id/mark-as-paid",
+  defineEventHandler(async (event: H3Event) => {
+    return await markInvoiceAsPaid(event);
+  })
+);
+
+router.post(
+  "/:id",
+  defineEventHandler(async (event: H3Event) => {
+    return await getInvoiceById(event);
+  })
+);
+
 router.post(
   "/",
   defineEventHandler(async (event: H3Event) => {
@@ -96,6 +110,26 @@ async function getInvoices(event: H3Event) {
   return res;
 }
 
+async function getInvoiceById(event: H3Event) {
+  console.log("getInvoiceById");
+  const config = useRuntimeConfig();
+  const backendBaseUrl = config.public.BACKEND_BASE_URL;
+  const params = getRouterParams(event);
+  console.log("query", params);
+  const cookies = parseCookies(event);
+  const res: any = await $fetch(
+    `${backendBaseUrl}/restapi/invoice/${params.id}`,
+    {
+      method: "GET",
+      headers: {
+        authorization: cookies.accessToken,
+        userid: cookies.userId,
+      },
+    }
+  );
+  return res;
+}
+
 async function getCurrentMonthTax(event: H3Event) {
   const config = useRuntimeConfig();
   const backendBaseUrl = config.public.BACKEND_BASE_URL;
@@ -107,6 +141,26 @@ async function getCurrentMonthTax(event: H3Event) {
       userid: cookies.userId,
     },
   });
+  return res;
+}
+
+async function markInvoiceAsPaid(event: H3Event) {
+  const { id } = getRouterParams(event);
+  const config = useRuntimeConfig();
+  const backendBaseUrl = config.public.BACKEND_BASE_URL;
+  const cookies = parseCookies(event);
+  const body = await readBody(event);
+  const res: any = await $fetch(
+    `${backendBaseUrl}/restapi/invoice/${id}/mark-as-paid`,
+    {
+      method: "PATCH",
+      headers: {
+        authorization: cookies.accessToken,
+        userid: cookies.userId,
+      },
+      body,
+    }
+  );
   return res;
 }
 

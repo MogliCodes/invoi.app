@@ -113,7 +113,7 @@
           </thead>
           <tbody>
             <tr
-              v-for="invoice in invoices"
+              v-for="invoice in invoices as Array<Invoice>"
               :key="invoice?._id"
               class="rounded bg-white p-4 even:bg-gray-200 dark:odd:bg-blue-80 dark:even:bg-blue-90"
             >
@@ -141,9 +141,11 @@
                 }}
               </td>
               <td class="px-6 py-3">
-                <span class="rounded bg-red-400 px-2 py-1 text-red-900">{{
-                  invoice?.status || "unpaid"
-                }}</span>
+                <span
+                  class="rounded px-2 py-1"
+                  :class="getStatusPillBgClasses(invoice)"
+                  >{{ invoice?.status }}</span
+                >
               </td>
               <td class="px-6 py-3">
                 {{ formatCurrencyAmount(formatCentToAmount(invoice.total)) }}
@@ -251,19 +253,6 @@
 import { useAuthStore } from "~/stores/auth.store";
 const authStore = useAuthStore();
 
-type Invoice = {
-  _id: string;
-  title: string;
-  nr: string;
-  client: string;
-  project: string;
-  date: Date;
-  status: string;
-  total: number;
-  taxes: number;
-  totalWithTaxes: number;
-  storagePath: string;
-};
 const config = useRuntimeConfig();
 const backendBaseUrl = config.public.BACKEND_BASE_URL;
 const { data: invoices, refresh: refreshInvoices } = useFetch<Invoice[]>(
@@ -315,6 +304,27 @@ const bulkActionOptions = ref([
   "Mark as unpaid",
   "Mark as overdue",
 ]);
+
+/**
+ * Calculates if invoice is due
+ * it is due when the invoice date is more than 14 days in the past
+ */
+function isInvoiceDue(invoice: Invoice) {
+  const dueDate = new Date(invoice.date);
+  dueDate.setDate(dueDate.getDate() + 14);
+  return dueDate < new Date();
+}
+
+function getStatusPillBgClasses(invoice: Invoice) {
+  if (invoice.status === "paid") {
+    return "bg-green-400 text-green-900";
+  }
+  if (isInvoiceDue(invoice)) {
+    return "bg-red-400 text-red-900";
+  }
+
+  return "bg-amber-200 text-amber-900";
+}
 
 function toggleSelectAll() {
   selectAll.value = !selectAll.value;

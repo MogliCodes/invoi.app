@@ -357,6 +357,7 @@ async function createInvoice() {
     items: JSON.stringify(formattedRows.value),
     user: authStore.userId,
     isReverseChargeInvoice: isReverseChargeInvoice.value,
+    status: "unpaid",
   };
   try {
     isPending.value = true;

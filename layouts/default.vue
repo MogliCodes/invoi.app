@@ -36,6 +36,7 @@
             :class="isUserMenuActive ? 'scale-1' : 'scale-0'"
           >
             <BaseMenuItem
+              @click="toggleUserMenu"
               to="/settings"
               icon="i-heroicons-cog-6-tooth"
               text="Settings"
