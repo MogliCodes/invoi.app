@@ -368,6 +368,7 @@ async function createInvoice() {
       lazy: true,
       headers: {
         authorization: `Bearer ${accessToken}`,
+        userid: authStore.userId,
       },
     });
     response.status === 201
