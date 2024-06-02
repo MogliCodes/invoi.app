@@ -14,6 +14,11 @@
             to="/invoices/import"
             text="Import invoices"
           />
+          <BaseButton
+            variant="outline"
+            to="/invoices/templates"
+            text="Manage templates"
+          />
         </BaseButtonGroup>
       </div>
     </div>
@@ -328,8 +333,8 @@ function getStatusPillBgClasses(invoice: Invoice) {
 
 function toggleSelectAll() {
   selectAll.value = !selectAll.value;
-  if (selectAll.value && invoices) {
-    selectedInvoices.value = invoices?.map((invoice) => invoice._id);
+  if (selectAll.value && invoices.value) {
+    selectedInvoices.value = invoices?.value.map((invoice) => invoice._id);
   } else {
     selectedInvoices.value = [];
   }
