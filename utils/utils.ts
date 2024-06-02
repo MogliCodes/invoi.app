@@ -42,3 +42,9 @@ export const formatAmountToCent = (amount: number): number => {
 export const formatCentToAmount = (amount: number): number => {
   return amount / 100;
 };
+
+export function isInvoiceDue(invoice: Invoice): boolean {
+  const dueDate = new Date(invoice.date);
+  dueDate.setDate(dueDate.getDate() + 14);
+  return dueDate < new Date();
+}
