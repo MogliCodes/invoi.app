@@ -59,6 +59,11 @@ const navItems = [
     text: "Proposals",
   },
   {
+    icon: "i-heroicons-chart-bar",
+    to: "/revenues",
+    text: "Revenues",
+  },
+  {
     icon: "i-heroicons-credit-card",
     to: "/expenses",
     text: "Expenses",
