@@ -17,6 +17,20 @@ router.post(
   })
 );
 
+router.post(
+  "/templates/get",
+  defineEventHandler(async (event: H3Event) => {
+    return await getCustomTemplates(event);
+  })
+);
+
+router.post(
+  "/templates/upload",
+  defineEventHandler(async (event: H3Event) => {
+    return await uploadInvoiceTemplate(event);
+  })
+);
+
 router.patch(
   "/:id/mark-as-paid",
   defineEventHandler(async (event: H3Event) => {
@@ -93,6 +107,54 @@ router.post(
     return await getCurrentQuarterTax(event);
   })
 );
+
+async function getCustomTemplates(event: H3Event) {
+  try {
+    console.log("getCustomTemplates");
+    const config = useRuntimeConfig();
+    const backendBaseUrl = config.public.BACKEND_BASE_URL;
+    const cookies = parseCookies(event);
+    const res: any = await $fetch(
+      `${backendBaseUrl}/restapi/invoice/templates`,
+      {
+        method: "GET",
+        headers: {
+          authorization: cookies.accessToken,
+          userid: cookies.userId,
+        },
+      }
+    );
+    return res;
+  } catch (e) {
+    console.log("error in nitro", e);
+  }
+}
+
+async function uploadInvoiceTemplate(event: H3Event) {
+  console.log("uploadInvoiceTemplate");
+  try {
+    const config = useRuntimeConfig();
+    const backendBaseUrl = config.public.BACKEND_BASE_URL;
+    const cookies = parseCookies(event);
+    const body = await readFormData(event);
+    console.log("body", body);
+    const res: any = await $fetch(
+      `${backendBaseUrl}/restapi/invoice/templates/upload`,
+      {
+        method: "POST",
+        body,
+        headers: {
+          authorization: cookies.accessToken,
+          userid: cookies.userId,
+        },
+      }
+    );
+    console.log("res in nitro", res);
+    return res;
+  } catch (e) {
+    console.log("error in nitro", e);
+  }
+}
 
 async function getInvoices(event: H3Event) {
   const config = useRuntimeConfig();

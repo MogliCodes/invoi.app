@@ -311,7 +311,7 @@ async function deleteContact() {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${authStore.accessToken}`,
-        ClientId: authStore.userId,
+        UserId: authStore.userId,
       },
     });
     refreshContacts();

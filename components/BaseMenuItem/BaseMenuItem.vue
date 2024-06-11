@@ -1,6 +1,7 @@
 <template>
   <NuxtLink
-    active-class="bg-yellow-300 text-yellow-950 focus:border-yellow-100 hover:bg-yellow-200"
+    active-class="text-yellow-300"
+    exact-active-class="bg-yellow-300 !text-yellow-950 focus:border-yellow-100 hover:bg-yellow-200"
     :to="to"
     :class="[commonClasses, classes]"
   >

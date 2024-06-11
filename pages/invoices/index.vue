@@ -131,8 +131,19 @@
               <td class="px-6 py-3">
                 {{ invoice?.nr }}
               </td>
-              <td class="px-6 py-3">{{ invoice.title }}</td>
-              <td class="px-6 py-3">{{ getClientName(invoice.client) }}</td>
+              <td class="px-6 py-3">
+                <span :title="invoice.title" class="line-clamp-1">{{
+                  invoice.title
+                }}</span>
+              </td>
+              <td class="truncate px-6 py-3">
+                <span
+                  :title="getClientName(invoice.client)"
+                  class="line-clamp-1"
+                >
+                  {{ getClientName(invoice.client) }}
+                </span>
+              </td>
               <td class="px-6 py-3">
                 {{
                   new Date(invoice.date)
@@ -152,13 +163,13 @@
                   >{{ invoice?.status }}</span
                 >
               </td>
-              <td class="px-6 py-3">
+              <td class="whitespace-nowrap px-6 py-3 text-right">
                 {{ formatCurrencyAmount(formatCentToAmount(invoice.total)) }}
               </td>
-              <td class="px-6 py-3">
+              <td class="whitespace-nowrap px-6 py-3 text-right">
                 {{ formatCurrencyAmount(formatCentToAmount(invoice?.taxes)) }}
               </td>
-              <td class="px-6 py-3">
+              <td class="whitespace-nowrap px-6 py-3 text-right">
                 {{
                   formatCurrencyAmount(
                     formatCentToAmount(invoice?.totalWithTaxes)

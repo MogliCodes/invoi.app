@@ -12,7 +12,8 @@
             <li
               v-for="(item, index) in navItems"
               :key="index"
-              class="inline-block sm:block"
+              class="inline-block sm:block rounded-lg"
+              :class="{ 'bg-blue-80': item?.subItems?.length }"
             >
               <BaseMenuItem
                 on-dark-bg
@@ -20,6 +21,16 @@
                 :text="item.text"
                 :icon="item.icon"
               />
+              <ul v-if="!!item?.subItems?.length">
+                <li class="px-5" v-for="subItem in item.subItems">
+                  <BaseMenuItem
+                    on-dark-bg
+                    :to="subItem.to"
+                    :text="subItem.text"
+                    :icon="subItem.icon"
+                  />
+                </li>
+              </ul>
             </li>
           </ul>
         </nav>
@@ -52,6 +63,23 @@ const navItems = [
     icon: "i-heroicons-banknotes",
     to: "/invoices",
     text: "Invoices",
+    subItems: [
+      {
+        icon: "i-heroicons-arrow-up-tray",
+        to: "/invoices/import",
+        text: "Import invoices",
+      },
+      {
+        icon: "i-heroicons-tag",
+        to: "/invoices/categories",
+        text: "Manage categories",
+      },
+      {
+        icon: "i-heroicons-document",
+        to: "/invoices/templates",
+        text: "Templates",
+      },
+    ],
   },
   {
     icon: "i-heroicons-document-text",
