@@ -62,6 +62,8 @@ const templateTags: Array<TemplateTag> = [
 ];
 const selectedTemplateTag: Ref<string> = ref("first-page");
 
+const emit = defineEmits(["upload-template"]);
+
 const handleTemplateUpload = async () => {
   const templateFileFirstPage = templateFirstPage.value?.files?.[0];
   if (!templateFileFirstPage) {
@@ -81,6 +83,7 @@ const handleTemplateUpload = async () => {
     },
   });
   if (res.status === 200) {
+    emit("upload-template");
     alertStore.setAlert("success", res.message);
     setTimeout(() => {
       alertStore.resetAlert();

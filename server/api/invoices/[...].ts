@@ -31,6 +31,13 @@ router.post(
   })
 );
 
+router.post(
+  "/templates/delete",
+  defineEventHandler(async (event: H3Event) => {
+    return await deleteInvoiceTemplate(event);
+  })
+);
+
 router.patch(
   "/:id/mark-as-paid",
   defineEventHandler(async (event: H3Event) => {
@@ -154,6 +161,32 @@ async function uploadInvoiceTemplate(event: H3Event) {
       }
     );
     console.log("res in nitro", res);
+    return res;
+  } catch (e) {
+    console.log("error in nitro", e);
+  }
+}
+
+async function deleteInvoiceTemplate(event: H3Event) {
+  console.log("deleteInvoiceTemplate");
+  try {
+    const config = useRuntimeConfig();
+    const backendBaseUrl = config.public.BACKEND_BASE_URL;
+    const cookies = parseCookies(event);
+    const body = await readBody(event);
+    const headers = event.headers;
+    const templateId = headers.get("Etag");
+    const res: any = await $fetch(
+      `${backendBaseUrl}/restapi/invoice/templates/${templateId}`,
+      {
+        method: "DELETE",
+        body,
+        headers: {
+          authorization: cookies.accessToken,
+          userid: cookies.userId,
+        },
+      }
+    );
     return res;
   } catch (e) {
     console.log("error in nitro", e);

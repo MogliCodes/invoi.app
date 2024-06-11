@@ -12,8 +12,8 @@
             <li
               v-for="(item, index) in navItems"
               :key="index"
-              class="inline-block sm:block rounded-lg"
-              :class="{ 'bg-blue-80': item?.subItems?.length }"
+              class="inline-block sm:block rounded-lg group"
+              :class="{ 'hover:bg-blue-80': item?.subItems?.length }"
             >
               <BaseMenuItem
                 on-dark-bg
@@ -21,7 +21,10 @@
                 :text="item.text"
                 :icon="item.icon"
               />
-              <ul class="pb-5" v-if="!!item?.subItems?.length">
+              <ul
+                class="pb-5 hidden group-hover:block"
+                v-if="!!item?.subItems?.length"
+              >
                 <li class="px-5" v-for="subItem in item.subItems">
                   <BaseMenuItem
                     on-dark-bg

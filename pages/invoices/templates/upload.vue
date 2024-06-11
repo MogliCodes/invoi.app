@@ -15,7 +15,7 @@
       </div>
     </section>
     <UModal v-model="showOverlay">
-      <TemplateUploadForm />
+      <TemplateUploadForm @upload-template="showOverlay = false" />
     </UModal>
   </main>
 </template>
