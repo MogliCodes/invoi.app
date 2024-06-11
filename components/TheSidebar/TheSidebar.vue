@@ -21,7 +21,7 @@
                 :text="item.text"
                 :icon="item.icon"
               />
-              <ul v-if="!!item?.subItems?.length">
+              <ul class="pb-5" v-if="!!item?.subItems?.length">
                 <li class="px-5" v-for="subItem in item.subItems">
                   <BaseMenuItem
                     on-dark-bg

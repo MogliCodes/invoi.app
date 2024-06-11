@@ -10,7 +10,27 @@
     </p>
     <form @submit.prevent class="flex flex-col gap-5" action="">
       <div>
-        <label for="">First page</label>
+        <label for="">Template Name</label>
+        <BaseInput v-model="templateName" />
+      </div>
+      <div>
+        <label for="">Tags</label>
+        <USelectMenu
+          v-model="selectedTemplateTag"
+          class="cursor-pointer"
+          size="xl"
+          color="white"
+          :options="templateTags"
+          value-attribute="tag"
+          option-attribute="name"
+        >
+          <template #label>
+            {{ selectedTemplateTag }}
+          </template>
+        </USelectMenu>
+      </div>
+      <div>
+        <label class="block" for="">First page</label>
         <input ref="templateFirstPage" type="file" size="sm" />
       </div>
       <BaseButton text="Upload templates" @click="handleTemplateUpload" />
@@ -28,6 +48,20 @@ const templateFirstPage: Ref<HTMLInputElement | null> = ref(null);
 
 const authStore = useAuthStore();
 const alertStore = useAlertStore();
+
+const templateName = ref("");
+type TemplateTag = {
+  name: string;
+  tag: string;
+};
+const templateTags: Array<TemplateTag> = [
+  { name: "First page", tag: "first-page" },
+  { name: "Subsequent pages", tag: "subsequent-pages" },
+  { name: "Last page", tag: "last-page" },
+  { name: "Single page", tag: "single-page" },
+];
+const selectedTemplateTag: Ref<string> = ref("first-page");
+
 const handleTemplateUpload = async () => {
   const templateFileFirstPage = templateFirstPage.value?.files?.[0];
   if (!templateFileFirstPage) {
@@ -42,6 +76,8 @@ const handleTemplateUpload = async () => {
     headers: {
       Authorization: `Bearer ${authStore.accessToken}`,
       Userid: authStore.userId,
+      TemplateName: templateName.value,
+      TemplateTags: [selectedTemplateTag.value],
     },
   });
   if (res.status === 200) {

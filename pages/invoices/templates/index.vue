@@ -7,9 +7,6 @@
       </div>
     </section>
     <section>
-      <pre>
-        {{ customTemplates }}
-      </pre>
       <div class="container mx-auto">
         <table class="min-w-full overflow-hidden rounded-lg dark:text-gray-400">
           <thead class="bg-blue-90 text-white">
@@ -17,6 +14,8 @@
               <th class="px-6 py-5 text-left">ID</th>
               <th class="px-6 py-5 text-left">Title</th>
               <th class="px-6 py-5 text-left">Filename</th>
+              <th class="px-6 py-5 text-left">Tag</th>
+              <th class="px-6 py-5 text-right">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -26,32 +25,36 @@
               class="rounded bg-white p-4 even:bg-gray-200 dark:odd:bg-blue-80 dark:even:bg-blue-90"
             >
               <td class="truncate px-6 py-3">{{ template.etag }}</td>
-              <td class="px-6 py-3">{{ template.title }}</td>
+              <td class="px-6 py-3">{{ template.name }}</td>
               <td class="px-6 py-3">
                 {{ template.fileName }}
+              </td>
+              <td>
+                <span class="rounded px-2 py-1 bg-green-400 text-green-900">{{
+                  template.tags
+                }}</span>
+              </td>
+              <td class="pr-4">
+                <span class="flex justify-end gap-2">
+                  <NuxtLink :to="`/invoices/${template.etag}`">
+                    <UIcon
+                      class="cursor-pointer text-xl transition-colors hover:text-gray-400 dark:hover:text-white"
+                      name="i-heroicons-eye"
+                    />
+                  </NuxtLink>
+                  <UIcon
+                    class="cursor-pointer text-xl transition-colors hover:text-gray-400 dark:hover:text-white"
+                    name="i-heroicons-pencil"
+                  />
+                  <UIcon
+                    class="cursor-pointer text-xl transition-colors hover:text-gray-400 dark:hover:text-white"
+                    name="i-heroicons-trash"
+                  />
+                </span>
               </td>
             </tr>
           </tbody>
         </table>
-      </div>
-    </section>
-    <section v-if="actualTemplates">
-      <div class="container mx-auto">
-        <USelectMenu
-          v-model="selectedTemplate"
-          class="cursor-pointer"
-          size="xl"
-          color="white"
-          :options="actualTemplates?.map((template: any) => template.name)"
-          option-attribute="name"
-        >
-          <template #label>
-            {{ selectedTemplate }}
-          </template>
-        </USelectMenu>
-        <pre>
-          {{ selectedTemplateData }}
-        </pre>
       </div>
     </section>
   </main>

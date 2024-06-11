@@ -137,6 +137,8 @@ async function uploadInvoiceTemplate(event: H3Event) {
     const backendBaseUrl = config.public.BACKEND_BASE_URL;
     const cookies = parseCookies(event);
     const body = await readFormData(event);
+    const headers = event.headers;
+    console.log("headers YO", headers.get("templatename"));
     console.log("body", body);
     const res: any = await $fetch(
       `${backendBaseUrl}/restapi/invoice/templates/upload`,
@@ -146,6 +148,8 @@ async function uploadInvoiceTemplate(event: H3Event) {
         headers: {
           authorization: cookies.accessToken,
           userid: cookies.userId,
+          templateName: headers.get("templatename"),
+          templateTags: headers.get("templatetags"),
         },
       }
     );

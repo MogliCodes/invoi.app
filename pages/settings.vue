@@ -1,7 +1,7 @@
 <template>
   <div class="w-2/3">
+    <IconButton class="mb-4" size="sm" @click="$router.back()" />
     <BaseHeadline class="mb-6 dark:text-white" text="Settings" type="h1" />
-
     <div v-if="!settings?.data">
       <p>No settings yet.</p>
       <BaseButton @click="initSettigns" text="Initialize settings" />
@@ -163,6 +163,8 @@
 <script setup lang="ts">
 import { useAuthStore } from "~/stores/auth.store";
 import { useAlertStore } from "~/stores/alert";
+
+const router = useRouter();
 
 const authStore = useAuthStore();
 const alertStore = useAlertStore();
