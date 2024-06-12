@@ -1,7 +1,6 @@
 <template>
   <div class="container mx-auto flex flex-col items-start">
     <div class="mb-12">
-      <BaseHeadline class="mb-4 dark:text-white" type="h1" text="Clients" />
       <div class="flex items-center gap-3">
         <BaseButton
           to="/clients/create"
@@ -84,6 +83,10 @@
 <script setup lang="ts">
 import { useAuthStore } from "~/stores/auth.store";
 const authStore = useAuthStore();
+
+definePageMeta({
+  title: "My home page",
+});
 
 const clients = await $fetch(`/api/clients`, {
   method: "POST",

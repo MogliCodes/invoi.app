@@ -111,6 +111,10 @@ type TemplateData = {
   }[];
 };
 
+definePageMeta({
+  title: "Templates",
+});
+
 const authStore = useAuthStore();
 
 const { data: templates } = await useFetch(

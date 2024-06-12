@@ -1,17 +1,29 @@
 <template>
   <div class="flex flex-col sm:flex-row">
     <TheSidebar v-if="authStore.isUserLoggedIn" />
-    <main
-      class="relative ml-auto w-10/12 bg-gray-100 px-6 py-24 dark:bg-blue-100"
-    >
-      <slot />
+    <main class="relative ml-auto w-10/12 bg-gray-100 py-24 dark:bg-blue-100">
+      <StickyElement
+        v-if="useRoute().meta.title"
+        visible-on-direction="disabled"
+      >
+        <BaseHeadline
+          class="pl-6 dark:text-white first-letter:uppercase"
+          type="h1"
+          :text="useRoute().meta.title"
+        />
+      </StickyElement>
+      <div class="pt-0 p-6">
+        <slot />
+      </div>
       <BaseAlert
         v-if="alertStore.isActive"
         :message="alertStore.alertMessage"
         :link="alertStore.alertLink"
         :type="alertStore.alertType"
       />
-      <div class="fixed right-6 top-4 flex items-center justify-center gap-1">
+      <div
+        class="fixed right-6 top-1.5 z-50 flex items-center justify-center gap-1"
+      >
         <div
           class="flex h-9 w-9 items-center justify-center rounded-lg bg-white transition hover:bg-gray-50 dark:bg-blue-90"
         >
@@ -61,7 +73,8 @@
 import { onClickOutside } from "@vueuse/core";
 import { useAuthStore } from "~/stores/auth.store";
 import { useAlertStore } from "~/stores/alert";
-
+import StickyElement from "vue-sticky-element";
+const route = useRoute();
 const authStore = useAuthStore();
 const alertStore = useAlertStore();
 const accessToken = useCookie("accessToken");
@@ -80,3 +93,10 @@ function toggleUserMenu() {
 const userMenu = ref(null);
 onClickOutside(userMenu, () => (isUserMenuActive.value = false));
 </script>
+
+<style>
+.vue-sticky-element--stuck {
+  @apply !bg-white dark:text-black !shadow-lg text-base py-3;
+  background: white;
+}
+</style>

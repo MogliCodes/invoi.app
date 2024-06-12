@@ -1,7 +1,6 @@
 <template>
-  <div :key="pageSize" class="container mx-auto flex flex-col items-start">
+  <main :key="pageSize" class="flex flex-col items-start">
     <section class="mb-12">
-      <BaseHeadline class="mb-4 dark:text-white" type="h1" text="Contacts" />
       <div class="flex items-center gap-3">
         <BaseButton
           to="/contacts/create"
@@ -227,12 +226,18 @@
         </section>
       </div>
     </UModal>
-  </div>
+  </main>
 </template>
 
 <script setup lang="ts">
 import { useAuthStore } from "~/stores/auth.store";
+import StickyElement from "vue-sticky-element";
+import "vue-sticky-element/css"; // this is required for default styles to work.
 const authStore = useAuthStore();
+
+definePageMeta({
+  title: "Contacts",
+});
 
 type Contact = {
   _id: string;

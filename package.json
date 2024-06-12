@@ -26,6 +26,7 @@
     "@storybook/testing-library": "^0.2.2",
     "@storybook/vue3": "^7.4.6",
     "@storybook/vue3-vite": "^7.4.6",
+    "@types/d3": "^7.4.3",
     "@types/node": "^20.12.12",
     "@typescript-eslint/parser": "^6.7.5",
     "@vue/eslint-config-typescript": "^11.0.3",
@@ -56,9 +57,11 @@
     "@tiptap/pm": "^2.1.12",
     "@tiptap/starter-kit": "^2.1.12",
     "@tiptap/vue-3": "^2.1.12",
+    "d3": "^7.9.0",
     "minio": "^8.0.0",
     "pinia": "^2.1.6",
     "solid": "link:@heroicons/vue/20/solid",
-    "sortablejs": "^1.15.0"
+    "sortablejs": "^1.15.0",
+    "vue-sticky-element": "^2.0.1"
   }
 }

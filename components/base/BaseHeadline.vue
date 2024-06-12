@@ -1,7 +1,5 @@
 <template>
-  <div>
-    <component :is="props.type" :class="textClasses">{{ text }}</component>
-  </div>
+  <component :is="props.type" :class="textClasses">{{ text }}</component>
 </template>
 
 <script setup lang="ts">

@@ -1,8 +1,8 @@
 <template>
-  <div class="w-full">
+  <div class="w-full -m-6">
     <section
       v-if="showTourTeaser"
-      class="relative mb-6 overflow-hidden rounded-lg bg-yellow-300 p-12 text-yellow-950 shadow-lg"
+      class="relative m-6 overflow-hidden rounded-lg bg-yellow-300 p-12 text-yellow-950 shadow-lg"
     >
       <div class="w-2/3">
         <BaseHeadline
@@ -32,7 +32,7 @@
         />
       </div>
     </section>
-    <section class="mb-6">
+    <section class="mb-6 pl-6">
       <BaseHeadline
         class="mb-3 font-syne text-2xl font-bold text-gray-400"
         type="h2"
@@ -88,26 +88,26 @@
         </div>
       </BaseBox>
     </section>
-    <section class="mb-6">
+    <section class="mb-6 pl-6">
       <BaseHeadline
         class="mb-3 font-syne text-2xl font-bold text-gray-400"
         type="h2"
         text="Revenues"
       />
-      <div class="flex gap-5">
-        <BaseBox class="w-1/3">
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <BaseBox>
           <div class="text-xl dark:text-white">This month</div>
           <span class="font-syne text-5xl font-bold text-secondary-100">
             {{ formatCurrencyAmount(currentMonthRevnue / 100) }}
           </span>
         </BaseBox>
-        <BaseBox class="w-1/3">
+        <BaseBox>
           <div class="text-xl dark:text-white">This quarter</div>
           <span class="font-syne text-5xl font-bold text-secondary-100">
             {{ formatCurrencyAmount(currentQuarterRevnue / 100) }}
           </span>
         </BaseBox>
-        <BaseBox class="w-1/3">
+        <BaseBox>
           <div class="text-xl dark:text-white">This year</div>
           <span class="font-syne text-5xl font-bold text-secondary-100">
             {{ formatCurrencyAmount(currentYearRevnue / 100) }}
@@ -115,26 +115,31 @@
         </BaseBox>
       </div>
     </section>
-    <section class="mb-6">
+    <section class="mb-6 pl-6">
+      <BaseBox>
+        <TestGraph />
+      </BaseBox>
+    </section>
+    <section class="mb-6 pl-6">
       <BaseHeadline
         text="Taxes"
         class="mb-3 font-syne text-2xl font-bold text-gray-400"
         type="h2"
       />
-      <div class="flex gap-5">
-        <BaseBox class="w-1/3">
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <BaseBox>
           <div class="text-xl dark:text-white">This month</div>
           <span class="font-syne text-5xl font-bold text-secondary-100">
             {{ formatCurrencyAmount(currentMonthTaxes / 100) }}
           </span>
         </BaseBox>
-        <BaseBox class="w-1/3">
+        <BaseBox>
           <div class="text-xl dark:text-white">This quarter</div>
           <span class="font-syne text-5xl font-bold text-secondary-100">
             {{ formatCurrencyAmount(currentQuarterTaxes / 100) }}
           </span>
         </BaseBox>
-        <BaseBox class="w-1/3">
+        <BaseBox>
           <div class="text-xl dark:text-white">This year</div>
           <span class="font-syne text-5xl font-bold text-secondary-100">
             {{ formatCurrencyAmount(currentYearTaxes / 100) }}
@@ -142,7 +147,7 @@
         </BaseBox>
       </div>
     </section>
-    <section>
+    <section class="mb-6 pl-6">
       <BaseContainer>
         <BaseBox>
           <div class="text-xl dark:text-white">User data</div>
@@ -156,7 +161,14 @@
 
 <script setup lang="ts">
 import { useAuthStore } from "~/stores/auth.store";
+import TestGraph from "~/components/TestGraph.vue";
 const authStore = useAuthStore();
+import StickyElement from "vue-sticky-element";
+import "vue-sticky-element/css"; // this is required for default styles to work.
+
+definePageMeta({
+  title: "Dashboard",
+});
 
 const { data: contactCount } = useFetch(`/api/contacts/count`, {
   method: "POST",
@@ -254,3 +266,10 @@ const { data: userData } = useFetch<UserData>(
 
 const showTourTeaser = ref(true);
 </script>
+
+<style>
+.vue-sticky-element--stuck {
+  @apply !bg-white !shadow-lg text-base;
+  background: white;
+}
+</style>

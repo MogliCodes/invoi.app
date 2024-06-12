@@ -63,6 +63,11 @@ const navItems = [
     text: "Clients",
   },
   {
+    icon: "i-heroicons-briefcase",
+    to: "/services",
+    text: "Services",
+  },
+  {
     icon: "i-heroicons-banknotes",
     to: "/invoices",
     text: "Invoices",

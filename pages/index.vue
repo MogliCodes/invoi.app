@@ -131,6 +131,7 @@
 
 <script setup lang="ts">
 definePageMeta({
+  title: "invoi - The most flexible and easiest accounting app",
   layout: "public",
 });
 </script>
