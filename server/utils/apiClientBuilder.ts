@@ -1,7 +1,13 @@
 import consola from "consola";
 
 type AllowedMethods = "GET" | "POST" | "PUT" | "DELETE";
-type ApiResources = "invoices" | "invoice" | "clients" | "items" | "users";
+type ApiResources =
+  | "invoices"
+  | "invoice"
+  | "clients"
+  | "items"
+  | "users"
+  | "services";
 
 interface ApiClientConfig {
   baseUrl: string;
@@ -15,6 +21,7 @@ export default class ApiClientBuilder {
   private endpoint: string;
   private config: ApiClientConfig;
   private params: Record<string, string>;
+  private headers: Record<string, string>;
 
   constructor(config?: ApiClientConfig) {
     this.config = config || {
@@ -24,6 +31,7 @@ export default class ApiClientBuilder {
     this.resource = undefined;
     this.endpoint = "";
     this.params = {};
+    this.headers = {};
   }
 
   setMethod(method: AllowedMethods): this {
@@ -59,6 +67,11 @@ export default class ApiClientBuilder {
 
   addParam(key: string, value: string): this {
     this.params[key] = value;
+    return this;
+  }
+
+  setHeaders(headers: Record<string, string>): this {
+    this.headers = headers;
     return this;
   }
 
@@ -98,8 +111,13 @@ export default class ApiClientBuilder {
     consola.info(`${this.method} ${url}`);
     let response;
     try {
+      console.log("fetching", this.headers);
       response = await $fetch(url, {
         method: this.method,
+        headers: {
+          ...this.headers,
+          "Content-Type": "application/json",
+        },
       });
       if (!response) {
         throw new Error(`Request failed with status ${response}`);
@@ -107,7 +125,6 @@ export default class ApiClientBuilder {
     } catch (error) {
       consola.error(error);
     }
-
     return response;
   }
 }
