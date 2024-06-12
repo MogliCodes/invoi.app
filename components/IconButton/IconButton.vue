@@ -22,7 +22,6 @@ import type { ConcreteComponent } from "vue";
 
 type Props = {
   disabled?: boolean;
-  text: string;
   to?: string;
   type?: "button" | "submit";
   variant?: "yellow" | "secondary" | "outline" | "red" | "amber";

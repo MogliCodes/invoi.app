@@ -47,54 +47,6 @@
         <span class="text-sm font-bold text-secondary-100"> Invoices</span>
       </div>
       <div class="overflow-hidden rounded-lg">
-        <div
-          class="flex items-center justify-between border-b-2 border-blue-80 bg-blue-90 p-4"
-        >
-          <div class="flex gap-8">
-            <div
-              class="inline-block border-b-2 border-white font-bold text-white"
-            >
-              All
-            </div>
-            <span class="inline-block text-white"> Paid </span>
-            <span class="inline-block text-white"> Due </span>
-            <span class="inline-block text-white"> Unpaid </span>
-          </div>
-          <div class="flex items-center gap-0.5">
-            <div
-              class="rounded-l-lg bg-white bg-opacity-20 p-2 dark:bg-black dark:bg-opacity-70"
-            >
-              <UIcon
-                class="block p-1 text-lg text-white"
-                name="i-heroicons-chevron-double-left"
-              />
-            </div>
-            <div
-              class="bg-white bg-opacity-20 p-2 dark:bg-black dark:bg-opacity-70"
-            >
-              <UIcon
-                class="block p-1 text-lg text-white"
-                name="i-heroicons-chevron-left"
-              />
-            </div>
-            <div
-              class="bg-white bg-opacity-20 p-2 dark:bg-black dark:bg-opacity-70"
-            >
-              <UIcon
-                class="block p-1 text-lg text-white"
-                name="i-heroicons-chevron-right"
-              />
-            </div>
-            <div
-              class="rounded-r-lg bg-white bg-opacity-20 p-2 dark:bg-black dark:bg-opacity-70"
-            >
-              <UIcon
-                class="block border-2 p-1 text-lg text-white"
-                name="i-heroicons-chevron-double-right"
-              />
-            </div>
-          </div>
-        </div>
         <table class="min-w-full overflow-hidden dark:text-gray-400">
           <thead class="bg-blue-90 text-white">
             <tr>
@@ -267,6 +219,7 @@
 
 <script setup lang="ts">
 import { useAuthStore } from "~/stores/auth.store";
+import { useAlertStore } from "~/stores/alert";
 const authStore = useAuthStore();
 
 const config = useRuntimeConfig();
@@ -383,9 +336,11 @@ function executeBulkAction(): void {
   }
 }
 
+const alertStore = useAlertStore();
+
 async function deleteInvoice() {
   try {
-    await useFetch(`/api/invoices?id=${currentInvoiceId.value}`, {
+    const res = await $fetch(`/api/invoices?id=${currentInvoiceId.value}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${authStore.accessToken}`,
@@ -395,6 +350,13 @@ async function deleteInvoice() {
     refreshInvoiceCount();
     refreshInvoices();
     isOpen.value = false;
+    console.log(res);
+    if (res.status === 200) {
+      alertStore.setAlert("success", res.message);
+      setTimeout(() => {
+        alertStore.resetAlert();
+      }, 5000);
+    }
   } catch (error) {
     console.error(error);
   }
@@ -402,7 +364,7 @@ async function deleteInvoice() {
 
 async function bulkDeleteInvoices() {
   try {
-    await useFetch(`/api/invoices/bulk/delete`, {
+    const res = await $fetch(`/api/invoices/bulk/delete`, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${authStore.accessToken}`,
@@ -413,6 +375,13 @@ async function bulkDeleteInvoices() {
     refreshInvoices();
     refreshInvoiceCount();
     isOpen.value = false;
+    console.log(res);
+    if (res.status === 200) {
+      alertStore.setAlert("success", res.message);
+      setTimeout(() => {
+        alertStore.resetAlert();
+      }, 5000);
+    }
   } catch (error) {
     console.error(error);
   }

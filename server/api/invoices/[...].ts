@@ -1,11 +1,12 @@
 import { createRouter, defineEventHandler, H3Event, useBase } from "h3";
+import ApiClientBuilder from "~/server/utils/apiClientBuilder";
+import consola from "consola";
 
 const router = createRouter();
 
 router.post(
   "/get",
   defineEventHandler(async (event: H3Event) => {
-    console.log("in get invoices");
     return await getInvoices(event);
   })
 );
@@ -35,6 +36,13 @@ router.post(
   "/templates/delete",
   defineEventHandler(async (event: H3Event) => {
     return await deleteInvoiceTemplate(event);
+  })
+);
+
+router.post(
+  "/templates/:id/get",
+  defineEventHandler(async (event: H3Event) => {
+    return await getTemplateById(event);
   })
 );
 
@@ -137,6 +145,16 @@ async function getCustomTemplates(event: H3Event) {
   }
 }
 
+async function getTemplateById(event: H3Event) {
+  consola.log("getTemplateById");
+  const params = getRouterParams(event);
+  return new ApiClientBuilder()
+    .setResource("invoice")
+    .setEndpoint(`templates/${params.id}`)
+    .get()
+    .execute();
+}
+
 async function uploadInvoiceTemplate(event: H3Event) {
   console.log("uploadInvoiceTemplate");
   try {
@@ -155,8 +173,8 @@ async function uploadInvoiceTemplate(event: H3Event) {
         headers: {
           authorization: cookies.accessToken,
           userid: cookies.userId,
-          templateName: headers.get("templatename"),
-          templateTags: headers.get("templatetags"),
+          templateName: headers.get("templatename") || "",
+          templateTags: headers.get("templatetags") || "",
         },
       }
     );

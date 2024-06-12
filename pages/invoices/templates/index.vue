@@ -36,16 +36,18 @@
               </td>
               <td class="pr-4">
                 <span class="flex justify-end gap-2">
-                  <NuxtLink :to="`/invoices/${template._id}`">
+                  <NuxtLink :to="`/invoices/templates/${template._id}`">
                     <UIcon
                       class="cursor-pointer text-xl transition-colors hover:text-gray-400 dark:hover:text-white"
                       name="i-heroicons-eye"
                     />
                   </NuxtLink>
-                  <UIcon
-                    class="cursor-pointer text-xl transition-colors hover:text-gray-400 dark:hover:text-white"
-                    name="i-heroicons-pencil"
-                  />
+                  <NuxtLink :to="`/invoices/templates/${template._id}/edit`">
+                    <UIcon
+                      class="cursor-pointer text-xl transition-colors hover:text-gray-400 dark:hover:text-white"
+                      name="i-heroicons-pencil"
+                    />
+                  </NuxtLink>
                   <UIcon
                     class="cursor-pointer text-xl transition-colors hover:text-gray-400 dark:hover:text-white"
                     name="i-heroicons-trash"
@@ -128,7 +130,7 @@ const actualTemplates = templates?.value?.data.filter(
   (template) => template.name.includes(".html") && !template.name.includes("/")
 );
 
-const { data: customTemplates } = useFetch("/api/invoices/templates/get", {
+const { data: customTemplates } = useLazyFetch("/api/invoices/templates/get", {
   method: "POST",
   headers: {
     Authorization: `Bearer ${authStore.accessToken}`,
