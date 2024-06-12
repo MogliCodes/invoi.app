@@ -22,6 +22,7 @@ export default class ApiClientBuilder {
   private config: ApiClientConfig;
   private params: Record<string, string>;
   private headers: Record<string, string>;
+  private body: any;
 
   constructor(config?: ApiClientConfig) {
     this.config = config || {
@@ -32,6 +33,7 @@ export default class ApiClientBuilder {
     this.endpoint = "";
     this.params = {};
     this.headers = {};
+    this.body = undefined;
   }
 
   setMethod(method: AllowedMethods): this {
@@ -72,6 +74,11 @@ export default class ApiClientBuilder {
 
   setHeaders(headers: Record<string, string>): this {
     this.headers = headers;
+    return this;
+  }
+
+  setBody(body: any): this {
+    this.body = body;
     return this;
   }
 
@@ -118,6 +125,7 @@ export default class ApiClientBuilder {
           ...this.headers,
           "Content-Type": "application/json",
         },
+        body: JSON.stringify(this.body),
       });
       if (!response) {
         throw new Error(`Request failed with status ${response}`);
