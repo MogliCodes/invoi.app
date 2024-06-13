@@ -3,6 +3,7 @@
     <TheSidebar v-if="authStore.isUserLoggedIn" />
     <main class="relative ml-auto w-10/12 bg-gray-100 py-24 dark:bg-blue-100">
       <StickyElement
+        class="mb-3"
         v-if="useRoute().meta.title"
         visible-on-direction="disabled"
       >

@@ -23,6 +23,46 @@ router.get(
 );
 
 router.post(
+  "/delete",
+  defineEventHandler(async (event: H3Event) => {
+    console.log("POST /api/services/delete");
+    const cookies = parseCookies(event);
+    const body = await readBody(event);
+    const headers = {
+      userId: cookies.userId,
+      authorization: cookies.accessToken,
+    };
+    const apiClient = new ApiClientBuilder();
+    return await apiClient
+      .post()
+      .setResource("services/delete")
+      .setHeaders(headers)
+      .setBody(body)
+      .execute();
+  })
+);
+
+// router.post(
+//   "(/delete",
+//   defineEventHandler(async (event: H3Event) => {
+//     console.log("POST /api/services/delete");
+//     const cookies = parseCookies(event);
+//     const body = await readBody(event);
+//     const headers = {
+//       userId: cookies.userId,
+//       authorization: cookies.accessToken,
+//     };
+//     const apiClient = new ApiClientBuilder();
+//     return await apiClient
+//       .post()
+//       .setResource("services/bulk-delete")
+//       .setHeaders(headers)
+//       .setBody(body)
+//       .execute();
+//   })
+// );
+
+router.post(
   "/",
   defineEventHandler(async (event: H3Event) => {
     console.log("POST /api/services");

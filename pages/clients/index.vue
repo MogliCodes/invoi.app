@@ -85,7 +85,7 @@ import { useAuthStore } from "~/stores/auth.store";
 const authStore = useAuthStore();
 
 definePageMeta({
-  title: "My home page",
+  title: "Clients",
 });
 
 const clients = await $fetch(`/api/clients`, {

@@ -1,10 +1,7 @@
 <template>
   <main class="flex flex-col gap-6">
     <section>
-      <div class="container mx-auto">
-        <BaseHeadline class="mb-4 dark:text-white" type="h1" text="Templates" />
-        <BaseButton to="/invoices/templates/upload" text="Upload template" />
-      </div>
+      <BaseButton to="/invoices/templates/upload" text="Upload template" />
     </section>
     <section>
       <div class="container mx-auto">

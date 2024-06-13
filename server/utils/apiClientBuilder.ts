@@ -17,7 +17,7 @@ const runtimeConfig = useRuntimeConfig();
 
 export default class ApiClientBuilder {
   private method: AllowedMethods | undefined;
-  private resource: ApiResources | undefined;
+  private resource: ApiResources | string | undefined;
   private endpoint: string;
   private config: ApiClientConfig;
   private params: Record<string, string>;
@@ -57,7 +57,7 @@ export default class ApiClientBuilder {
     return this.setMethod("DELETE");
   }
 
-  setResource(resource: ApiResources): this {
+  setResource(resource: ApiResources | string): this {
     this.resource = resource;
     return this;
   }
