@@ -23,7 +23,7 @@ type Props = {
   to?: string;
   type?: "button" | "submit";
   variant?: "yellow" | "secondary" | "outline" | "red" | "amber";
-  size?: "sm" | "md" | "lg";
+  size?: "xs" | "sm" | "md" | "lg";
 };
 
 const NuxtLink = resolveComponent("NuxtLink");
@@ -51,6 +51,7 @@ const STYLE_MAPS = {
 };
 
 const SIZE_MAP = {
+  xs: "py-1 px-3 text-sm",
   sm: "px-4 py-2",
   md: "px-6 py-3",
   lg: "px-9 py-6",

@@ -13,16 +13,33 @@
               v-for="(item, index) in navItems"
               :key="index"
               class="inline-block sm:block rounded-lg group"
-              :class="{ 'hover:bg-blue-80': item?.subItems?.length }"
+              :class="[
+                { 'hover:bg-blue-80': item?.subItems?.length },
+                { 'bg-blue-80': isActiveSubmenu(`menu-${index}`) },
+              ]"
             >
               <BaseMenuItem
                 on-dark-bg
                 :to="item.to"
                 :text="item.text"
                 :icon="item.icon"
-              />
+              >
+                <template v-if="!!item?.subItems?.length" #trailingIcon>
+                  <IconButton
+                    variant="secondary"
+                    size="xs"
+                    :icon="
+                      isActiveSubmenu(`menu-${index}`)
+                        ? 'i-heroicons-chevron-up'
+                        : 'i-heroicons-chevron-down'
+                    "
+                    @click.prevent="toggleSubmenu(`menu-${index}`)"
+                  />
+                </template>
+              </BaseMenuItem>
               <ul
-                class="pb-5 hidden group-hover:block"
+                class="pb-5"
+                :class="isActiveSubmenu(`menu-${index}`) ? 'block' : 'hidden'"
                 v-if="!!item?.subItems?.length"
               >
                 <li class="px-5" v-for="subItem in item.subItems">
@@ -46,6 +63,20 @@
 </template>
 
 <script setup lang="ts">
+const subMenu = ref("");
+
+function toggleSubmenu(menu: string) {
+  if (subMenu.value === menu) {
+    subMenu.value = "";
+  } else {
+    subMenu.value = menu;
+  }
+}
+
+function isActiveSubmenu(menu: string) {
+  return subMenu.value === menu;
+}
+
 const navItems = [
   {
     icon: "i-heroicons-home",
@@ -61,6 +92,13 @@ const navItems = [
     icon: "i-heroicons-building-office",
     to: "/clients",
     text: "Clients",
+    subItems: [
+      {
+        icon: "i-heroicons-book-open",
+        to: "/clients/projects",
+        text: "Projects",
+      },
+    ],
   },
   {
     icon: "i-heroicons-briefcase",

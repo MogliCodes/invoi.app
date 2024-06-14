@@ -1,18 +1,18 @@
 <script setup lang="ts">
 import * as d3 from "d3";
 
-onMounted(() => {
-  // Sample data
-  const data = [
-    { month: "January", y: 20 },
-    { month: "February", y: 30 },
-    { month: "March", y: 40 },
-    { month: "April", y: 35 },
-    { month: "May", y: 50 },
-    { month: "June", y: 45 },
-    { month: "July", y: 55 },
-  ];
+type Props = {
+  values: Array<{ month: string; y: number }>;
+};
+const props = defineProps<Props>();
 
+onMounted(() => {
+  if (props.values) {
+    setupGraph();
+  }
+});
+
+function setupGraph() {
   // Set up the SVG
   const svg = d3.select("svg");
   const margin = { top: 20, right: 20, bottom: 50, left: 50 };
@@ -22,13 +22,13 @@ onMounted(() => {
   // Define the scales and axes
   const xScale = d3
     .scalePoint()
-    .domain(data.map((d) => d.month))
+    .domain(props.values?.map((d) => d.month))
     .range([0, width])
     .padding(0);
 
   const yScale = d3
     .scaleLinear()
-    .domain([0, d3.max(data, (d) => d.y)])
+    .domain([0, d3.max(props.values, (d) => formatCentToAmount(d.y))])
     .range([height, 0]);
 
   const xAxis = d3.axisBottom(xScale);
@@ -41,7 +41,7 @@ onMounted(() => {
   const line = d3
     .line()
     .x((d) => xScale(d.month))
-    .y((d) => yScale(d.y))
+    .y((d) => yScale(formatCentToAmount(d.y)))
     .curve(d3.curveMonotoneX); // Smooth the line with curveMonotoneX
 
   // Area generator
@@ -49,7 +49,7 @@ onMounted(() => {
     .area()
     .x((d) => xScale(d.month))
     .y0(height)
-    .y1((d) => yScale(d.y))
+    .y1((d) => yScale(formatCentToAmount(d.y)))
     .curve(d3.curveMonotoneX); // Smooth the area with curveMonotoneX
 
   // Append a group element for margin convention
@@ -58,10 +58,10 @@ onMounted(() => {
     .attr("transform", `translate(${margin.left},${margin.top})`);
 
   // Draw the area
-  g.append("path").datum(data).attr("class", "area").attr("d", area);
+  g.append("path").datum(props.values).attr("class", "area").attr("d", area);
 
   // Draw the line
-  g.append("path").datum(data).attr("class", "line").attr("d", line);
+  g.append("path").datum(props.values).attr("class", "line").attr("d", line);
 
   // Add the X-axis
   g.append("g")
@@ -102,12 +102,12 @@ onMounted(() => {
 
   // Draw dots
   g.selectAll(".dot")
-    .data(data)
+    .data(props.values)
     .enter()
     .append("circle")
     .attr("class", "dot")
     .attr("cx", (d) => xScale(d.month) + xScale.bandwidth() / 2) // Adjust to center points
-    .attr("cy", (d) => yScale(d.y))
+    .attr("cy", (d) => yScale(formatCentToAmount(d.y)))
     .attr("r", 4)
     .on("mouseover", (event, d) => {
       // Show tooltip on mouseover
@@ -115,14 +115,14 @@ onMounted(() => {
         .append("text")
         .attr("class", "tooltip")
         .attr("x", xScale(d.month) + xScale.bandwidth() / 2)
-        .attr("y", yScale(d.y) - 10)
+        .attr("y", yScale(formatCentToAmount(d.y)) - 10)
         .style("text-anchor", "middle")
-        .text(`Value: ${d.y}`);
+        .html(`${formatCurrencyAmount(formatCentToAmount(d.y))}`);
 
       // Remove tooltip on mouseout
       d3.select(event.target).on("mouseout", () => tooltip.remove());
     });
-});
+}
 </script>
 
 <template>

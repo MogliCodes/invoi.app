@@ -117,7 +117,7 @@
     </section>
     <section class="mb-6 pl-6">
       <BaseBox>
-        <TestGraph />
+        <TestGraph :values="revenues" />
       </BaseBox>
     </section>
     <section class="mb-6 pl-6">
@@ -247,6 +247,20 @@ const { data: currentYearTaxes } = useFetch(`/api/invoices/tax/year`, {
     UserId: authStore.userId,
   },
 });
+
+const { data: revenues } = useFetch(
+  "http://localhost:8000/restapi/invoice/revenue/range/year?start=2021-01-01&end=2021-12-31",
+  {
+    method: "GET",
+    headers: {
+      userid: "6652501f2d7789c03fe430b0",
+    },
+    params: {
+      start: "2024-01-01",
+      end: "2024-12-31",
+    },
+  }
+);
 
 type UserData = {
   username: string;

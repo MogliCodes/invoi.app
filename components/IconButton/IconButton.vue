@@ -12,7 +12,7 @@
   >
     <UIcon
       class="cursor-pointer text-xl transition-colors hover:text-gray-400 dark:hover:text-white"
-      name="i-heroicons-arrow-left"
+      :name="icon"
     />
   </component>
 </template>
@@ -25,7 +25,8 @@ type Props = {
   to?: string;
   type?: "button" | "submit";
   variant?: "yellow" | "secondary" | "outline" | "red" | "amber";
-  size?: "sm" | "md" | "lg";
+  size?: "xs" | "sm" | "md" | "lg";
+  icon?: string;
 };
 
 const NuxtLink = resolveComponent("NuxtLink");
@@ -53,6 +54,7 @@ const STYLE_MAPS = {
 };
 
 const SIZE_MAP = {
+  xs: "p-0 !rounded",
   sm: "px-2 py-2",
   md: "px-3 py-3",
   lg: "px-6 py-6",

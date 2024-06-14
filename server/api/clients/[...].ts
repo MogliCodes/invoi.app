@@ -1,6 +1,65 @@
 import { createRouter, defineEventHandler, H3Event, useBase } from "h3";
+import ApiClientBuilder from "~/server/utils/apiClientBuilder";
 
 const router = createRouter();
+
+router.post(
+  "/projects/client/:id/get",
+  defineEventHandler(async (event: H3Event) => {
+    console.log("POST /api/clients/projects/client/:id/get");
+    const params = getRouterParams(event);
+    const cookies = parseCookies(event);
+    const headers = {
+      userId: cookies.userId,
+      authorization: cookies.accessToken,
+    };
+    const apiClient = new ApiClientBuilder();
+    return await apiClient
+      .get()
+      .setResource(`client/projects/client/${params.id}`)
+      .setHeaders(headers)
+      .execute();
+  })
+);
+
+router.post(
+  "/projects/get",
+  defineEventHandler(async (event: H3Event) => {
+    console.log("POST /api/clients/projects/get");
+    const cookies = parseCookies(event);
+    const headers = {
+      userId: cookies.userId,
+      authorization: cookies.accessToken,
+    };
+    const apiClient = new ApiClientBuilder();
+    return await apiClient
+      .get()
+      .setResource("client/projects")
+      .setHeaders(headers)
+      .execute();
+  })
+);
+
+router.post(
+  "/projects",
+  defineEventHandler(async (event: H3Event) => {
+    console.log("POST /api/clients/projects");
+    const cookies = parseCookies(event);
+    const body = await readBody(event);
+    console.log("body", body);
+    const headers = {
+      userId: cookies.userId,
+      authorization: cookies.accessToken,
+    };
+    const apiClient = new ApiClientBuilder();
+    return await apiClient
+      .post()
+      .setResource("client/projects")
+      .setHeaders(headers)
+      .setBody(body)
+      .execute();
+  })
+);
 
 router.post(
   "/count",

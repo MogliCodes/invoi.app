@@ -5,8 +5,11 @@
     :to="to"
     :class="[commonClasses, classes]"
   >
-    <UIcon v-if="icon" class="text-xl" :name="icon" />
-    <span v-if="text">{{ text }}</span>
+    <div class="flex items-center gap-4 w-full">
+      <UIcon v-if="icon" class="text-xl" :name="icon" />
+      <span v-if="text">{{ text }}</span>
+    </div>
+    <slot name="trailingIcon"></slot>
   </NuxtLink>
 </template>
 
@@ -27,7 +30,7 @@ const props = withDefaults(defineProps<Props>(), {
   onDarkBg: false,
 });
 
-const commonClasses = "flex items-center gap-4  rounded-lg cursor-pointer";
+const commonClasses = "flex items-center rounded-lg cursor-pointer";
 const STYLE_MAP = {
   sm: {
     true: "px-3 py-2 text-white hover:bg-blue-80",
