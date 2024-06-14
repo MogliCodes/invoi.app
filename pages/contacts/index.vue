@@ -79,6 +79,7 @@
               <tr>
                 <th class="py-5 pl-6 text-left">
                   <UCheckbox
+                    data-testid="toggleAllContacts"
                     v-model="selectAll"
                     :checked="selectAll"
                     @click="toggleSelectAll"
@@ -96,7 +97,7 @@
             </thead>
             <tbody>
               <tr
-                v-for="contact in data"
+                v-for="contact in data as Array<Contact>"
                 :key="contact._id"
                 class="rounded bg-white p-4 even:bg-gray-200 dark:odd:bg-blue-80 dark:even:bg-blue-90"
               >
@@ -231,8 +232,6 @@
 
 <script setup lang="ts">
 import { useAuthStore } from "~/stores/auth.store";
-import StickyElement from "vue-sticky-element";
-import "vue-sticky-element/css"; // this is required for default styles to work.
 const authStore = useAuthStore();
 
 definePageMeta({
