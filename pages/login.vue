@@ -64,26 +64,47 @@ async function login() {
         password: password.value,
       },
     });
-    console.log("response", response);
-    authStore.setAccessToken(response.token);
-    authStore.setUserId(response.id);
-    authStore.setUserName(response.username);
-    authStore.setUserLoggedIn(true);
+    console.log(response);
+    if (response.status === 200) {
+      authStore.setAccessToken(response.data.token);
+      authStore.setUserId(response.data.id);
+      authStore.setUserName(response.data.username);
+      authStore.setUserLoggedIn(true);
+      alertStore.setAlert(
+        "success",
+        "🎉 You have successfully logged in. Redirecting you to your dashboard."
+      );
 
-    const accessToken = useCookie("accessToken");
-    accessToken.value = response.token;
-    const userId = useCookie("userId");
-    userId.value = response.id;
-    navigateTo("/dashboard");
-  } catch (error) {
-    console.log("response", response);
-    if (response.statusCode === 401) {
-      console.log("in if");
-      alertStore.setAlert("error", response.message);
-    } else {
+      // Set cookie with accessToken that expires after 1 hour
+      const accessToken = useCookie("accessToken", { maxAge: 3600 });
+
+      const userId = useCookie("userId");
+      accessToken.value = response.data.token;
+      userId.value = response.data.id;
       navigateTo("/dashboard");
+      setTimeout(() => {
+        alertStore.resetAlert();
+      }, 3000);
     }
-    console.error("error", error);
+  } catch (error) {
+    if (error.status === 404) {
+      alertStore.setAlert(
+        "error",
+        "Error 404: 😵 We are terribly sorry, but your login attempt failed. We could not find a user in our database."
+      );
+      setTimeout(() => {
+        alertStore.resetAlert();
+      }, 5000);
+    }
+    if (error.status === 401) {
+      alertStore.setAlert(
+        "error",
+        "Error 401: 😵 We are terribly sorry, but your login attempt failed. Please check your credentials and try again."
+      );
+      setTimeout(() => {
+        alertStore.resetAlert();
+      }, 5000);
+    }
   }
 }
 </script>

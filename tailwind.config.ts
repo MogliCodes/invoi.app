@@ -10,6 +10,15 @@ export default {
       colors: {
         secondary: {
           100: "#3836BA",
+          90: "#4544B6",
+          80: "#5251B2",
+          70: "#5F5EB0",
+          60: "#6C6BB0",
+          50: "#7978AE",
+          40: "#8685AB",
+          30: "#9392A9",
+          20: "#A0A0A7",
+          10: "#ADADA5",
         },
         white: "#ffffff",
         yellow: {

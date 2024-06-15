@@ -1,5 +1,5 @@
 <template>
-  <FullCalendar :options="calendarOptions" />
+  <FullCalendar v-if="!pending" :options="calendarOptions" />
   <UModal v-model="isOpen">
     <template #default>
       <section class="p-5">
@@ -11,11 +11,11 @@
               @change="handleClientChange"
               v-model="selectedClient"
               placeholder="Select client"
-              :options="clients"
+              :options="clients as Array<unknown>"
               value-attribute="_id"
               option-attribute="company"
             >
-              <template #label>
+              <template #leading>
                 {{ selectedClient?.company }}
               </template>
             </USelect>
@@ -26,7 +26,7 @@
               @change="handleClientChange"
               v-model="selectedProject"
               placeholder="Select client"
-              :options="projects"
+              :options="projectsPerClient"
               option-attribute="title"
               value-attribute="_id"
             >
@@ -41,8 +41,9 @@
               @change="handleClientChange"
               v-model="selectedTask"
               placeholder="Select client"
-              :options="['Design', 'Development', 'Testing']"
-              value-attribute="company"
+              :options="services"
+              option-attribute="name"
+              value-attribute="_id"
             >
               <template #label>
                 {{ selectedClient?.company }}
@@ -56,7 +57,7 @@
   </UModal>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref } from "vue";
 import FullCalendar from "@fullcalendar/vue3";
 import timeGridPlugin from "@fullcalendar/timegrid";
@@ -65,26 +66,96 @@ import interactionPlugin from "@fullcalendar/interaction";
 import { useAuthStore } from "~/stores/auth.store";
 
 const isOpen = ref(false);
-const selectedClient = ref(null);
-const selectedProject = ref(null);
-const selectedTask = ref(null);
-const showProjects = ref(false);
-
+const selectedClient = ref();
+const selectedProject = ref();
+const selectedTask = ref();
 const authStore = useAuthStore();
 const config = useRuntimeConfig();
 const backendBaseUrl = config.public.BACKEND_BASE_URL;
-const { data: clients } = useFetch(`${backendBaseUrl}/restapi/client`, {
+const projectsPerClient = ref();
+
+const { data: clients } = useFetch<Array<Client>>(
+  `${backendBaseUrl}/restapi/client`,
+  {
+    headers: {
+      Authorization: `Bearer ${authStore.accessToken}`,
+      userid: authStore.userId,
+    },
+  }
+);
+
+const { data: projects } = useFetch("/api/clients/projects/get", {
+  method: "POST",
   headers: {
     Authorization: `Bearer ${authStore.accessToken}`,
     userid: authStore.userId,
   },
 });
 
-const projects = ref();
+const { data: services } = useFetch(`/api/services/`, {
+  headers: {
+    Authorization: `Bearer ${authStore.accessToken}`,
+    Userid: authStore.userId,
+  },
+});
+
+const { data: timeRecords, pending } = useFetch("/api/time-records/get", {
+  method: "POST",
+  headers: {
+    Authorization: `Bearer ${authStore.accessToken}`,
+    userid: authStore.userId,
+  },
+});
+
+if (!timeRecords.value) {
+  // rerender fullcalendar
+}
+
+if (!timeRecords.value) {
+  timeRecords.value = [];
+}
+
+type TimeRecord = {
+  _id: string;
+  clientId: string;
+  projectId: string;
+  serviceId: string;
+  startTime: Date;
+  endTime: Date;
+};
+
+type TimeRecordInfo = {
+  start: Date;
+  end: Date;
+  allDay: boolean;
+  view: any;
+  event: any;
+};
+
+function getClientName(clientId: string) {
+  const client = clients?.value?.find(
+    (client: Client) => client._id === clientId
+  );
+  return client?.company;
+}
+
+function getProjectName(projectId: string) {
+  const project = projects?.value?.find(
+    (project: any) => project._id === projectId
+  );
+  return project?.title;
+}
+
+function getServiceName(serviceId: string) {
+  const service = services?.value?.find(
+    (service: any) => service._id === serviceId
+  );
+  return service?.name;
+}
 
 async function handleClientChange() {
   console.log("Client changed:", selectedClient.value);
-  const response = await $fetch(
+  projectsPerClient.value = await $fetch(
     `/api/clients/projects/client/${selectedClient.value}/get`,
     {
       method: "POST",
@@ -94,9 +165,21 @@ async function handleClientChange() {
       },
     }
   );
-  projects.value = response;
 }
 
+const formattedTimeRecords = timeRecords.value.map((record: TimeRecord) => {
+  console.log("Record:", record.startTime);
+  const formattedRecord = {
+    ...record,
+    start: record.startTime,
+    end: record.endTime,
+    client: getClientName(record.clientId),
+    project: getProjectName(record.projectId),
+    task: getServiceName(record.serviceId),
+  };
+  console.log("Formatted Record:", formattedRecord);
+  return formattedRecord;
+});
 const calendarOptions = ref({
   plugins: [timeGridPlugin, dayGridPlugin, interactionPlugin],
   initialView: "timeGridWeek",
@@ -110,16 +193,15 @@ const calendarOptions = ref({
   select: handleDateSelect,
   eventDrop: handleEventChange,
   eventResize: handleEventChange,
-  events: [], // initial events, can be empty
+  events: formattedTimeRecords, // initial events, can be empty
   eventContent: renderEventContent, // function to render custom event content
 });
+const slotStart = ref();
+const slotEnd = ref();
+const slotAllDay = ref();
 
-const slotStart = ref(null);
-const slotEnd = ref(null);
-const slotAllDay = ref(null);
-const info = ref(null);
-
-function handleDateSelect(info) {
+function handleDateSelect(info: TimeRecordInfo) {
+  if (!info.start || !info.end) return;
   isOpen.value = true;
   slotStart.value = info.start;
   slotEnd.value = info.end;
@@ -127,7 +209,7 @@ function handleDateSelect(info) {
   info.view.calendar.unselect(); // clear date selection
 }
 
-function submitTimeSlot() {
+async function submitTimeSlot() {
   // Prompt the user for event details
   const client = selectedClient.value;
   const project = selectedProject.value;
@@ -142,13 +224,32 @@ function submitTimeSlot() {
       end: slotEnd.value,
       allDay: slotAllDay.value,
       extendedProps: {
-        client,
-        project,
-        task,
+        client: getClientName(client),
+        project: getProjectName(project),
+        task: getServiceName(task),
       },
       color: "#3836BA",
       textColor: "white",
     };
+
+    const eventBody = {
+      userId: authStore.userId,
+      clientId: client,
+      projectId: project,
+      serviceId: task,
+      startTime: slotStart.value,
+      endTime: slotEnd.value,
+    };
+
+    await $fetch("/api/time-records", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${authStore.accessToken}`,
+        userid: authStore.userId,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(eventBody),
+    });
 
     // Add the new event to the calendar
     calendarOptions.value.events.push(newEvent);
@@ -156,42 +257,52 @@ function submitTimeSlot() {
     // Optionally, you can call a method to save the event to a server here
   }
   isOpen.value = false;
+  console.table(calendarOptions.value.events);
 }
 
-function handleEventChange(info) {
-  console.log("Event changed:", info);
-  console.log(info.event.id);
+function handleEventChange(info: TimeRecordInfo) {
   const event = calendarOptions.value.events.find(
-    (event) => event.id === info.event.id
+    (event: TimeRecord) => event._id === info.event.id
   );
   const index = calendarOptions.value.events.indexOf(event);
-  console.log("Event changed:", event);
-  console.log("Event changed:", index);
-
   event.start = info?.event.start;
   event.end = info?.event.end;
-  console.log("Event changed:", event);
   calendarOptions.value.events.splice(index, 1, event);
 }
 
-function renderEventContent(info) {
+function renderEventContent(info: TimeRecordInfo) {
   // Custom rendering for event content
   const { client, project, task } = info.event.extendedProps;
 
   return {
     html: `
-      <div class="fc-event-title">${client}</div>
+      <div class="fc-event-title line-clamp-1">${client}</div>
       <div class="fc-event-title">${project}</div>
-      <div class="fc-event-title">${task}</div>
+      <div class="fc-event-title text-secondary-30">${task}</div>
     `,
   };
 }
+
+console.table(calendarOptions.value.events);
 </script>
 
 <style>
-/* Optional: Add custom styles for event rendering */
+.fc-v-event {
+  background-color: #3836ba;
+  border: none;
+  padding: 4px;
+  @apply rounded-l-none;
+  @apply rounded-r-lg;
+}
 .fc-event-title {
-  font-size: 0.85em;
+  font-size: 0.9rem;
+}
+
+.fc-v-event .fc-event-title:first-child {
   font-weight: bold;
+}
+
+.fc-v-event .fc-event-title:nth-child(3) {
+  font-style: italic;
 }
 </style>

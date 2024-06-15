@@ -85,6 +85,8 @@ if (accessToken.value) {
   authStore.setAccessToken(accessToken.value);
   authStore.setUserId(userId.value);
   authStore.setUserLoggedIn(true);
+} else {
+  navigateTo("/login");
 }
 
 const isUserMenuActive = ref(false);

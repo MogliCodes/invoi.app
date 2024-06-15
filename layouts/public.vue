@@ -15,6 +15,16 @@
     >
       <slot />
     </main>
+    <BaseAlert
+      v-if="alertStore.isActive"
+      :message="alertStore.alertMessage"
+      :link="alertStore.alertLink"
+      :type="alertStore.alertType"
+    />
   </div>
 </template>
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { useAlertStore } from "~/stores/alert";
+
+const alertStore = useAlertStore();
+</script>
