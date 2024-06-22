@@ -99,7 +99,11 @@ const { data: services } = useFetch(`/api/services/`, {
   },
 });
 
-const { data: timeRecords, pending } = useFetch("/api/time-records/get", {
+const {
+  data: timeRecords,
+  pending,
+  refresh,
+} = useFetch("/api/time-records/get", {
   method: "POST",
   headers: {
     Authorization: `Bearer ${authStore.accessToken}`,
@@ -171,6 +175,7 @@ const formattedTimeRecords = timeRecords.value.map((record: TimeRecord) => {
   console.log("Record:", record.startTime);
   const formattedRecord = {
     ...record,
+    id: record._id,
     start: record.startTime,
     end: record.endTime,
     client: getClientName(record.clientId),
@@ -260,14 +265,37 @@ async function submitTimeSlot() {
   console.table(calendarOptions.value.events);
 }
 
-function handleEventChange(info: TimeRecordInfo) {
+async function handleEventChange(info: TimeRecordInfo) {
+  console.log("Event changed:", info);
   const event = calendarOptions.value.events.find(
     (event: TimeRecord) => event._id === info.event.id
   );
+  console.log("Event:", event);
   const index = calendarOptions.value.events.indexOf(event);
   event.start = info?.event.start;
   event.end = info?.event.end;
   calendarOptions.value.events.splice(index, 1, event);
+
+  const eventBody = {
+    userId: authStore.userId,
+    clientId: event.clientId,
+    projectId: event.projectId,
+    serviceId: event.serviceId,
+    startTime: event.start,
+    endTime: event.end,
+  };
+
+  await $fetch(`/api/time-records/${event._id}`, {
+    method: "PATCH",
+    headers: {
+      Authorization: `Bearer ${authStore.accessToken}`,
+      userid: authStore.userId,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(eventBody),
+  });
+
+  refresh();
 }
 
 function renderEventContent(info: TimeRecordInfo) {

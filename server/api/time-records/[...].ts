@@ -6,9 +6,7 @@ const router = createRouter();
 router.post(
   "/get",
   defineEventHandler(async (event: H3Event) => {
-    console.log("POST /api/time-records/get");
     const cookies = parseCookies(event);
-    console.log(cookies.userId);
     const body = await readBody(event);
     const headers = {
       userId: cookies.userId,
@@ -27,7 +25,6 @@ router.post(
 router.post(
   "/",
   defineEventHandler(async (event: H3Event) => {
-    console.log("POST /api/time-records");
     const cookies = parseCookies(event);
     const body = await readBody(event);
     const headers = {
@@ -38,6 +35,29 @@ router.post(
     return await apiClient
       .post()
       .setResource("time-records")
+      .setHeaders(headers)
+      .setBody(body)
+      .execute();
+  })
+);
+
+router.patch(
+  "/:id",
+  defineEventHandler(async (event: H3Event) => {
+    console.log("PATCH /api/time-records");
+    const cookies = parseCookies(event);
+    const params = getRouterParams(event);
+    const body = await readBody(event);
+    console.log("body", body);
+    const headers = {
+      userId: cookies.userId,
+      authorization: cookies.accessToken,
+    };
+    const apiClient = new ApiClientBuilder();
+    return await apiClient
+      .patch()
+      .setResource("time-records")
+      .setEndpoint(`${params.id}`)
       .setHeaders(headers)
       .setBody(body)
       .execute();

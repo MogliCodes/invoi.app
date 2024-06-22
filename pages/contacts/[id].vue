@@ -1,5 +1,5 @@
 <template>
-  <section>
+  <section v-if="contact">
     <div class="w-2/3">
       <BaseHeadline
         type="h1"
@@ -7,8 +7,18 @@
         :text="`${contact?.firstname} ${contact?.lastname}`"
       />
       <BaseHeadline type="h2" text="Contact information" />
+      <div v-if="contact && contact.client" class="bg-pink-500"></div>
       <BaseBox v-if="firstname && lastname && dob && street && zip && city">
-        <div class="flex w-2/3 flex-col items-start gap-4">
+        <div class="flex flex-col items-start gap-4">
+          <USelect
+            class="w-full"
+            v-if="clients"
+            v-model="contact.client"
+            :options="clients"
+            value-attribute="_id"
+            placeholder="Select a client"
+            option-attribute="company"
+          />
           <BaseInput
             v-if="firstname"
             v-model="firstname"
@@ -69,6 +79,7 @@ type Contact = {
   city: string;
   zip: string;
   user: string;
+  client?: string;
 };
 
 const { data: contact } = useFetch<Contact>(
@@ -81,6 +92,17 @@ const { data: contact } = useFetch<Contact>(
     },
   }
 );
+const clients = await $fetch(`/api/clients`, {
+  method: "POST",
+  headers: {
+    Authorization: `Bearer ${authStore.accessToken}`,
+    userid: authStore.userId,
+  },
+});
+function getClientName(clientId: string) {
+  const client = clients?.find((client: Client) => client._id === clientId);
+  return client?.company;
+}
 
 async function patchContact() {
   try {

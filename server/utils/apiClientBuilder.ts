@@ -1,6 +1,6 @@
 import consola from "consola";
 
-type AllowedMethods = "GET" | "POST" | "PUT" | "DELETE";
+type AllowedMethods = "GET" | "POST" | "PATCH" | "PUT" | "DELETE";
 type ApiResources =
   | "invoices"
   | "invoice"
@@ -47,6 +47,10 @@ export default class ApiClientBuilder {
 
   post(): this {
     return this.setMethod("POST");
+  }
+
+  patch(): this {
+    return this.setMethod("PATCH");
   }
 
   put(): this {
@@ -118,7 +122,6 @@ export default class ApiClientBuilder {
     consola.info(`${this.method} ${url}`);
     let response;
     try {
-      console.log("fetching", this.headers);
       response = await $fetch(url, {
         method: this.method,
         headers: {

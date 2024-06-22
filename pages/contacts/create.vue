@@ -14,6 +14,18 @@
             >Contact base information</BaseText
           >
           <div class="mb-3">
+            <div class="mb-3">
+              <BaseText
+                ><label class="block" for="username">Client</label></BaseText
+              >
+              <USelect
+                v-model="selectedClient"
+                :options="clients"
+                placeholder="Select a client"
+                value-attribute="_id"
+                option-attribute="company"
+              ></USelect>
+            </div>
             <BaseText
               ><label class="block" for="username">First name</label></BaseText
             >
@@ -74,6 +86,15 @@ const street: Ref<string> = ref("");
 const zipcode: Ref<string> = ref("");
 const city: Ref<string> = ref("");
 
+const clients = await $fetch(`/api/clients`, {
+  method: "POST",
+  headers: {
+    Authorization: `Bearer ${authStore.accessToken}`,
+    userid: authStore.userId,
+  },
+});
+const selectedClient = ref<string | null>(null);
+
 const contact = computed(() => {
   return {
     firstname: firstname.value,
@@ -83,6 +104,7 @@ const contact = computed(() => {
     zip: zipcode.value,
     city: city.value,
     user: userId,
+    client: selectedClient.value,
   };
 });
 

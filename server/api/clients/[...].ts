@@ -3,6 +3,25 @@ import ApiClientBuilder from "~/server/utils/apiClientBuilder";
 
 const router = createRouter();
 
+router.delete(
+  "/projects/:id",
+  defineEventHandler(async (event: H3Event) => {
+    console.log("DELETE /api/clients/projects/:id");
+    const params = getRouterParams(event);
+    const cookies = parseCookies(event);
+    const headers = {
+      userId: cookies.userId,
+      authorization: cookies.accessToken,
+    };
+    const apiClient = new ApiClientBuilder();
+    return await apiClient
+      .delete()
+      .setResource(`client/projects/${params.id}`)
+      .setHeaders(headers)
+      .execute();
+  })
+);
+
 router.post(
   "/projects/client/:id/get",
   defineEventHandler(async (event: H3Event) => {

@@ -84,9 +84,7 @@
                 {{ invoice?.nr }}
               </td>
               <td class="px-6 py-3">
-                <span :title="invoice.title" class="line-clamp-1">{{
-                  invoice.title
-                }}</span>
+                <span :title="invoice.title">{{ invoice.title }}</span>
               </td>
               <td class="truncate px-6 py-3">
                 <span
