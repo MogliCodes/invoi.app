@@ -7,7 +7,7 @@
         :text="`${client?.company}`"
       />
     </div>
-    <div class="grid grid-cols-2 gap-10">
+    <div class="flex flex-col w-2/3 gap-10">
       <section>
         <BaseHeadline type="h2" text="Client information" />
         <BaseBox v-if="company && street && zip && city">
@@ -36,18 +36,19 @@
           </div>
         </BaseBox>
       </section>
-      <section>
+      <section v-if="invoices">
         <BaseHeadline type="h2" :text="`Invoices to ${client.company}`" />
-
         <table
           class="min-w-full overflow-hidden rounded-lg dark:text-gray-400 shadow-md"
           v-if="invoices"
         >
           <thead class="bg-blue-90 text-white">
-            <th class="py-5 pl-6 text-left">Nr.</th>
-            <th class="py-5 pl-6 text-left">Title</th>
-            <th class="py-5 pl-6 text-left">Status</th>
-            <th class="py-5 pl-6 text-left">Total</th>
+            <tr>
+              <th class="py-5 pl-6 text-left">Nr.</th>
+              <th class="py-5 pl-6 text-left">Title</th>
+              <th class="py-5 pl-6 text-left">Status</th>
+              <th class="py-5 pl-6 text-left">Total</th>
+            </tr>
           </thead>
           <tbody>
             <tr
@@ -68,9 +69,54 @@
           </tbody>
         </table>
       </section>
+      <section v-if="contacts">
+        <BaseHeadline type="h2" :text="`Contacts at ${client.company}`" />
+        <table
+          class="min-w-full overflow-hidden rounded-lg dark:text-gray-400 shadow-md"
+        >
+          <thead class="bg-blue-90 text-white">
+            <tr>
+              <th class="py-5 pl-6 text-left">Firstname</th>
+              <th class="py-5 pl-6 text-left">Lastname</th>
+              <th class="py-5 pl-6 text-left">Email</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              class="rounded bg-white p-4 even:bg-gray-200 dark:odd:bg-blue-80 dark:even:bg-blue-90"
+              v-for="contact in contacts"
+            >
+              <td class="py-3 pl-6">{{ contact.firstname }}</td>
+              <td class="py-3 pl-6">{{ contact.lastname }}</td>
+              <td class="py-3 pl-6">{{ contact.email }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+      <section v-if="projects">
+        <BaseHeadline type="h2" :text="`Projects with ${client.company}`" />
+        <table
+          class="min-w-full overflow-hidden rounded-lg dark:text-gray-400 shadow-md"
+        >
+          <thead class="bg-blue-90 text-white">
+            <tr>
+              <th class="py-5 pl-6 text-left">Title</th>
+              <th class="py-5 pl-6 text-left">Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              class="rounded bg-white p-4 even:bg-gray-200 dark:odd:bg-blue-80 dark:even:bg-blue-90"
+              v-for="project in projects"
+            >
+              <td class="py-3 pl-6">{{ project.title }}</td>
+              <td class="py-3 pl-6">{{ project.description }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
       <section>
         <BaseHeadline type="h2" text="Client-specific rates and prices" />
-
         <div class="flex flex-col items-start gap-4">
           <table
             class="min-w-full overflow-hidden rounded-lg dark:text-gray-400"
@@ -89,28 +135,6 @@
           </table>
           <BaseButton text="Save client" @click="patchClient" />
         </div>
-      </section>
-
-      <section>
-        <BaseHeadline type="h2" :text="`Projects with ${client.company}`" />
-        <table
-          class="min-w-full overflow-hidden rounded-lg dark:text-gray-400 shadow-md"
-          v-if="invoices"
-        >
-          <thead class="bg-blue-90 text-white">
-            <th class="py-5 pl-6 text-left">Title</th>
-            <th class="py-5 pl-6 text-left">Description</th>
-          </thead>
-          <tbody>
-            <tr
-              class="rounded bg-white p-4 even:bg-gray-200 dark:odd:bg-blue-80 dark:even:bg-blue-90"
-              v-for="project in projects"
-            >
-              <td class="py-3 pl-6">{{ project.title }}</td>
-              <td class="py-3 pl-6">{{ project.description }}</td>
-            </tr>
-          </tbody>
-        </table>
       </section>
     </div>
   </section>
@@ -132,7 +156,7 @@ const { data: client } = useFetch<Client>(`/api/clients/${route.params.id}`, {
   },
 });
 
-const { data: invoices } = useFetch<Invoice>(
+const { data: invoices } = useFetch<Array<Invoice>>(
   `http://localhost:8000/restapi/invoice/client?client=${route.params.id}`,
   {
     headers: {
@@ -142,9 +166,20 @@ const { data: invoices } = useFetch<Invoice>(
   }
 );
 
-const { data: projects } = useFetch(
+const { data: projects } = useFetch<Array<Project>>(
   `http://localhost:8000/restapi/client/projects?clientId=${route.params.id}`,
   {
+    headers: {
+      Authorization: `Bearer ${authStore.accessToken}`,
+      Userid: authStore.userId,
+    },
+  }
+);
+
+const { data: contacts } = useFetch<Array<Contact>>(
+  `/api/contacts/get?clientId=${route.params.id}`,
+  {
+    method: "POST",
     headers: {
       Authorization: `Bearer ${authStore.accessToken}`,
       Userid: authStore.userId,

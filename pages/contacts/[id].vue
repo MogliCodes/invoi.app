@@ -10,51 +10,43 @@
       <div v-if="contact && contact.client" class="bg-pink-500"></div>
       <BaseBox v-if="firstname && lastname && dob && street && zip && city">
         <div class="flex flex-col items-start gap-4">
-          <USelect
-            class="w-full"
-            v-if="clients"
-            v-model="contact.client"
-            :options="clients"
-            value-attribute="_id"
-            placeholder="Select a client"
-            option-attribute="company"
-          />
-          <BaseInput
-            v-if="firstname"
-            v-model="firstname"
-            class="bg-white dark:text-black"
-            type="text"
-          />
-          <BaseInput
-            v-if="lastname"
-            v-model="lastname"
-            class="bg-white dark:text-black"
-            type="text"
-          />
-          <BaseInput
-            v-if="dob"
-            v-model="dob"
-            class="bg-white dark:text-black"
-            type="date"
-          />
-          <BaseInput
-            v-if="street"
-            v-model="street"
-            class="bg-white dark:text-black"
-            type="text"
-          />
-          <BaseInput
-            v-if="zip"
-            v-model="zip"
-            class="bg-white dark:text-black"
-            type="text"
-          />
-          <BaseInput
-            v-if="city"
-            v-model="city"
-            class="bg-white dark:text-black"
-            type="text"
-          />
+          <div class="w-full">
+            <BaseLabel text="Client" />
+            <USelect
+              size="md"
+              class="w-full"
+              v-if="clients"
+              v-model="contact.client"
+              :options="clients"
+              value-attribute="_id"
+              placeholder="Select a client"
+              option-attribute="company"
+            />
+          </div>
+          <div class="w-full">
+            <BaseLabel text="First name" />
+            <BaseInput v-if="firstname" v-model="firstname" type="text" />
+          </div>
+          <div class="w-full">
+            <BaseLabel text="Last name" />
+            <BaseInput v-if="lastname" v-model="lastname" type="text" />
+          </div>
+          <div class="w-full">
+            <BaseLabel text="Date of birth" />
+            <BaseInput v-if="dob" v-model="dob" type="date" />
+          </div>
+          <div class="w-full">
+            <BaseLabel text="Street" />
+            <BaseInput v-if="street" v-model="street" type="text" />
+          </div>
+          <div class="w-full">
+            <BaseLabel text="Zip" />
+            <BaseInput v-if="zip" v-model="zip" type="text" />
+          </div>
+          <div class="w-full">
+            <BaseLabel text="City" />
+            <BaseInput v-if="city" v-model="city" type="text" />
+          </div>
           <BaseButton text="Save contact" @click="patchContact" />
         </div>
       </BaseBox>

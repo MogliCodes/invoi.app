@@ -20,3 +20,18 @@ type Invoice = {
   totalWithTaxes: number;
   storagePath: string;
 };
+
+type Project = {
+  _id: string;
+  title: string;
+  client: string;
+  description: string;
+};
+
+type Contact = {
+  _id: string;
+  firstname: string;
+  lastname: string;
+  email: string;
+  message: string;
+};

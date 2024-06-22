@@ -3,10 +3,13 @@ export default defineAppConfig({
     primary: "yellow",
     gray: "slate",
     select: {
+      padding: {
+        md: "py-2 px-4",
+      },
       color: {
         white: {
           outline:
-            "shadow-sm bg-white dark:bg-black dark:bg-opacity-10 text-gray-900 dark:text-white ring-2 ring-inset ring-blue-200 dark:ring-white dark:ring-opacity-20 focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400",
+            "shadow-sm bg-gray-100 text-md focus:border-yellow-normal dark:bg-black dark:bg-opacity-10 text-gray-900 dark:text-white ring-2 ring-inset ring-blue-200 dark:ring-white dark:ring-opacity-20 focus:ring-2 focus:ring-yellow-normal dark:focus:ring-primary-400",
         },
         gray: {
           outline:
@@ -15,9 +18,8 @@ export default defineAppConfig({
       },
     },
     selectMenu: {
-      input:
-        "bg-white dark:bg-black dark:bg-opacity-20 border-2 border-gray-200",
-      background: "bg-white dark:bg-blue-90",
+      input: "dark:bg-opacity-20 border-2 border-gray-200",
+      background: "bg-gray-100 dark:bg-blue-90",
       ring: "ring-2 ring-gray-200 dark:ring-black dark:ring-opacity-20",
     },
     modal: {

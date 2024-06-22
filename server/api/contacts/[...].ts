@@ -1,6 +1,28 @@
 import { createRouter, defineEventHandler, H3Event, useBase } from "h3";
+import ApiClientBuilder from "~/server/utils/apiClientBuilder";
 
 const router = createRouter();
+
+router.post(
+  "/get",
+  defineEventHandler(async (event: H3Event) => {
+    console.log("GET /api/services!!!!!!!!!!!!!!!!!!!!!!!!");
+    const query = getQuery(event);
+    const cookies = parseCookies(event);
+    const headers = {
+      userId: cookies.userId,
+      authorization: cookies.accessToken,
+    };
+    console.log("params", query);
+    const apiClient = new ApiClientBuilder();
+    return await apiClient
+      .get()
+      .setResource("contact")
+      .setHeaders(headers)
+      .addParam("clientId", `${query.clientId}`)
+      .execute();
+  })
+);
 
 router.post(
   "/create",
