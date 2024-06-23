@@ -15,10 +15,9 @@
           >
           <div class="mb-3">
             <div class="mb-3">
-              <BaseText
-                ><label class="block" for="username">Client</label></BaseText
-              >
+              <BaseLabel text="Client" />
               <USelect
+                size="md"
                 v-model="selectedClient"
                 :options="clients"
                 placeholder="Select a client"
@@ -26,37 +25,33 @@
                 option-attribute="company"
               ></USelect>
             </div>
-            <BaseText
-              ><label class="block" for="username">First name</label></BaseText
-            >
-            <BaseInput v-model="firstname" />
+            <div>
+              <BaseLabel text="First name" />
+              <BaseInput v-model="firstname" />
+            </div>
           </div>
           <div class="mb-3">
-            <BaseText
-              ><label class="block" for="username">Last name</label></BaseText
-            >
+            <BaseLabel text="Last name" />
             <BaseInput v-model="lastname" />
           </div>
           <div class="mb-3">
-            <BaseText><label class="block" for="username">DOB</label></BaseText>
+            <BaseLabel text="E-Mail" />
+            <BaseInput v-model="email" />
+          </div>
+          <div class="mb-3">
+            <BaseLabel text="Date of birth" />
             <BaseInput v-model="dob" />
           </div>
           <div class="mb-3">
-            <BaseText
-              ><label class="block" for="username">Street</label></BaseText
-            >
+            <BaseLabel text="Street" />
             <BaseInput v-model="street" />
           </div>
           <div class="mb-3">
-            <BaseText
-              ><label class="block" for="username">ZIP Code</label></BaseText
-            >
+            <BaseLabel text="ZIP Code" />
             <BaseInput v-model="zipcode" />
           </div>
           <div class="mb-3">
-            <BaseText
-              ><label class="block" for="username">City</label></BaseText
-            >
+            <BaseLabel text="City" />
             <BaseInput v-model="city" />
           </div>
           <BaseButton type="submit" text="Create contact" />
@@ -81,6 +76,7 @@ const userId = authStore.userId;
 const accessToken = authStore.accessToken;
 const firstname: Ref<string> = ref("");
 const lastname: Ref<string> = ref("");
+const email: Ref<string> = ref("");
 const dob: Ref<string> = ref("");
 const street: Ref<string> = ref("");
 const zipcode: Ref<string> = ref("");
@@ -99,6 +95,7 @@ const contact = computed(() => {
   return {
     firstname: firstname.value,
     lastname: lastname.value,
+    email: email.value,
     dob: new Date(dob.value),
     street: street.value,
     zip: zipcode.value,

@@ -12,6 +12,19 @@ router.post(
 );
 
 router.post(
+  "/number",
+  defineEventHandler(async (event: H3Event) => {
+    const apiClient = new ApiClientBuilder();
+
+    return await apiClient
+      .setResource("invoice")
+      .setEndpoint("number")
+      .get()
+      .execute();
+  })
+);
+
+router.post(
   "/count",
   defineEventHandler(async (event: H3Event) => {
     return await getInvoiceCount(event);

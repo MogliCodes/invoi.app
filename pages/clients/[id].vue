@@ -7,7 +7,7 @@
         :text="`${client?.company}`"
       />
     </div>
-    <div class="flex flex-col w-2/3 gap-10">
+    <div class="flex w-2/3 flex-col gap-10">
       <section>
         <BaseHeadline type="h2" text="Client information" />
         <BaseBox v-if="company && street && zip && city">
@@ -39,8 +39,8 @@
       <section v-if="invoices">
         <BaseHeadline type="h2" :text="`Invoices to ${client.company}`" />
         <table
-          class="min-w-full overflow-hidden rounded-lg dark:text-gray-400 shadow-md"
           v-if="invoices"
+          class="min-w-full overflow-hidden rounded-lg shadow-md dark:text-gray-400"
         >
           <thead class="bg-blue-90 text-white">
             <tr>
@@ -52,8 +52,8 @@
           </thead>
           <tbody>
             <tr
-              class="rounded bg-white p-4 even:bg-gray-200 dark:odd:bg-blue-80 dark:even:bg-blue-90"
               v-for="invoice in invoices"
+              class="rounded bg-white p-4 even:bg-gray-200 dark:odd:bg-blue-80 dark:even:bg-blue-90"
             >
               <td class="py-3 pl-6">{{ invoice.nr }}</td>
               <td class="py-3 pl-6">{{ invoice.title }}</td>
@@ -72,7 +72,7 @@
       <section v-if="contacts">
         <BaseHeadline type="h2" :text="`Contacts at ${client.company}`" />
         <table
-          class="min-w-full overflow-hidden rounded-lg dark:text-gray-400 shadow-md"
+          class="min-w-full overflow-hidden rounded-lg shadow-md dark:text-gray-400"
         >
           <thead class="bg-blue-90 text-white">
             <tr>
@@ -83,8 +83,8 @@
           </thead>
           <tbody>
             <tr
-              class="rounded bg-white p-4 even:bg-gray-200 dark:odd:bg-blue-80 dark:even:bg-blue-90"
               v-for="contact in contacts"
+              class="rounded bg-white p-4 even:bg-gray-200 dark:odd:bg-blue-80 dark:even:bg-blue-90"
             >
               <td class="py-3 pl-6">{{ contact.firstname }}</td>
               <td class="py-3 pl-6">{{ contact.lastname }}</td>
@@ -96,7 +96,7 @@
       <section v-if="projects">
         <BaseHeadline type="h2" :text="`Projects with ${client.company}`" />
         <table
-          class="min-w-full overflow-hidden rounded-lg dark:text-gray-400 shadow-md"
+          class="min-w-full overflow-hidden rounded-lg shadow-md dark:text-gray-400"
         >
           <thead class="bg-blue-90 text-white">
             <tr>
@@ -106,8 +106,8 @@
           </thead>
           <tbody>
             <tr
-              class="rounded bg-white p-4 even:bg-gray-200 dark:odd:bg-blue-80 dark:even:bg-blue-90"
               v-for="project in projects"
+              class="rounded bg-white p-4 even:bg-gray-200 dark:odd:bg-blue-80 dark:even:bg-blue-90"
             >
               <td class="py-3 pl-6">{{ project.title }}</td>
               <td class="py-3 pl-6">{{ project.description }}</td>

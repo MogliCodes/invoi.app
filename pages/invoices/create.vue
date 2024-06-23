@@ -11,42 +11,53 @@
     <BaseHeadline type="h2" text="Invoice details" />
     <BaseBox class="mb-6 flex gap-6">
       <div class="w-1/2">
-        <div v-if="clients && selectedClient">
-          <div>
-            <label class="dark:text-white" for="">Client</label>
-          </div>
-          <USelectMenu
+        <div v-if="clients">
+          <BaseLabel text="Client" />
+          <USelect
+            size="md"
             v-model="selectedClient"
             class="mb-3"
+            placeholder="Select a client"
             option-attribute="company"
+            value-attribute="_id"
             :options="clients"
           >
             <template #label>
               {{ selectedClient?.company }}
             </template>
-          </USelectMenu>
+          </USelect>
+        </div>
+        <div v-if="selectedClient">
+          <BaseLabel text="Contact person" />
+          <USelect
+            size="md"
+            v-model="selectedContact"
+            class="mb-3"
+            placeholder="Select a contact person"
+            :options="contactsPerClient"
+            value-attribute="_id"
+            option-attribute="firstname"
+          >
+            <template #label>
+              {{ selectedContact?.firstname }} {{ selectedContact?.lastname }}}
+            </template>
+          </USelect>
         </div>
         <div>
-          <label class="dark:text-white" for="">Invoice titel</label>
+          <BaseLabel text="Invoice title" />
           <BaseInput
             v-model="invoiceTitle"
-            size="sm"
-            placeholder="Rechnung August 2024"
+            placeholder="Plese enter a title for the invoice"
           />
         </div>
       </div>
       <div class="flex w-1/2 flex-col gap-3">
         <div>
-          <label class="dark:text-white" for="">Invoice number</label>
-          <BaseInput
-            v-model="invoiceNumber"
-            size="sm"
-            placeholder="invoiceNumber"
-          />
+          <BaseLabel text="Invoice number" />
+          <BaseInput v-model="invoiceNumber" placeholder="invoiceNumber" />
         </div>
         <div>
-          <label class="dark:text-white" for="">Date</label>
-
+          <BaseLabel text="Invoice date" />
           <BaseInput
             v-model="invoiceDate"
             type="date"
@@ -55,7 +66,7 @@
           />
         </div>
         <div>
-          <label class="dark:text-white" for="">Performance period</label>
+          <BaseLabel text="Performance period" />
           <div class="flex gap-2">
             <BaseInput
               v-model="performancePeriodStart"
@@ -71,13 +82,13 @@
           </div>
         </div>
         <div>
-          <label class="dark:text-white" for="">Taxes</label>
+          <BaseLabel text="Taxes" />
           <USelectMenu
             v-if="clients"
             v-model="selectedTaxes"
             multiple
             class="mb-3"
-            placeholder="Select people"
+            placeholder="Select taxes"
             :options="taxOptions"
           >
           </USelectMenu>
@@ -89,6 +100,7 @@
             name="taxes"
             label="Is reverse charge invoice"
           />
+          <UCheckbox label="Save as template" />
         </div>
       </div>
     </BaseBox>
@@ -237,22 +249,18 @@ const selectedTaxes = ref([]);
 /* ==============
  * Data fetching
  ============== */
-const config = useRuntimeConfig();
-const backendBaseUrl = config.public.BACKEND_BASE_URL;
-
-const { data: clients } = useFetch<Array<Client>>(
-  `${backendBaseUrl}/restapi/client`,
-  {
-    headers: {
-      Authorization: `Bearer ${authStore.accessToken}`,
-      userid: authStore.userId,
-    },
-  }
-);
+const { data: clients } = useFetch<Array<Client>>(`/api/clients/get`, {
+  method: "POST",
+  headers: {
+    Authorization: `Bearer ${authStore.accessToken}`,
+    userid: authStore.userId,
+  },
+});
 
 const { data: generatedInvoiceNumber } = useFetch<string>(
-  `${backendBaseUrl}/restapi/invoice/number`,
+  `/api/invoices/number`,
   {
+    method: "POST",
     headers: {
       Authorization: `Bearer ${authStore.accessToken}`,
       userid: authStore.userId,
@@ -263,11 +271,12 @@ const { data: generatedInvoiceNumber } = useFetch<string>(
 /* ==============
  * Invoice data
  ============== */
-watch(clients, (newVal) => {
-  selectedClient.value = newVal?.[0] || null;
-});
+// watch(clients, (newVal) => {
+//   selectedClient.value = newVal?.[0] || null;
+// });
 const isPending = ref(false);
 const selectedClient: Ref<Client | null> = ref(clients?.value?.[0] || null);
+const selectedContact: Ref<Contact | null> = ref("" || null);
 const currentDate = new Date().toLocaleDateString("en-CA");
 const invoiceTitle = ref();
 const invoiceDate = ref(currentDate);
@@ -279,6 +288,24 @@ const isReverseChargeInvoice: Ref<boolean> = ref(false);
 const rows = ref([
   { position: 1, description: "description", hours: 0, factor: 0, total: 0 },
 ]);
+
+const contactsPerClient = ref();
+
+watch(selectedClient, async (newVal) => {
+  if (!newVal) return;
+  console.log(newVal);
+  contactsPerClient.value = await $fetch(
+    `/api/contacts/get?clientId=${newVal}`,
+    {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${authStore.accessToken}`,
+        Userid: authStore.userId,
+      },
+    }
+  );
+});
+
 useSortable("#rows", rows);
 const totalAmount = computed(() => {
   return rows.value.reduce(
@@ -346,7 +373,8 @@ const formattedRows = computed(() => {
 async function createInvoice() {
   const invoiceToCreate = {
     nr: invoiceNumber.value,
-    client: selectedClient.value?._id,
+    contact: selectedContact.value,
+    client: selectedClient.value,
     title: invoiceTitle.value,
     date: invoiceDate.value,
     performancePeriodStart: performancePeriodStart.value,

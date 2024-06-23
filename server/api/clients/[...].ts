@@ -102,9 +102,19 @@ router.post(
 );
 
 router.post(
-  "/",
+  "/get",
   defineEventHandler(async (event: H3Event) => {
-    return await getClients(event);
+    const apiClient = new ApiClientBuilder();
+    const cookies = parseCookies(event);
+    const headers = {
+      userId: cookies.userId,
+      authorization: cookies.accessToken,
+    };
+    return await apiClient
+      .get()
+      .setResource("client")
+      .setHeaders(headers)
+      .execute();
   })
 );
 
