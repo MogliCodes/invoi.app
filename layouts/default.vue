@@ -3,17 +3,17 @@
     <TheSidebar v-if="authStore.isUserLoggedIn" />
     <main class="relative ml-auto w-10/12 bg-gray-100 py-24 dark:bg-blue-100">
       <StickyElement
-        class="mb-3"
         v-if="useRoute().meta.title"
+        class="mb-3"
         visible-on-direction="disabled"
       >
         <BaseHeadline
-          class="pl-6 dark:text-white first-letter:uppercase"
+          class="pl-6 first-letter:uppercase dark:text-white"
           type="h1"
           :text="useRoute().meta.title"
         />
       </StickyElement>
-      <div class="pt-0 p-6">
+      <div class="p-6 pt-0">
         <slot />
       </div>
       <BaseAlert
@@ -49,12 +49,12 @@
             :class="isUserMenuActive ? 'scale-1' : 'scale-0'"
           >
             <BaseMenuItem
-              @click="toggleUserMenu"
               to="/settings"
               icon="i-heroicons-cog-6-tooth"
               text="Settings"
               size="sm"
               class="flex cursor-pointer items-center gap-2 rounded-lg border-2 border-slate-100 px-4 py-2 hover:bg-slate-200 focus:border-2 focus:outline-0"
+              @click="toggleUserMenu"
             />
             <BaseMenuItem
               icon="i-heroicons-arrow-left-on-rectangle"
@@ -72,9 +72,9 @@
 
 <script setup lang="ts">
 import { onClickOutside } from "@vueuse/core";
+import StickyElement from "vue-sticky-element";
 import { useAuthStore } from "~/stores/auth.store";
 import { useAlertStore } from "~/stores/alert";
-import StickyElement from "vue-sticky-element";
 const route = useRoute();
 const authStore = useAuthStore();
 const alertStore = useAlertStore();

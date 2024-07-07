@@ -5,3 +5,11 @@
     </NuxtLayout>
   </div>
 </template>
+
+<script setup lang="ts">
+useHead({
+  titleTemplate: (titleChunk) => {
+    return titleChunk ? `${titleChunk} | invoi.app` : "invoi.app";
+  },
+});
+</script>

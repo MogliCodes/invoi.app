@@ -1,6 +1,6 @@
 <template>
   <section class="mt-10">
-    <BaseBox class="w-1/2 flex flex-col gap-5">
+    <BaseBox class="flex w-1/2 flex-col gap-5">
       <div v-if="clients">
         <label for="">Client</label>
         <USelect

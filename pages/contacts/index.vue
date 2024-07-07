@@ -29,7 +29,7 @@
             <span class="text-sm font-bold text-secondary-100"> Contacts </span>
           </div>
         </div>
-        <div class="flex gap-6">
+        <div v-if="contactCount > 20" class="flex gap-6">
           <div>
             <USelect
               v-model.number="pageSize"
@@ -79,8 +79,8 @@
               <tr>
                 <th class="py-5 pl-6 text-left">
                   <UCheckbox
-                    data-testid="toggleAllContacts"
                     v-model="selectAll"
+                    data-testid="toggleAllContacts"
                     :checked="selectAll"
                     @click="toggleSelectAll"
                   />
@@ -163,6 +163,7 @@
           <BaseButton size="sm" text="Apply" @click="executeBulkAction" />
         </div>
         <UPagination
+          v-if="contactCount > 20"
           v-model.number="page"
           size="sm"
           :page-count="pageSize"
@@ -235,6 +236,10 @@ import { useAuthStore } from "~/stores/auth.store";
 const authStore = useAuthStore();
 
 definePageMeta({
+  title: "Contacts",
+});
+
+useHead({
   title: "Contacts",
 });
 

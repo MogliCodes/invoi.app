@@ -76,6 +76,10 @@
             </tr>
           </tbody>
         </table>
+        <BulkActions
+          :bulk-action-options="['Choose an action', 'Delete']"
+          resource="clients"
+        />
       </div>
     </div>
   </div>

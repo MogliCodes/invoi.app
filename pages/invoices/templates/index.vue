@@ -27,7 +27,7 @@
                 {{ template.fileName }}
               </td>
               <td>
-                <span class="rounded px-2 py-1 bg-green-400 text-green-900">{{
+                <span class="rounded bg-green-400 px-2 py-1 text-green-900">{{
                   template.tags.split("-").join(" ")
                 }}</span>
               </td>

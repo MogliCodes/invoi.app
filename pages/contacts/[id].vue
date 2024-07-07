@@ -13,10 +13,10 @@
           <div class="w-full">
             <BaseLabel text="Client" />
             <USelect
-              size="md"
-              class="w-full"
               v-if="clients"
               v-model="contact.client"
+              size="md"
+              class="w-full"
               :options="clients"
               value-attribute="_id"
               placeholder="Select a client"

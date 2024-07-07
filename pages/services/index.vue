@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col gap-6">
     <section>
-      <div class="flex items-center gap-3 mt-3">
+      <div class="mt-3 flex items-center gap-3">
         <BaseButton
           to="/services/create"
           text="Create services"
@@ -47,8 +47,8 @@
         </thead>
         <tbody>
           <tr
-            class="rounded bg-white p-4 even:bg-gray-200 dark:odd:bg-blue-80 dark:even:bg-blue-90"
             v-for="service in services"
+            class="rounded bg-white p-4 even:bg-gray-200 dark:odd:bg-blue-80 dark:even:bg-blue-90"
           >
             <td class="py-3 pl-6">
               <UCheckbox
@@ -91,12 +91,12 @@
   </div>
   <BulkActionModal
     v-if="isBulkDeleteModalOpen"
-    @discard-action="isBulkDeleteModalOpen = false"
-    @execute-action="executeAction"
     resource="services"
     :is-open="isBulkDeleteModalOpen"
     :item-id="itemId"
     :selected-items="selectedItems"
+    @discard-action="isBulkDeleteModalOpen = false"
+    @execute-action="executeAction"
   />
 </template>
 

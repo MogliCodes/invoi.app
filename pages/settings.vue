@@ -2,7 +2,7 @@
   <div class="w-1/2">
     <div v-if="!settings?.data">
       <p>No settings yet.</p>
-      <BaseButton @click="initSettigns" text="Initialize settings" />
+      <BaseButton text="Initialize settings" @click="initSettigns" />
     </div>
     <div v-else class="flex flex-col gap-6">
       <section>

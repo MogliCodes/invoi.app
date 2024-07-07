@@ -1,14 +1,14 @@
 <template>
   <div class="p-8">
-    <h3 class="mb-2 font-syne text-xl text-secondary-100 font-bold underline">
+    <h3 class="mb-2 font-syne text-xl font-bold text-secondary-100 underline">
       Template Uploader
     </h3>
-    <p class="text-gray-600 text-sm mb-4">
+    <p class="mb-4 text-sm text-gray-600">
       In order to be able to create single page and multi page PDFs you need to
       upload adequate templates. At least you need to provide a template for the
       first page, subsequent pages and the last page.
     </p>
-    <form @submit.prevent class="flex flex-col gap-5" action="">
+    <form class="flex flex-col gap-5" action="" @submit.prevent>
       <div>
         <label for="">Template Name</label>
         <BaseInput v-model="templateName" />

@@ -17,8 +17,8 @@
             <div class="mb-3">
               <BaseLabel text="Client" />
               <USelect
-                size="md"
                 v-model="selectedClient"
+                size="md"
                 :options="clients"
                 placeholder="Select a client"
                 value-attribute="_id"
