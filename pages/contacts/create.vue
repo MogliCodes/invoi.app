@@ -27,12 +27,20 @@
             </div>
             <div>
               <BaseLabel text="First name" />
-              <BaseInput v-model="firstname" />
+              <BaseInput
+                v-model="firstname"
+                is-required
+                error-message="Please provide a first name"
+              />
             </div>
           </div>
           <div class="mb-3">
             <BaseLabel text="Last name" />
-            <BaseInput v-model="lastname" />
+            <BaseInput
+              v-model="lastname"
+              is-required
+              error-message="Please provide a last name"
+            />
           </div>
           <div class="mb-3">
             <BaseLabel text="E-Mail" />
@@ -54,7 +62,11 @@
             <BaseLabel text="City" />
             <BaseInput v-model="city" />
           </div>
-          <BaseButton type="submit" text="Create contact" />
+          <BaseButton
+            :disabled="!isValidContact"
+            type="submit"
+            text="Create contact"
+          />
         </form>
       </BaseBox>
     </div>
@@ -82,6 +94,10 @@ const street: Ref<string> = ref("");
 const zipcode: Ref<string> = ref("");
 const city: Ref<string> = ref("");
 
+const isValidContact = computed(() => {
+  return firstname.value !== "" && lastname.value !== "";
+});
+
 const clients = await $fetch(`/api/clients`, {
   method: "POST",
   headers: {
@@ -89,7 +105,7 @@ const clients = await $fetch(`/api/clients`, {
     userid: authStore.userId,
   },
 });
-const selectedClient = ref<string | null>(null);
+const selectedClient = ref<string>("");
 
 const contact = computed(() => {
   return {
