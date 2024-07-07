@@ -12,6 +12,39 @@ router.post(
 );
 
 router.post(
+  "/draft/get",
+  defineEventHandler(async (event: H3Event) => {
+    const cookies = parseCookies(event);
+    const headers = {
+      userId: cookies.userId,
+      authorization: cookies.accessToken,
+    };
+
+    const apiClient = new ApiClientBuilder();
+    return await apiClient
+      .setResource("invoice")
+      .setEndpoint("draft")
+      .setHeaders(headers)
+      .get()
+      .execute();
+  })
+);
+
+router.post(
+  "/draft",
+  defineEventHandler(async (event: H3Event) => {
+    const body = await readBody(event);
+    const apiClient = new ApiClientBuilder();
+    return await apiClient
+      .setResource("invoice")
+      .setEndpoint("draft")
+      .setBody(body)
+      .post()
+      .execute();
+  })
+);
+
+router.post(
   "/number",
   defineEventHandler(async (event: H3Event) => {
     const apiClient = new ApiClientBuilder();

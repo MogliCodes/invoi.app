@@ -2,6 +2,9 @@
 import pkg from "./package.json";
 
 export default defineNuxtConfig({
+  ui: {
+    icons: ["material-symbols", "heroicons"],
+  },
   runtimeConfig: {
     public: {
       BACKEND_BASE_URL: process.env.NUXT_PUBLIC_BACKEND_BASE_URL,

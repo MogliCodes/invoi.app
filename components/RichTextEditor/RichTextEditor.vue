@@ -1,98 +1,73 @@
 <template>
   <div class="overflow-hidden rounded-lg border-2 bg-white">
     <div v-if="editor" class="flex flex-wrap gap-1 bg-gray-100 p-2">
-      <button
-        class="rounded-lg bg-gray-700 px-1 py-0.5 text-xs text-gray-200"
-        :disabled="!editor.can().chain().focus().toggleBold().run()"
-        :class="{ '!bg-secondary-100': editor.isActive('bold') }"
-        @click="editor.chain().focus().toggleBold().run()"
-      >
-        bold
-      </button>
-      <button
-        class="rounded-lg bg-gray-700 px-1 py-0.5 text-xs text-gray-200"
-        :disabled="!editor.can().chain().focus().toggleItalic().run()"
-        :class="{ '!bg-secondary-100': editor.isActive('italic') }"
+      <IconButton size="xs" variant="outline" icon="i-material-symbols-lists" />
+      <IconButton
+        size="xs"
+        variant="outline"
+        icon="i-material-symbols-format-italic"
         @click="editor.chain().focus().toggleItalic().run()"
-      >
-        italic
-      </button>
-      <button
-        class="rounded-lg bg-gray-700 px-1 py-0.5 text-xs text-gray-200"
-        :disabled="!editor.can().chain().focus().toggleStrike().run()"
-        :class="{ '!bg-secondary-100': editor.isActive('strike') }"
+      />
+      <IconButton
+        size="xs"
+        variant="outline"
+        icon="i-material-symbols-format-strikethrough"
         @click="editor.chain().focus().toggleStrike().run()"
-      >
-        strike
-      </button>
-      <button
-        class="rounded-lg bg-gray-700 px-1 py-0.5 text-xs text-gray-200"
-        :class="{ '!bg-secondary-100': editor.isActive('paragraph') }"
+      />
+      <IconButton
+        size="xs"
+        variant="outline"
+        icon="i-material-symbols-format-paragraph"
         @click="editor.chain().focus().setParagraph().run()"
-      >
-        paragraph
-      </button>
-      <button
-        class="rounded-lg bg-gray-700 px-1 py-0.5 text-xs text-gray-200"
-        :class="{
-          '!bg-secondary-100': editor.isActive('heading', { level: 1 }),
-        }"
+      />
+      <IconButton
+        size="xs"
+        variant="outline"
+        icon="i-material-symbols-format-h1"
         @click="editor.chain().focus().toggleHeading({ level: 1 }).run()"
-      >
-        h1
-      </button>
-      <button
-        class="rounded-lg bg-gray-700 px-1 py-0.5 text-xs text-gray-200"
-        :class="{
-          '!bg-secondary-100': editor.isActive('heading', { level: 2 }),
-        }"
+      />
+      <IconButton
+        size="xs"
+        variant="outline"
+        icon="i-material-symbols-format-h2"
         @click="editor.chain().focus().toggleHeading({ level: 2 }).run()"
-      >
-        h2
-      </button>
-      <button
-        class="rounded-lg bg-gray-700 px-1 py-0.5 text-xs text-gray-200"
-        :class="{
-          '!bg-secondary-100': editor.isActive('heading', { level: 3 }),
-        }"
+      />
+      <IconButton
+        size="xs"
+        variant="outline"
+        icon="i-material-symbols-format-h3"
         @click="editor.chain().focus().toggleHeading({ level: 3 }).run()"
-      >
-        h3
-      </button>
-      <button
-        class="rounded-lg bg-gray-700 px-1 py-0.5 text-xs text-gray-200"
-        :class="{ '!bg-secondary-100': editor.isActive('bulletList') }"
+      />
+      <IconButton
+        size="xs"
+        variant="outline"
+        icon="i-material-symbols-format-list-bulleted"
         @click="editor.chain().focus().toggleBulletList().run()"
-      >
-        bullet list
-      </button>
-      <button
-        class="rounded-lg bg-gray-700 px-1 py-0.5 text-xs text-gray-200"
-        :class="{ '!bg-secondary-100': editor.isActive('orderedList') }"
+      />
+      <IconButton
+        size="xs"
+        variant="outline"
+        icon="i-material-symbols-format-list-numbered"
         @click="editor.chain().focus().toggleOrderedList().run()"
-      >
-        ordered list
-      </button>
-      <button
-        class="rounded-lg bg-gray-700 px-1 py-0.5 text-xs text-gray-200"
+      />
+      <IconButton
+        size="xs"
+        variant="outline"
+        icon="i-material-symbols-horizontal-rule"
         @click="editor.chain().focus().setHorizontalRule().run()"
-      >
-        horizontal rule
-      </button>
-      <button
-        class="rounded-lg bg-gray-700 px-1 py-0.5 text-xs text-gray-200"
-        :disabled="!editor.can().chain().focus().undo().run()"
+      />
+      <IconButton
+        size="xs"
+        variant="outline"
+        icon="i-material-symbols-undo"
         @click="editor.chain().focus().undo().run()"
-      >
-        undo
-      </button>
-      <button
-        class="rounded-lg bg-gray-700 px-1 py-0.5 text-xs text-gray-200"
-        :disabled="!editor.can().chain().focus().redo().run()"
+      />
+      <IconButton
+        size="xs"
+        variant="outline"
+        icon="i-material-symbols-redo"
         @click="editor.chain().focus().redo().run()"
-      >
-        redo
-      </button>
+      />
     </div>
     <div v-if="props.modelValue && editor" class="editor p-2">
       <editor-content :editor="editor" />
@@ -120,15 +95,18 @@ watch(
     if (isSame) {
       return;
     }
-    editor.value?.commands.setContent(`<p>${value}</p>`);
+    editor.value?.commands.setContent(`${value}`);
     emit("update:modelValue", editor.value?.getHTML() || "");
   }
 );
 
 onMounted(() => {
   editor.value = new Editor({
-    content: `<p>${props.modelValue}</p>`,
+    content: `${props.modelValue}`,
     extensions: [StarterKit],
+    parseOptions: {
+      preserveWhitespace: false,
+    },
   });
 
   editor.value.on("update", () => {
@@ -142,9 +120,21 @@ onBeforeUnmount(() => {
 </script>
 
 <style>
-.editor h1 {
-  font-weight: bold;
-  font-size: 2rem;
+.editor {
+  h1,
+  h2,
+  h3 {
+    font-weight: bold;
+  }
+  h1 {
+    font-size: 2rem;
+  }
+  h2 {
+    font-size: 1.6rem;
+  }
+  h3 {
+    font-size: 1.3rem;
+  }
 }
 
 .editor ul {

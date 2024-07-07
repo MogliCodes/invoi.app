@@ -57,6 +57,7 @@
     "@fullcalendar/vue3": "^6.1.14",
     "@headlessui/vue": "^1.7.16",
     "@heroicons/vue": "^2.0.18",
+    "@iconify-json/material-symbols": "^1.1.82",
     "@nuxt/ui": "^2.10.0",
     "@pinia/nuxt": "^0.4.11",
     "@tiptap/pm": "^2.1.12",

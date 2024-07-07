@@ -12,14 +12,14 @@ describe("Utils", () => {
   });
 
   test("isInvoiceDue", () => {
-    const invoice = {
+    const invoice: Invoice = {
       _id: "66525918c1468d419e713fdb",
       nr: "2024-001",
       client: "CLient",
       title: "Rechnung Januar 2024",
       date: new Date(),
-      performancePeriodStart: "2024-05-25T00:00:00.000Z",
-      performancePeriodEnd: "2024-05-25T00:00:00.000Z",
+      performancePeriodStart: new Date(),
+      performancePeriodEnd: new Date(),
       items:
         '[{"position":1,"description":"<p>Wartung und Pflege</p>","hours":7000,"factor":"4.00","total":28000}]',
       total: 28000,

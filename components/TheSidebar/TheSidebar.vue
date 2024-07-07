@@ -111,6 +111,11 @@ const navItems = [
     text: "Invoices",
     subItems: [
       {
+        icon: "i-heroicons-pencil",
+        to: "/invoices/drafts",
+        text: "Drafts",
+      },
+      {
         icon: "i-heroicons-arrow-up-tray",
         to: "/invoices/import",
         text: "Import invoices",

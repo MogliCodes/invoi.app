@@ -6,17 +6,7 @@
           <div>
             <BaseHeadline class="mb-6" type="h1" :text="invoice.title" />
             <div>
-              <span
-                class="rounded px-2 py-1"
-                :class="
-                  isInvoiceDue(invoice)
-                    ? 'bg-red-400 text-red-900'
-                    : 'bg-amber-200 text-amber-900'
-                "
-                >{{
-                  invoice?.status || isInvoiceDue(invoice) ? "due" : "unpaid"
-                }}</span
-              >
+              <InvoiceStatusPill :invoice="invoice" />
             </div>
           </div>
           <div>
@@ -29,7 +19,26 @@
         </header>
         <section class="grid grid-cols-2 gap-6">
           <div class="flex flex-col gap-6">
+            <BaseTable>
+              <template #head>
+                <BaseTableHeadCell>Position</BaseTableHeadCell>
+                <BaseTableHeadCell>Description</BaseTableHeadCell>
+                <BaseTableHeadCell>Preis</BaseTableHeadCell>
+                <BaseTableHeadCell>Faktor</BaseTableHeadCell>
+                <BaseTableHeadCell>Gesamtpreis</BaseTableHeadCell>
+              </template>
+              <template #body>
+                <BaseTableRow v-for="(row, index) in JSON.parse(invoice.items)">
+                  <BaseTableCell>{{ index + 1 }}</BaseTableCell>
+                  <BaseTableCell>{{ row.description }}</BaseTableCell>
+                  <BaseTableCell>{{ row.hours }}</BaseTableCell>
+                  <BaseTableCell>{{ row.factor }}</BaseTableCell>
+                  <BaseTableCell>{{ row.total }}</BaseTableCell>
+                </BaseTableRow>
+              </template>
+            </BaseTable>
             <BaseBox>
+              <div></div>
               <div class="grid grid-cols-3 gap-3">
                 <div>
                   <span class="block">Total amount</span>
@@ -63,9 +72,6 @@
               </div>
             </BaseBox>
           </div>
-          <div>
-            <BaseBox> </BaseBox>
-          </div>
         </section>
       </div>
     </div>
@@ -74,6 +80,8 @@
 
 <script setup lang="ts">
 import { useAuthStore } from "~/stores/auth.store";
+import { getStatusPillBgClasses } from "~/utils/utils";
+import InvoiceStatusPill from "~/components/Invoice/InvoiceStatusPill.vue";
 
 const authStore = useAuthStore();
 const route = useRoute();

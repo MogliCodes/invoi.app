@@ -14,11 +14,17 @@ type Invoice = {
   client: string;
   project: string;
   date: Date;
+  performancePeriodStart: Date;
+  performancePeriodEnd: Date;
+  items: string;
   status: string;
   total: number;
   taxes: number;
+  contact?: string;
   totalWithTaxes: number;
   storagePath: string;
+  user: string;
+  isReverseChargeInvoice: boolean;
 };
 
 type Project = {

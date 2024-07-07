@@ -48,3 +48,14 @@ export function isInvoiceDue(invoice: Invoice): boolean {
   dueDate.setDate(dueDate.getDate() + 14);
   return dueDate < new Date();
 }
+
+export function getStatusPillBgClasses(invoice: Invoice) {
+  if (invoice.status === "paid") {
+    return "bg-green-400 text-green-900";
+  }
+  if (isInvoiceDue(invoice)) {
+    return "bg-red-400 text-red-900";
+  }
+
+  return "bg-amber-200 text-amber-900";
+}

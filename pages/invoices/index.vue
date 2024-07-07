@@ -2,7 +2,6 @@
   <div class="container mx-auto">
     <div class="mb-12 flex items-end justify-between">
       <div>
-        <BaseHeadline class="mb-4 dark:text-white" type="h1" text="Invoices" />
         <BaseButtonGroup>
           <BaseButton
             variant="yellow"
@@ -107,11 +106,7 @@
                 }}
               </td>
               <td class="px-6 py-3">
-                <span
-                  class="rounded px-2 py-1"
-                  :class="getStatusPillBgClasses(invoice)"
-                  >{{ invoice?.status }}</span
-                >
+                <InvoiceStatusPill :invoice="invoice" />
               </td>
               <td class="whitespace-nowrap px-6 py-3 text-right">
                 {{ formatCurrencyAmount(formatCentToAmount(invoice.total)) }}
@@ -157,7 +152,7 @@
           <div class="flex items-center gap-2">
             <USelectMenu
               v-model="bulkAction"
-              class="cursor-pointer"
+              class="!bg-white cursor-pointer"
               size="xl"
               color="white"
               :options="bulkActionOptions"
@@ -218,8 +213,13 @@
 <script setup lang="ts">
 import { useAuthStore } from "~/stores/auth.store";
 import { useAlertStore } from "~/stores/alert";
-const authStore = useAuthStore();
+import { isInvoiceDue, getStatusPillBgClasses } from "~/utils/utils";
 
+definePageMeta({
+  title: "Invoices",
+});
+
+const authStore = useAuthStore();
 const config = useRuntimeConfig();
 const backendBaseUrl = config.public.BACKEND_BASE_URL;
 const { data: invoices, refresh: refreshInvoices } = useFetch<Invoice[]>(
@@ -271,27 +271,6 @@ const bulkActionOptions = ref([
   "Mark as unpaid",
   "Mark as overdue",
 ]);
-
-/**
- * Calculates if invoice is due
- * it is due when the invoice date is more than 14 days in the past
- */
-function isInvoiceDue(invoice: Invoice) {
-  const dueDate = new Date(invoice.date);
-  dueDate.setDate(dueDate.getDate() + 14);
-  return dueDate < new Date();
-}
-
-function getStatusPillBgClasses(invoice: Invoice) {
-  if (invoice.status === "paid") {
-    return "bg-green-400 text-green-900";
-  }
-  if (isInvoiceDue(invoice)) {
-    return "bg-red-400 text-red-900";
-  }
-
-  return "bg-amber-200 text-amber-900";
-}
 
 function toggleSelectAll() {
   selectAll.value = !selectAll.value;

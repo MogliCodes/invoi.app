@@ -6,17 +6,19 @@
         type="h1"
         text="Create a new invoice"
       />
-      <BaseButton text="Add position" @click="addPosition" />
+      <div class="flex gap-4">
+        <BaseButton text="Add position" @click="addPosition" />
+        <BaseButton text="Select draft" @click="showDraftSelectModal = true" />
+      </div>
     </div>
     <BaseHeadline type="h2" text="Invoice details" />
     <BaseBox class="mb-6 flex gap-6">
-      <div class="w-1/2">
+      <div class="w-1/2 flex flex-col gap-3">
         <div v-if="clients">
           <BaseLabel text="Client" />
           <USelect
             size="md"
             v-model="selectedClient"
-            class="mb-3"
             placeholder="Select a client"
             option-attribute="company"
             value-attribute="_id"
@@ -32,7 +34,6 @@
           <USelect
             size="md"
             v-model="selectedContact"
-            class="mb-3"
             placeholder="Select a contact person"
             :options="contactsPerClient"
             value-attribute="_id"
@@ -50,12 +51,12 @@
             placeholder="Plese enter a title for the invoice"
           />
         </div>
-      </div>
-      <div class="flex w-1/2 flex-col gap-3">
         <div>
           <BaseLabel text="Invoice number" />
           <BaseInput v-model="invoiceNumber" placeholder="invoiceNumber" />
         </div>
+      </div>
+      <div class="flex w-1/2 flex-col gap-3">
         <div>
           <BaseLabel text="Invoice date" />
           <BaseInput
@@ -80,6 +81,16 @@
               placeholder="invoiceDate"
             />
           </div>
+        </div>
+        <div>
+          <BaseLabel text="Rate type" />
+          <USelectMenu
+            v-model="selectedRateType"
+            class="mb-3"
+            placeholder="Select rate type"
+            :options="rateTypeOptions"
+          >
+          </USelectMenu>
         </div>
         <div>
           <BaseLabel text="Taxes" />
@@ -202,6 +213,12 @@
           text="View preview"
           @click="getInvoicePreview"
         />
+        <BaseButton
+          :disabled="!isValidInvoice"
+          variant="outline"
+          text="Save as draft"
+          @click="saveAsDraft"
+        />
       </div>
     </section>
     <section></section>
@@ -225,6 +242,23 @@
         <UIcon class="text-4xl" name="i-heroicons-arrow-path" />
       </div>
     </section>
+    <UModal v-model="showDraftSelectModal">
+      <template #default>
+        <div class="p-6">
+          <BaseHeadline type="h2" text="Select a draft" />
+          <USelect
+            v-if="invoiceDrafts"
+            v-model="selectedInvoiceDraft"
+            :options="invoiceDrafts"
+            class="mb-3"
+            placeholder="Select a draft"
+            option-attribute="title"
+            value-attribute="_id"
+          />
+          <BaseButton text="Use draft" @click="applyDraft" />
+        </div>
+      </template>
+    </UModal>
   </div>
 </template>
 
@@ -243,6 +277,7 @@ const preview = ref(null);
 
 onClickOutside(preview, () => (showPreview.value = false));
 
+const rateTypeOptions = ["hourly", "daily"];
 const taxOptions = ["7%", "19%"];
 const selectedTaxes = ref([]);
 
@@ -283,13 +318,56 @@ const invoiceDate = ref(currentDate);
 const performancePeriodStart = ref(currentDate);
 const performancePeriodEnd = ref(currentDate);
 const invoiceNumber: Ref<string> = ref(generatedInvoiceNumber.value || "");
+const selectedRateType = ref();
 const hasTaxes: Ref<boolean> = ref(true);
 const isReverseChargeInvoice: Ref<boolean> = ref(false);
-const rows = ref([
-  { position: 1, description: "description", hours: 0, factor: 0, total: 0 },
-]);
 
 const contactsPerClient = ref();
+
+const config = useRuntimeConfig();
+const backendBaseUrl = config.public.BACKEND_BASE_URL;
+
+type Settings = {
+  data: any;
+  message: any;
+};
+
+const { data: settings } = useFetch<Settings>(
+  `${backendBaseUrl}/restapi/settings`,
+  {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${authStore.accessToken}`,
+      userid: authStore.userId,
+    },
+  }
+);
+const defaultRate = ref(0);
+
+const rows = ref([
+  {
+    position: 1,
+    description: "Add your description",
+    hours: defaultRate.value,
+    factor: 0,
+    total: 0,
+  },
+]);
+
+watch([settings, selectedRateType], async (newVal) => {
+  if (!newVal) return;
+  defaultRate.value =
+    selectedRateType.value === "daily"
+      ? settings?.value?.data?.defaultDailyRate
+      : settings?.value?.data?.defaultHourlyRate;
+  rows.value = rows.value.map((row) => {
+    return {
+      ...row,
+      hours: defaultRate.value,
+      total: row.hours * row.factor,
+    };
+  });
+});
 
 watch(selectedClient, async (newVal) => {
   if (!newVal) return;
@@ -335,8 +413,8 @@ const isValidInvoice = computed(() => {
 function addPosition() {
   rows.value.push({
     position: rows.value.length + 1,
-    description: "description",
-    hours: 0,
+    description: "Add your description",
+    hours: defaultRate.value,
     factor: 0,
     total: 0,
   });
@@ -345,8 +423,8 @@ function addPosition() {
 function insertRow(index: number) {
   const element = {
     position: index + 2,
-    description: "description",
-    hours: 0,
+    description: "Add your description",
+    hours: defaultRate.value,
     factor: 0,
     total: 0,
   };
@@ -421,6 +499,94 @@ async function getInvoicePreview() {
   invoicePreviewHtml.value = data.value;
   showPreview.value = true;
 }
+
+const showDraftSelectModal = ref(false);
+function useDraft() {
+  showDraftSelectModal.value = true;
+}
+
+function applyDraft() {
+  if (!invoiceDrafts.value) return;
+  const draft = invoiceDrafts.value.find(
+    (draft) => draft._id === selectedInvoiceDraft.value
+  );
+  if (!draft) return;
+  selectedClient.value = draft.client;
+  invoiceNumber.value = draft.nr;
+  invoiceTitle.value = draft.title;
+  invoiceDate.value = new Date(draft.date).toLocaleDateString("en-CA");
+
+  const items = JSON.parse(draft.items);
+  rows.value = items.map((item) => {
+    return {
+      position: item.position,
+      description: item.description,
+      hours: formatCentToAmount(item.hours),
+      factor: item.factor,
+      total: formatCentToAmount(item.total),
+    };
+  });
+  showDraftSelectModal.value = false;
+  console.log(items);
+}
+
+async function saveAsDraft() {
+  const invoiceToCreate = {
+    nr: invoiceNumber.value,
+    contact: selectedContact.value,
+    client: selectedClient.value,
+    title: invoiceTitle.value,
+    date: invoiceDate.value,
+    performancePeriodStart: performancePeriodStart.value,
+    performancePeriodEnd: performancePeriodEnd.value,
+    taxes: formatAmountToCent(taxes.value),
+    total: formatAmountToCent(totalAmount.value),
+    totalWithTaxes: formatAmountToCent(totalWithTaxes.value),
+    items: JSON.stringify(formattedRows.value),
+    user: authStore.userId,
+    isReverseChargeInvoice: isReverseChargeInvoice.value,
+    status: "unpaid",
+  };
+  console.log(invoiceToCreate);
+  try {
+    isPending.value = true;
+    const response = await $fetch("/api/invoices/draft", {
+      method: "POST",
+      body: invoiceToCreate,
+      credentials: "include",
+      lazy: true,
+      headers: {
+        authorization: `Bearer ${accessToken}`,
+        userid: authStore.userId,
+      },
+    });
+    response.status === 201
+      ? (isPending.value = false)
+      : (isPending.value = true);
+    if (response.status === 201) {
+      alertStore.setAlert("success", response.message);
+      alertStore.setAlertLink(response.link);
+      setTimeout(() => {
+        alertStore.resetAlert();
+      }, 5000);
+    }
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+const { data: invoiceDrafts } = useFetch<Array<Invoice>>(
+  `/api/invoices/draft/get`,
+  {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${authStore.accessToken}`,
+      userid: authStore.userId,
+    },
+  }
+);
+
+const selectedInvoiceDraft = ref();
 </script>
 
 <style>
