@@ -5,7 +5,7 @@
     :to="to"
     :class="[commonClasses, classes]"
   >
-    <div class="flex items-center gap-4 w-full">
+    <div class="flex w-full items-center gap-4">
       <UIcon v-if="icon" class="text-xl" :name="icon" />
       <span v-if="text">{{ text }}</span>
     </div>

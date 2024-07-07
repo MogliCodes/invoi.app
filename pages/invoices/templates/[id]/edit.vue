@@ -1,12 +1,12 @@
 <template>
   <main class="flex flex-col gap-8">
     <section>
-      <div class="container mx auto">
+      <div class="mx auto container">
         <div class="flex flex-col items-start gap-4">
           <IconButton
             icon="i-heroicons-arrow-left"
-            @click="$router.back()"
             size="sm"
+            @click="$router.back()"
           />
           <BaseHeadline type="h1" text="Edit template" />
         </div>
@@ -14,7 +14,7 @@
     </section>
     <section>
       <BaseHeadline type="h2" text="Template details" />
-      <BaseBox class="container mx auto flex flex-col gap-4 w-1/2">
+      <BaseBox class="mx auto container flex w-1/2 flex-col gap-4">
         <div>
           <label for="">Name</label>
           <BaseInput v-model="data.name" />

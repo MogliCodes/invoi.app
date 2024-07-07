@@ -8,12 +8,12 @@
           <div>
             <label for="">Client</label>
             <USelect
-              @change="handleClientChange"
               v-model="selectedClient"
               placeholder="Select client"
               :options="clients as Array<unknown>"
               value-attribute="_id"
               option-attribute="company"
+              @change="handleClientChange"
             >
               <template #leading>
                 {{ selectedClient?.company }}
@@ -23,12 +23,12 @@
           <div v-if="selectedClient">
             <label for="">Projects</label>
             <USelect
-              @change="handleClientChange"
               v-model="selectedProject"
               placeholder="Select client"
               :options="projectsPerClient"
               option-attribute="title"
               value-attribute="_id"
+              @change="handleClientChange"
             >
               <template #label>
                 {{ selectedClient?.company }}
@@ -38,12 +38,12 @@
           <div v-if="selectedClient">
             <label for="">Service</label>
             <USelect
-              @change="handleClientChange"
               v-model="selectedTask"
               placeholder="Select client"
               :options="services"
               option-attribute="name"
               value-attribute="_id"
+              @change="handleClientChange"
             >
               <template #label>
                 {{ selectedClient?.company }}

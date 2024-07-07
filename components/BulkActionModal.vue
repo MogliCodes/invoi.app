@@ -9,7 +9,7 @@
       <BaseHeadline class="mb-2" type="h3" text="Confirm delete" />
       <section v-if="itemId">
         <p class="mb-8">Are you sure you want to delete this entry?</p>
-        <div class="mb-8 break-all bg-black p-2 rounded text-gray-200">
+        <div class="mb-8 break-all rounded bg-black p-2 text-gray-200">
           {{ itemId }}
         </div>
         <div class="flex justify-center gap-4">
@@ -25,7 +25,7 @@
         <p class="mb-8">
           Are you sure you want to delete the entries with the following ids?
         </p>
-        <div class="mb-8 break-all bg-black p-2 rounded text-gray-200">
+        <div class="mb-8 break-all rounded bg-black p-2 text-gray-200">
           {{ selectedItems?.toString().replaceAll(",", ", ") }}
         </div>
         <div class="flex justify-center gap-4">

@@ -1,7 +1,7 @@
 <template>
   <section>
     <BaseBox>
-      <div class="flex gap-3 mb-5">
+      <div class="mb-5 flex gap-3">
         <USelect placeholder="Select start" />
         <USelect placeholder="Select end" />
         <BaseButton size="xs" text="Apply" />

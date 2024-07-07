@@ -152,7 +152,7 @@
           <div class="flex items-center gap-2">
             <USelectMenu
               v-model="bulkAction"
-              class="!bg-white cursor-pointer"
+              class="cursor-pointer !bg-white"
               size="xl"
               color="white"
               :options="bulkActionOptions"

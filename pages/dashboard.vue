@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full -m-6">
+  <div class="-m-6 w-full">
     <section
       v-if="showTourTeaser"
       class="relative m-6 overflow-hidden rounded-lg bg-yellow-300 p-12 text-yellow-950 shadow-lg"
@@ -94,7 +94,7 @@
         type="h2"
         text="Revenues"
       />
-      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+      <div class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
         <BaseBox>
           <div class="text-xl dark:text-white">This month</div>
           <span class="font-syne text-5xl font-bold text-secondary-100">
@@ -126,7 +126,7 @@
         class="mb-3 font-syne text-2xl font-bold text-gray-400"
         type="h2"
       />
-      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+      <div class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
         <BaseBox>
           <div class="text-xl dark:text-white">This month</div>
           <span class="font-syne text-5xl font-bold text-secondary-100">
@@ -160,13 +160,17 @@
 </template>
 
 <script setup lang="ts">
+import StickyElement from "vue-sticky-element";
 import { useAuthStore } from "~/stores/auth.store";
 import TestGraph from "~/components/TestGraph.vue";
-const authStore = useAuthStore();
-import StickyElement from "vue-sticky-element";
-import "vue-sticky-element/css"; // this is required for default styles to work.
+import "vue-sticky-element/css";
+const authStore = useAuthStore(); // this is required for default styles to work.
 
 definePageMeta({
+  title: "Dashboard",
+});
+
+useHead({
   title: "Dashboard",
 });
 

@@ -1,6 +1,6 @@
 import { createRouter, defineEventHandler, H3Event, useBase } from "h3";
-import ApiClientBuilder from "~/server/utils/apiClientBuilder";
 import consola from "consola";
+import ApiClientBuilder from "~/server/utils/apiClientBuilder";
 
 const router = createRouter();
 

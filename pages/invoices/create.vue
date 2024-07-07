@@ -13,12 +13,12 @@
     </div>
     <BaseHeadline type="h2" text="Invoice details" />
     <BaseBox class="mb-6 flex gap-6">
-      <div class="w-1/2 flex flex-col gap-3">
+      <div class="flex w-1/2 flex-col gap-3">
         <div v-if="clients">
           <BaseLabel text="Client" />
           <USelect
-            size="md"
             v-model="selectedClient"
+            size="md"
             placeholder="Select a client"
             option-attribute="company"
             value-attribute="_id"
@@ -32,8 +32,8 @@
         <div v-if="selectedClient">
           <BaseLabel text="Contact person" />
           <USelect
-            size="md"
             v-model="selectedContact"
+            size="md"
             placeholder="Select a contact person"
             :options="contactsPerClient"
             value-attribute="_id"

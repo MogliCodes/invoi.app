@@ -23,16 +23,16 @@
       </thead>
       <tbody>
         <tr
-          class="rounded bg-white p-4 even:bg-gray-200 dark:odd:bg-blue-80 dark:even:bg-blue-90"
           v-for="project in projects"
+          class="rounded bg-white p-4 even:bg-gray-200 dark:odd:bg-blue-80 dark:even:bg-blue-90"
         >
           <td class="px-6 py-3">{{ project.title }}</td>
           <td class="px-6 py-3">{{ getClientName(project.client) }}</td>
           <td class="px-6 py-3">{{ project.description }}</td>
           <td class="px-6 py-3">
-            <span class="block relative border-2 w-28 h-2 rounded-full">
+            <span class="relative block h-2 w-28 rounded-full border-2">
               <span
-                class="block absolute -top-[2px] -left-[2px] left-0 rounded-full w-1/2 h-2 bg-green-300"
+                class="absolute -left-[2px] -top-[2px] left-0 block h-2 w-1/2 rounded-full bg-green-300"
               ></span>
             </span>
           </td>
