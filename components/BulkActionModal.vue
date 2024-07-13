@@ -1,5 +1,5 @@
 <template>
-  <UModal v-model="isOpen">
+  <UModal :key="isOpen" v-model="isOpen">
     <div class="flex flex-col items-center p-8 text-center">
       <div
         class="mx-auto mb-4 flex h-10 w-10 items-center justify-center rounded-full bg-red-500"
@@ -67,21 +67,6 @@ async function executeBulkDelete(): Promise<void> {
   } else {
     ids = [props.itemId];
   }
-
-  try {
-    console.log("Bulk delete");
-    const res = await $fetch(`/api/services/delete`, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${authStore.accessToken}`,
-      },
-      body: {
-        ids,
-      },
-    });
-    emit("execute-action");
-  } catch (error) {
-    console.error(error);
-  }
+  emit("execute-action", { action: "Delete", ids });
 }
 </script>

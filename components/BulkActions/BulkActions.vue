@@ -23,11 +23,11 @@ type Props = {
   bulkActionOptions: Array<string>;
   resource: "clients" | "invoices" | "products" | "users";
 };
-defineProps<Props>();
+const props = defineProps<Props>();
+const emit = defineEmits(["execute-bulk-action"]);
 
-const selectedBulkAction = ref("");
-
+const selectedBulkAction = ref(props.bulkActionOptions[0]);
 function executeBulkAction() {
-  console.log("Bulk Action Executed");
+  emit("execute-bulk-action", selectedBulkAction.value);
 }
 </script>

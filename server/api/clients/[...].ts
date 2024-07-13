@@ -132,6 +132,25 @@ router.patch(
   })
 );
 
+router.delete(
+  "/bulk",
+  defineEventHandler(async (event: H3Event) => {
+    const apiClient = new ApiClientBuilder();
+    const { ids } = await readBody(event);
+    const cookies = parseCookies(event);
+    const headers = {
+      userId: cookies.userId,
+      authorization: cookies.accessToken,
+    };
+    return await apiClient
+      .delete()
+      .setResource("client/bulk")
+      .setHeaders(headers)
+      .setBody({ ids })
+      .execute();
+  })
+);
+
 async function getClientCount(event: H3Event) {
   const config = useRuntimeConfig();
   const backendBaseUrl = config.public.BACKEND_BASE_URL;

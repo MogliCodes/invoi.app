@@ -70,6 +70,7 @@
                   <UIcon
                     class="cursor-pointer text-xl transition-colors hover:text-gray-400 dark:hover:text-white"
                     name="i-heroicons-trash"
+                    @click="initiateDeletion(client._id)"
                   />
                 </span>
               </td>
@@ -79,6 +80,15 @@
         <BulkActions
           :bulk-action-options="['Choose an action', 'Delete']"
           resource="clients"
+          @execute-bulk-action="initiateBulkAction"
+        />
+        <BulkActionModal
+          v-if="showBulkActionModal"
+          :selected-items="selectedClients"
+          resource="clients"
+          :is-open="showBulkActionModal"
+          @discard-action="showBulkActionModal = false"
+          @execute-action="executeBulkAction"
         />
       </div>
     </div>
@@ -86,19 +96,24 @@
 </template>
 <script setup lang="ts">
 import { useAuthStore } from "~/stores/auth.store";
+import { useAlertStore } from "~/stores/alert";
 const authStore = useAuthStore();
+const alertStore = useAlertStore();
 
 definePageMeta({
   title: "Clients",
 });
 
-const clients = await $fetch(`/api/clients`, {
-  method: "POST",
-  headers: {
-    Authorization: `Bearer ${authStore.accessToken}`,
-    userid: authStore.userId,
-  },
-});
+const { data: clients, refresh: refreshClients } = await useFetch(
+  `/api/clients`,
+  {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${authStore.accessToken}`,
+      userid: authStore.userId,
+    },
+  }
+);
 
 /**
  * Actions
@@ -127,5 +142,46 @@ function toggleSelectAll() {
     selectedClients.value = clients.value.map((client: any) => client._id);
   }
   selectAll.value = !selectAll.value;
+}
+
+const showBulkActionModal = ref(false);
+function initiateDeletion() {
+  console.log("Initiate deletion");
+  showBulkActionModal.value = true;
+}
+
+async function initiateBulkAction(action: string) {
+  console.log("Bulk action", action);
+  if (action === "Delete") {
+    initiateDeletion();
+  }
+}
+
+async function executeBulkAction({
+  action,
+  ids,
+}: {
+  action: string;
+  ids: string[];
+}) {
+  console.log("Execute bulk action", action, ids);
+  try {
+    await $fetch(`/api/clients/bulk`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${authStore.accessToken}`,
+        userid: authStore.userId,
+      },
+      body: JSON.stringify({ ids }),
+    });
+    showBulkActionModal.value = false;
+    refreshClients();
+    alertStore.setAlert("success", "Clients deleted successfully");
+    setTimeout(() => {
+      alertStore.resetAlert();
+    }, 3000);
+  } catch (error) {
+    console.error(error);
+  }
 }
 </script>

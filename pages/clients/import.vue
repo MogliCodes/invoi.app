@@ -30,17 +30,30 @@
 </template>
 <script setup lang="ts">
 import { useAuthStore } from "~/stores/auth.store";
+import { useAlertStore } from "~/stores/alert";
 const authStore = useAuthStore();
+const alertStore = useAlertStore();
 const userId = authStore.userId;
 const accessToken = authStore.accessToken;
 
 async function createDemoContacts() {
-  useFetch(`/api/clients/demo`, {
+  const response = await $fetch(`/api/clients/demo`, {
     method: "POST",
     headers: {
       userId,
       authorization: `Bearer ${accessToken}`,
     },
   });
+  if (response.status === 201) {
+    alertStore.setAlert("success", "Demo contacts created successfully");
+    setTimeout(() => {
+      alertStore.resetAlert();
+    }, 3000);
+  } else {
+    alertStore.setAlert("error", "Failed to create demo contacts");
+    setTimeout(() => {
+      alertStore.resetAlert();
+    }, 3000);
+  }
 }
 </script>

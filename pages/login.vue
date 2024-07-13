@@ -64,7 +64,7 @@ async function login() {
         password: password.value,
       },
     });
-    console.log(response);
+    console.log("response", response);
     if (response.status === 200) {
       authStore.setAccessToken(response.data.token);
       authStore.setUserId(response.data.id);
