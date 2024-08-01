@@ -130,11 +130,12 @@ const formattedTime = computed<string>(() => {
 
   return `${days}d ${hours}h ${minutes}m ${seconds}s`;
 });
-
-setInterval(() => {
-  console.log(expiresInTime.value);
-  expiresInTime.value -= 1000;
-}, 1000);
+onMounted(() => {
+  setInterval(() => {
+    console.log(expiresInTime.value);
+    expiresInTime.value -= 1000;
+  }, 1000);
+});
 
 // function formatExpirationDate(time: number): string {
 //   // decrease time by 1 second
