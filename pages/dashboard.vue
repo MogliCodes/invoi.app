@@ -115,7 +115,8 @@
         </BaseBox>
       </div>
     </section>
-    <section class="mb-6 pl-6">
+    <!-- Revenue graph -->
+    <section v-if="revenues" class="mb-6 pl-6">
       <BaseBox>
         <TestGraph :values="revenues" />
       </BaseBox>
@@ -160,7 +161,6 @@
 </template>
 
 <script setup lang="ts">
-import StickyElement from "vue-sticky-element";
 import { useAuthStore } from "~/stores/auth.store";
 import TestGraph from "~/components/TestGraph.vue";
 import "vue-sticky-element/css";

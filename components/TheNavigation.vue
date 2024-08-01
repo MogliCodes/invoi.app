@@ -15,21 +15,21 @@
         <nuxt-link
           class="inline-block py-2 pr-8 font-bold text-white"
           to="/contacts"
-          >Contacts</nuxt-link
+          >Kontakte</nuxt-link
         >
       </li>
       <li class="inline-block">
         <nuxt-link
           class="inline-block py-2 pr-8 font-bold text-white"
           to="/clients"
-          >Clients</nuxt-link
+          >Kunden</nuxt-link
         >
       </li>
       <li class="inline-block">
         <nuxt-link
           class="inline-block py-2 pr-8 font-bold text-white"
           to="/invoice"
-          >Invoices</nuxt-link
+          >Rechnungen</nuxt-link
         >
       </li>
     </ul>

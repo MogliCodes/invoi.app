@@ -1,4 +1,8 @@
 <template>
-  <BaseHeadline text="Time recording" />
   <TestCalendar />
 </template>
+<script>
+definePageMeta({
+  title: "Zeiterfassung",
+});
+</script>

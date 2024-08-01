@@ -88,6 +88,28 @@ router.post(
 );
 
 router.post(
+  "/delete/:id",
+  defineEventHandler(async (event: H3Event) => {
+    const apiClient = new ApiClientBuilder();
+    const params = getRouterParams(event);
+    const cookies = parseCookies(event);
+    console.log("params", params);
+    const query = getQuery(event);
+    console.log("query", query);
+    const headers = {
+      userId: cookies.userId,
+      authorization: cookies.accessToken,
+    };
+    return await apiClient
+      .delete()
+      .setResource(`client/${params.id}`)
+      .setHeaders(headers)
+      .setBody([params.id])
+      .execute();
+  })
+);
+
+router.post(
   "/demo",
   defineEventHandler(async (event: H3Event) => {
     return createDemoClients(event);

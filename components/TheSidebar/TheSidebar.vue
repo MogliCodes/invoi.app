@@ -86,71 +86,71 @@ const navItems = [
   {
     icon: "i-heroicons-user-circle",
     to: "/contacts",
-    text: "Contacts",
+    text: "Kontakte",
   },
   {
     icon: "i-heroicons-building-office",
     to: "/clients",
-    text: "Clients",
+    text: "Kunden",
     subItems: [
       {
         icon: "i-heroicons-book-open",
         to: "/clients/projects",
-        text: "Projects",
+        text: "Projekte",
       },
     ],
   },
   {
     icon: "i-heroicons-briefcase",
     to: "/services",
-    text: "Services",
+    text: "Leistungen",
   },
   {
     icon: "i-heroicons-banknotes",
     to: "/invoices",
-    text: "Invoices",
+    text: "Rechnungen",
     subItems: [
       {
         icon: "i-heroicons-pencil",
         to: "/invoices/drafts",
-        text: "Drafts",
+        text: "Vorlagen",
       },
       {
         icon: "i-heroicons-arrow-up-tray",
         to: "/invoices/import",
-        text: "Import invoices",
+        text: "Rechnungen importieren",
       },
       {
         icon: "i-heroicons-tag",
         to: "/invoices/categories",
-        text: "Manage categories",
+        text: "Kategorien verwalten",
       },
       {
         icon: "i-heroicons-document",
         to: "/invoices/templates",
-        text: "Templates",
+        text: "Templates verwalten",
       },
     ],
   },
   {
     icon: "i-heroicons-document-text",
     to: "/proposals",
-    text: "Proposals",
+    text: "Angebote",
   },
   {
     icon: "i-heroicons-chart-bar",
     to: "/revenues",
-    text: "Revenues",
+    text: "Einkünfte",
   },
   {
     icon: "i-heroicons-credit-card",
     to: "/expenses",
-    text: "Expenses",
+    text: "Ausgabe",
   },
   {
     icon: "i-heroicons-clock",
     to: "/time-recording",
-    text: "Time recording",
+    text: "Zeiterfassung",
   },
 ];
 

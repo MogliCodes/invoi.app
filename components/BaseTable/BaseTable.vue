@@ -1,5 +1,7 @@
 <template>
-  <table class="min-w-full overflow-hidden rounded-lg dark:text-gray-400">
+  <table
+    class="min-w-full overflow-hidden shadow-lg rounded-lg dark:text-gray-400"
+  >
     <thead class="bg-blue-90 text-white">
       <tr>
         <slot name="head"></slot>

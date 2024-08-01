@@ -1,236 +1,217 @@
 <template>
   <div class="container mx-auto">
-    <div class="mb-12">
-      <BaseHeadline
-        class="mb-4 dark:text-white"
-        type="h1"
-        text="Create a new invoice"
-      />
+    <!-- Page head -->
+    <section class="mb-12">
       <div class="flex gap-4">
-        <BaseButton text="Add position" @click="addPosition" />
-        <BaseButton text="Select draft" @click="showDraftSelectModal = true" />
-      </div>
-    </div>
-    <BaseHeadline type="h2" text="Invoice details" />
-    <BaseBox class="mb-6 flex gap-6">
-      <div class="flex w-1/2 flex-col gap-3">
-        <div v-if="clients">
-          <BaseLabel text="Client" />
-          <USelect
-            v-model="selectedClient"
-            size="md"
-            placeholder="Select a client"
-            option-attribute="company"
-            value-attribute="_id"
-            :options="clients"
-          >
-            <template #label>
-              {{ selectedClient?.company }}
-            </template>
-          </USelect>
-        </div>
-        <div v-if="selectedClient">
-          <BaseLabel text="Contact person" />
-          <USelect
-            v-model="selectedContact"
-            size="md"
-            placeholder="Select a contact person"
-            :options="contactsPerClient"
-            value-attribute="_id"
-            option-attribute="firstname"
-          >
-            <template #label>
-              {{ selectedContact?.firstname }} {{ selectedContact?.lastname }}}
-            </template>
-          </USelect>
-        </div>
-        <div>
-          <BaseLabel text="Invoice title" />
-          <BaseInput
-            v-model="invoiceTitle"
-            placeholder="Plese enter a title for the invoice"
-          />
-        </div>
-        <div>
-          <BaseLabel text="Invoice number" />
-          <BaseInput v-model="invoiceNumber" placeholder="invoiceNumber" />
-        </div>
-      </div>
-      <div class="flex w-1/2 flex-col gap-3">
-        <div>
-          <BaseLabel text="Invoice date" />
-          <BaseInput
-            v-model="invoiceDate"
-            type="date"
-            size="sm"
-            placeholder="invoiceDate"
-          />
-        </div>
-        <div>
-          <BaseLabel text="Performance period" />
-          <div class="flex gap-2">
-            <BaseInput
-              v-model="performancePeriodStart"
-              type="date"
-              size="sm"
-              placeholder="invoiceDate"
-            /><BaseInput
-              v-model="performancePeriodEnd"
-              type="date"
-              size="sm"
-              placeholder="invoiceDate"
-            />
-          </div>
-        </div>
-        <div>
-          <BaseLabel text="Rate type" />
-          <USelectMenu
-            v-model="selectedRateType"
-            class="mb-3"
-            placeholder="Select rate type"
-            :options="rateTypeOptions"
-          >
-          </USelectMenu>
-        </div>
-        <div>
-          <BaseLabel text="Taxes" />
-          <USelectMenu
-            v-if="clients"
-            v-model="selectedTaxes"
-            multiple
-            class="mb-3"
-            placeholder="Select taxes"
-            :options="taxOptions"
-          >
-          </USelectMenu>
-        </div>
-        <div class="flex flex-col gap-2">
-          <UCheckbox v-model="hasTaxes" name="taxes" label="Add taxes" />
-          <UCheckbox
-            v-model="isReverseChargeInvoice"
-            name="taxes"
-            label="Is reverse charge invoice"
-          />
-          <UCheckbox label="Save as template" />
-        </div>
-      </div>
-    </BaseBox>
-    <BaseHeadline type="h2" text="Invoice items" />
-    <div class="shadow-lg">
-      <table class="min-w-full rounded-lg dark:text-gray-400">
-        <thead class="bg-blue-90 text-white">
-          <tr>
-            <th></th>
-            <th class="w-1/12 px-6 py-5 text-left">Position</th>
-            <th class="w-7/12 px-6 py-5 text-left">Description</th>
-            <th class="w-1/12 px-6 py-5 text-left">
-              <span contenteditable>Preis</span>
-            </th>
-            <th class="w-1/12 px-6 py-5 text-left">Faktor</th>
-            <th class="w-2/12 px-6 py-5 text-right">Gesamtpreis</th>
-          </tr>
-        </thead>
-        <tbody id="rows">
-          <tr
-            v-for="(row, index) in rows"
-            :key="`position-${index}`"
-            class="relative rounded bg-white p-4 even:bg-gray-200 dark:odd:bg-blue-80 dark:even:bg-blue-90"
-          >
-            <td
-              class="add-row-btn absolute -left-5 bottom-0 flex h-10 w-10 translate-y-1/2 scale-50 cursor-pointer items-center justify-center rounded-full bg-secondary-100 opacity-0 transition-all"
-              @click="insertRow(index)"
-            >
-              <UIcon name="i-heroicons-plus" class="text-xl text-white" />
-            </td>
-            <td class="w-1/12 px-6 py-3">{{ row.position }}</td>
-            <td class="w-7/12 px-6 py-3">
-              <RichTextEditor v-model="row.description"></RichTextEditor>
-            </td>
-            <td class="w-1/12 px-6 py-3 align-top">
-              <BaseInput
-                v-model.number="row.hours"
-                class="w-auto"
-                size="sm"
-                type="number"
-                @change="updateRowTotal(index)"
-              />
-            </td>
-            <td class="w-1/12 px-6 py-3 align-top">
-              <BaseInput
-                v-model.number="row.factor"
-                class="w-auto"
-                size="sm"
-                type="number"
-                @change="updateRowTotal(index)"
-              />
-            </td>
-            <td class="w-2/12 px-6 py-3 text-right align-top">
-              <span>{{ formatCurrencyAmount(row.total) }}</span>
-            </td>
-          </tr>
-        </tbody>
-        <tfoot>
-          <tr class="bg-gray-500 text-white dark:bg-gray-800">
-            <td colspan="5" class="px-6 py-3">Gesamt</td>
-            <td class="px-6 py-3 text-right">
-              <span>{{ formatCurrencyAmount(totalAmount) }}</span>
-            </td>
-          </tr>
-          <tr
-            v-for="(tax, index) in selectedTaxes"
-            :key="`tax-${index}`"
-            class="px-6 py-3 text-right"
-          >
-            <td class="px-6 py-3 text-right">{{ tax }}</td>
-          </tr>
-          <tr v-if="hasTaxes" class="bg-gray-600 text-white dark:bg-gray-900">
-            <td colspan="5" class="px-6 py-3">Mwst.</td>
-            <td class="px-6 py-3 text-right">
-              <span>{{ formatCurrencyAmount(taxes) }}</span>
-            </td>
-          </tr>
-          <tr class="bg-blue-80 text-white">
-            <td colspan="5" class="px-6 py-5">
-              <span class="font-bold">Brutto-Rechnungssumme</span>
-            </td>
-            <td class="px-6 py-5 text-right">
-              <span>{{ formatCurrencyAmount(totalWithTaxes) }}</span>
-            </td>
-          </tr>
-        </tfoot>
-      </table>
-    </div>
-    <section class="mt-6">
-      <div class="flex gap-3">
+        <BaseButton text="Position hinzufügen" @click="addPosition" />
         <BaseButton
-          :disabled="!isValidInvoice"
-          variant="yellow"
-          text="Create invoice"
-          @click="createInvoice"
-        />
-        <BaseButton
-          variant="outline"
-          text="View preview"
-          @click="getInvoicePreview"
-        />
-        <BaseButton
-          :disabled="!isValidInvoice"
-          variant="outline"
-          text="Save as draft"
-          @click="saveAsDraft"
+          text="Vorlage auswählen"
+          @click="showDraftSelectModal = true"
         />
       </div>
     </section>
-    <section></section>
-    <section
-      v-if="showPreview"
-      class="fixed inset-0 z-30 flex items-center justify-center bg-black bg-opacity-80 p-12"
-    >
-      <div class="h-full w-full">
-        <div class="a4 mx-auto bg-white">
-          <div ref="preview" v-html="invoicePreviewHtml"></div>
+    <!-- Invoice details -->
+    <section>
+      <BaseHeadline type="h2" text="Rechnungsdetails" />
+      <BaseBox class="mb-6 flex gap-6">
+        <div class="flex w-1/2 flex-col gap-3">
+          <div v-if="clients && selectedClient">
+            <BaseLabel text="Kunde" />
+            <USelect
+              v-model="selectedClient"
+              size="md"
+              placeholder="Wähle einen Kunden"
+              option-attribute="company"
+              value-attribute="_id"
+              :options="clients"
+            >
+              <template #label>
+                {{ selectedClient?.company }}
+              </template>
+            </USelect>
+          </div>
+          <div v-if="selectedClient">
+            <BaseLabel text="Kontaktperson" />
+            <USelect
+              v-model="selectedContact"
+              size="md"
+              placeholder="Select a contact person"
+              :options="contactsPerClient"
+              value-attribute="_id"
+              option-attribute="firstname"
+            >
+              <template #label>
+                {{ selectedContact?.firstname }}
+                {{ selectedContact?.lastname }}}
+              </template>
+            </USelect>
+          </div>
+          <div>
+            <BaseLabel text="Titel" />
+            <BaseInput v-model="invoiceTitle" placeholder="Rechnung MM/JJJJ" />
+          </div>
+          <div>
+            <BaseLabel text="Rechnungsnummer" />
+            <BaseInput v-model="invoiceNumber" placeholder="invoiceNumber" />
+          </div>
         </div>
+        <div class="flex w-1/2 flex-col gap-3">
+          <div>
+            <BaseLabel text="Rechnungsdatum" />
+            <BaseInput
+              v-model="invoiceDate"
+              type="date"
+              size="sm"
+              placeholder="JJJJ-XXX"
+            />
+          </div>
+          <div>
+            <BaseLabel text="Leistungszeitraum" />
+            <div class="flex gap-2">
+              <BaseInput
+                v-model="performancePeriodStart"
+                type="date"
+                size="sm"
+                placeholder="invoiceDate"
+              />
+              <BaseInput
+                v-model="performancePeriodEnd"
+                type="date"
+                size="sm"
+                placeholder="invoiceDate"
+              />
+            </div>
+          </div>
+          <div>
+            <BaseLabel text="Satz" />
+            <USelectMenu
+              v-model="selectedRateType"
+              class="mb-3"
+              placeholder="Select rate type"
+              :options="rateTypeOptions"
+            >
+            </USelectMenu>
+          </div>
+          <div>
+            <BaseLabel text="Steuern" />
+            <USelectMenu
+              v-if="clients"
+              v-model="selectedTaxes"
+              multiple
+              class="mb-3"
+              placeholder="Select taxes"
+              :options="taxOptions"
+            >
+            </USelectMenu>
+          </div>
+          <div class="flex flex-col gap-2">
+            <UCheckbox v-model="hasTaxes" name="taxes" label="Add taxes" />
+            <UCheckbox
+              v-model="isReverseChargeInvoice"
+              name="taxes"
+              label="Is reverse charge invoice"
+            />
+            <UCheckbox label="Save as template" />
+          </div>
+        </div>
+      </BaseBox>
+    </section>
+    <!-- Invoice items -->
+    <section>
+      <BaseHeadline type="h2" text="Rechnungspositionen" />
+      <div class="shadow-lg">
+        <BaseTable>
+          <template #head>
+            <thead class="bg-blue-90 text-white">
+              <tr>
+                <th></th>
+                <th class="w-1/12 px-6 py-5 text-left">Position</th>
+                <th class="w-7/12 px-6 py-5 text-left">Beschreibung</th>
+                <th class="w-1/12 px-6 py-5 text-left">
+                  <span contenteditable>Preis</span>
+                </th>
+                <th class="w-1/12 px-6 py-5 text-left">Faktor</th>
+                <th class="w-2/12 px-6 py-5 text-right">Gesamtpreis</th>
+              </tr>
+            </thead>
+          </template>
+          <template #body>
+            <tbody id="rows">
+              <InvoicePosition
+                v-for="(row, index) in rows"
+                :key="`position-${index}`"
+                :row="row"
+                @add-row="insertRow(index)"
+                @update:row="updateRowTotal(index, $event)"
+              />
+            </tbody>
+            <tfoot>
+              <tr class="bg-gray-500 text-white dark:bg-gray-800">
+                <td colspan="5" class="px-6 py-3">Gesamt</td>
+                <td class="px-6 py-3 text-right">
+                  <span>{{ formatCurrencyAmount(totalAmount) }}</span>
+                </td>
+              </tr>
+              <tr
+                v-for="(tax, index) in selectedTaxes"
+                :key="`tax-${index}`"
+                class="px-6 py-3 text-right"
+              >
+                <td class="px-6 py-3 text-right">{{ tax }}</td>
+              </tr>
+              <tr
+                v-if="hasTaxes"
+                class="bg-gray-600 text-white dark:bg-gray-900"
+              >
+                <td colspan="5" class="px-6 py-3">Mwst.</td>
+                <td class="px-6 py-3 text-right">
+                  <span>{{ formatCurrencyAmount(taxes) }}</span>
+                </td>
+              </tr>
+              <tr class="bg-blue-80 text-white">
+                <td colspan="5" class="px-6 py-5">
+                  <span class="font-bold">Brutto-Rechnungssumme</span>
+                </td>
+                <td class="px-6 py-5 text-right">
+                  <span>{{ formatCurrencyAmount(totalWithTaxes) }}</span>
+                </td>
+              </tr>
+            </tfoot>
+          </template>
+        </BaseTable>
       </div>
+      <section class="mt-6">
+        <div class="flex gap-3">
+          <BaseButton
+            :disabled="!isValidInvoice"
+            variant="yellow"
+            text="Create invoice"
+            @click="createInvoice"
+          />
+          <BaseButton
+            :disabled="!isValidInvoice"
+            variant="outline"
+            text="View preview"
+            @click="getInvoicePreview"
+          />
+          <BaseButton
+            :disabled="!isValidInvoice"
+            variant="outline"
+            text="Save as draft"
+            @click="saveAsDraft"
+          />
+        </div>
+      </section>
+      <section
+        v-if="showPreview"
+        class="fixed inset-0 z-30 flex items-center justify-center bg-black bg-opacity-80 p-12"
+      >
+        <div class="h-full w-full">
+          <div class="a4 mx-auto bg-white">
+            <div ref="preview" v-html="invoicePreviewHtml"></div>
+          </div>
+        </div>
+      </section>
     </section>
     <section
       v-if="isPending"
@@ -269,6 +250,12 @@ import { onClickOutside } from "@vueuse/core";
 import { useAuthStore } from "~/stores/auth.store";
 import { useAlertStore } from "~/stores/alert";
 import { formatAmountToCent } from "~/utils/utils";
+import InvoicePosition from "~/components/Invoice/InvoicePosition.vue";
+
+definePageMeta({
+  title: "Rechnung erstellen",
+});
+
 const alertStore = useAlertStore();
 const authStore = useAuthStore();
 const accessToken = authStore.accessToken;
@@ -306,12 +293,11 @@ const { data: generatedInvoiceNumber } = useFetch<string>(
 /* ==============
  * Invoice data
  ============== */
-// watch(clients, (newVal) => {
-//   selectedClient.value = newVal?.[0] || null;
-// });
 const isPending = ref(false);
-const selectedClient: Ref<Client | null> = ref(clients?.value?.[0] || null);
-const selectedContact: Ref<Contact | null> = ref("" || null);
+const selectedClient: Ref<Client | null> = ref(
+  clients.value ? clients.value[0] : null
+);
+const selectedContact: Ref<Contact | null> = ref(null);
 const currentDate = new Date().toLocaleDateString("en-CA");
 const invoiceTitle = ref();
 const invoiceDate = ref(currentDate);
@@ -344,10 +330,10 @@ const { data: settings } = useFetch<Settings>(
 );
 const defaultRate = ref(0);
 
-const rows = ref([
+const rows: Ref<Array<InvoicePosition>> = ref([
   {
     position: 1,
-    description: "Add your description",
+    description: "Füge eine Beschreibung hinzu",
     hours: defaultRate.value,
     factor: 0,
     total: 0,
@@ -413,7 +399,7 @@ const isValidInvoice = computed(() => {
 function addPosition() {
   rows.value.push({
     position: rows.value.length + 1,
-    description: "Add your description",
+    description: "Füge eine Beschreibung hinzu",
     hours: defaultRate.value,
     factor: 0,
     total: 0,
@@ -421,9 +407,10 @@ function addPosition() {
 }
 
 function insertRow(index: number) {
+  console.log("insertRow", index);
   const element = {
     position: index + 2,
-    description: "Add your description",
+    description: "Füge eine Beschreibung hinzu",
     hours: defaultRate.value,
     factor: 0,
     total: 0,
@@ -432,8 +419,8 @@ function insertRow(index: number) {
   rows.value.map((row, index) => (row.position = index + 1));
 }
 
-function updateRowTotal(index: number): void {
-  rows.value[index].total = rows.value[index].hours * rows.value[index].factor;
+function updateRowTotal(index: number, event: any): void {
+  rows.value[index] = event;
 }
 
 const formattedRows = computed(() => {
@@ -500,10 +487,10 @@ async function getInvoicePreview() {
   showPreview.value = true;
 }
 
-const showDraftSelectModal = ref(false);
-function useDraft() {
-  showDraftSelectModal.value = true;
-}
+// const showDraftSelectModal = ref(false);
+// function useDraft() {
+//   showDraftSelectModal.value = true;
+// }
 
 function applyDraft() {
   if (!invoiceDrafts.value) return;
@@ -517,7 +504,7 @@ function applyDraft() {
   invoiceDate.value = new Date(draft.date).toLocaleDateString("en-CA");
 
   const items = JSON.parse(draft.items);
-  rows.value = items.map((item) => {
+  rows.value = items.map((item: InvoicePosition) => {
     return {
       position: item.position,
       description: item.description,

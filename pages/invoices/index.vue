@@ -6,17 +6,17 @@
           <BaseButton
             variant="yellow"
             to="/invoices/create"
-            text="Create new invoice"
+            text="Rechnung erstellen"
           />
           <BaseButton
             variant="outline"
             to="/invoices/import"
-            text="Import invoices"
+            text="Rechnungen importieren"
           />
           <BaseButton
             variant="outline"
             to="/invoices/templates"
-            text="Manage templates"
+            text="Templates verwalten"
           />
         </BaseButtonGroup>
       </div>
@@ -37,16 +37,16 @@
         <span class="text-sm font-bold text-secondary-100">{{
           invoices?.length
         }}</span>
-        <span class="text-sm font-bold text-secondary-100"> of </span>
+        <span class="text-sm font-bold text-secondary-100"> von </span>
         <span
           v-if="invoiceCount"
           class="text-sm font-bold text-secondary-100"
           >{{ invoiceCount }}</span
         >
-        <span class="text-sm font-bold text-secondary-100"> Invoices</span>
+        <span class="text-sm font-bold text-secondary-100"> Rechnungen</span>
       </div>
       <div class="overflow-hidden rounded-lg">
-        <table class="min-w-full overflow-hidden dark:text-gray-400">
+        <table class="min-w-full overflow-hidden shadow-lg dark:text-gray-400">
           <thead class="bg-blue-90 text-white">
             <tr>
               <th class="py-5 pl-6 text-left">
@@ -57,14 +57,14 @@
                 />
               </th>
               <th class="px-6 py-5 text-left">Rechnungsnummer</th>
-              <th class="px-6 py-5 text-left">Title</th>
-              <th class="px-6 py-5 text-left">Client</th>
-              <th class="px-6 py-5 text-left">Date</th>
+              <th class="px-6 py-5 text-left">Titel</th>
+              <th class="px-6 py-5 text-left">Kunde</th>
+              <th class="px-6 py-5 text-left">Datum</th>
               <th class="px-6 py-5 text-left">Status</th>
               <th class="px-6 py-5 text-left">Netto</th>
               <th class="px-6 py-5 text-left">Mwst.</th>
               <th class="px-6 py-5 text-left">Brutto</th>
-              <th class="px-6 py-5 text-left">Action</th>
+              <th class="px-6 py-5 text-left">Aktion</th>
             </tr>
           </thead>
           <tbody>
@@ -161,7 +161,7 @@
                 {{ bulkAction }}
               </template>
             </USelectMenu>
-            <BaseButton size="sm" text="Apply" @click="executeBulkAction" />
+            <BaseButton size="sm" text="Anwenden" @click="executeBulkAction" />
           </div>
         </div>
       </div>
@@ -216,7 +216,7 @@ import { useAlertStore } from "~/stores/alert";
 import { isInvoiceDue, getStatusPillBgClasses } from "~/utils/utils";
 
 definePageMeta({
-  title: "Invoices",
+  title: "Rechnungen",
 });
 
 const authStore = useAuthStore();
@@ -264,9 +264,9 @@ const isOpen = ref(false);
 const currentInvoiceId = ref("");
 const selectedInvoices = ref<string[]>([]);
 const selectAll = ref(false);
-const bulkAction = ref("Bulk actions");
+const bulkAction = ref("Mehrfachauswahl");
 const bulkActionOptions = ref([
-  "Delete",
+  "Löschen",
   "Mark as paid",
   "Mark as unpaid",
   "Mark as overdue",

@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col gap-6">
     <section>
-      <div class="mt-3 flex items-center gap-3">
+      <div class="flex items-center gap-3">
         <BaseButton
           to="/services/create"
           text="Create services"

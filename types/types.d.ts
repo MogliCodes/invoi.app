@@ -27,6 +27,14 @@ type Invoice = {
   isReverseChargeInvoice: boolean;
 };
 
+type InvoicePosition = {
+  position: number;
+  description: string;
+  hours: number;
+  factor: number;
+  total: number;
+};
+
 type Project = {
   _id: string;
   title: string;

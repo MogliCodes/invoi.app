@@ -4,12 +4,12 @@
       <div class="flex items-center gap-3">
         <BaseButton
           to="/clients/create"
-          text="Create client"
+          text="Kunde anlegen"
           variant="yellow"
         />
         <BaseButton
           to="/clients/import"
-          text="Import clients"
+          text="Kunden importieren"
           variant="outline"
         />
       </div>
@@ -21,7 +21,7 @@
       <div>
         <div class="mb-2">
           <span class="text-sm font-bold text-secondary-100"
-            >{{ clients?.length }} Clients</span
+            >{{ clients?.length }} Kunden</span
           >
         </div>
         <table class="min-w-full overflow-hidden rounded-lg dark:text-gray-400">
@@ -34,12 +34,12 @@
                   @click="toggleSelectAll"
                 />
               </th>
-              <th class="px-6 py-5 text-left">Company</th>
-              <th class="px-6 py-5 text-left">Street</th>
-              <th class="px-6 py-5 text-left">Zip</th>
-              <th class="px-6 py-5 text-left">City</th>
-              <th class="px-6 py-5 text-left">Tax ID</th>
-              <th class="px-6 py-5 text-left">Action</th>
+              <th class="px-6 py-5 text-left">Kunde</th>
+              <th class="px-6 py-5 text-left">Straße</th>
+              <th class="px-6 py-5 text-left">PLZ</th>
+              <th class="px-6 py-5 text-left">Ort</th>
+              <th class="px-6 py-5 text-left">Steuernummer</th>
+              <th class="px-6 py-5 text-left">Handlung</th>
             </tr>
           </thead>
           <tbody>
@@ -70,29 +70,27 @@
                   <UIcon
                     class="cursor-pointer text-xl transition-colors hover:text-gray-400 dark:hover:text-white"
                     name="i-heroicons-trash"
+                    @click="deleteClient(client._id)"
                   />
                 </span>
               </td>
             </tr>
           </tbody>
         </table>
-        <BulkActions
-          :bulk-action-options="['Choose an action', 'Delete']"
-          resource="clients"
-        />
       </div>
     </div>
   </div>
 </template>
 <script setup lang="ts">
 import { useAuthStore } from "~/stores/auth.store";
+import consola from "consola";
 const authStore = useAuthStore();
 
 definePageMeta({
-  title: "Clients",
+  title: "Kunden",
 });
 
-const clients = await $fetch(`/api/clients`, {
+const { data: clients, refresh } = await useFetch(`/api/clients`, {
   method: "POST",
   headers: {
     Authorization: `Bearer ${authStore.accessToken}`,
@@ -127,5 +125,19 @@ function toggleSelectAll() {
     selectedClients.value = clients.value.map((client: any) => client._id);
   }
   selectAll.value = !selectAll.value;
+}
+
+async function deleteClient(clientId) {
+  console.log(clientId);
+  const response = await $fetch(`/api/clients/delete/${clientId}`, {
+    method: "POST",
+    body: { clientId },
+    headers: {
+      Authorization: `Bearer ${authStore.accessToken}`,
+      userid: authStore.userId,
+    },
+  });
+  consola.log(response);
+  refresh();
 }
 </script>

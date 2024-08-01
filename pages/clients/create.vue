@@ -1,41 +1,27 @@
 <template>
   <div class="container mx-auto">
-    <BaseHeadline class="mb-8 dark:text-white" type="h1" text="Create client" />
-    <div class="grid grid-cols-2">
-      <BaseBox>
+    <BaseHeadline class="mb-8 dark:text-white" type="h1" text="Kunde anlegen" />
+    <div class="">
+      <BaseHeadline class="dark:text-white" type="h2" text="Kundendaten" />
+      <BaseBox class="w-1/2">
         <form @submit.prevent="createClient">
-          <BaseText
-            type="h3"
-            class="mb-8 block text-2xl font-bold dark:text-white"
-            >Client base information</BaseText
-          >
           <div class="mb-3">
-            <BaseText
-              ><label class="block" for="username"
-                >Company name</label
-              ></BaseText
-            >
+            <BaseLabel text="Name" />
             <BaseInput v-model="company" />
           </div>
           <div class="mb-3">
-            <BaseText
-              ><label class="block" for="username">Street</label></BaseText
-            >
+            <BaseLabel text="Straße" />
             <BaseInput v-model="street" />
           </div>
           <div class="mb-3">
-            <BaseText
-              ><label class="block" for="username">ZIP Code</label></BaseText
-            >
+            <BaseLabel text="PLZ" />
             <BaseInput v-model="zipcode" />
           </div>
           <div class="mb-3">
-            <BaseText
-              ><label class="block" for="username">City</label></BaseText
-            >
+            <BaseLabel text="Ort" />
             <BaseInput v-model="city" />
           </div>
-          <BaseButton type="submit" text="Create contact" />
+          <BaseButton type="submit" text="Kunde anlegen" />
         </form>
       </BaseBox>
     </div>
