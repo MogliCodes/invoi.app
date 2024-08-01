@@ -1,8 +1,9 @@
 <template>
-  <div class="-m-6 w-full">
+  <div class="w-full flex flex-col gap-4">
+    <!-- Onboarding teaser -->
     <section
       v-if="showTourTeaser"
-      class="relative m-6 overflow-hidden rounded-lg bg-yellow-300 p-12 text-yellow-950 shadow-lg"
+      class="relative overflow-hidden rounded-lg bg-yellow-300 p-12 text-yellow-950 shadow-lg"
     >
       <div class="w-2/3">
         <BaseHeadline
@@ -32,7 +33,8 @@
         />
       </div>
     </section>
-    <section class="mb-6 pl-6">
+    <!-- Overview -->
+    <section class="">
       <BaseHeadline
         class="mb-3 font-syne text-2xl font-bold text-gray-400"
         type="h2"
@@ -88,7 +90,8 @@
         </div>
       </BaseBox>
     </section>
-    <section class="mb-6 pl-6">
+    <!-- Revenues -->
+    <section class="">
       <BaseHeadline
         class="mb-3 font-syne text-2xl font-bold text-gray-400"
         type="h2"
@@ -116,12 +119,13 @@
       </div>
     </section>
     <!-- Revenue graph -->
-    <section v-if="revenues" class="mb-6 pl-6">
+    <section v-if="false" class="">
       <BaseBox>
         <TestGraph :values="revenues" />
       </BaseBox>
     </section>
-    <section class="mb-6 pl-6">
+    <!-- Taxes -->
+    <section>
       <BaseHeadline
         text="Taxes"
         class="mb-3 font-syne text-2xl font-bold text-gray-400"
@@ -129,30 +133,33 @@
       />
       <div class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
         <BaseBox>
-          <div class="text-xl dark:text-white">This month</div>
+          <BaseLabel class="block" text="This month" />
           <span class="font-syne text-5xl font-bold text-secondary-100">
             {{ formatCurrencyAmount(currentMonthTaxes / 100) }}
           </span>
         </BaseBox>
         <BaseBox>
-          <div class="text-xl dark:text-white">This quarter</div>
+          <BaseLabel class="block" text="This quarter" />
           <span class="font-syne text-5xl font-bold text-secondary-100">
             {{ formatCurrencyAmount(currentQuarterTaxes / 100) }}
           </span>
         </BaseBox>
         <BaseBox>
-          <div class="text-xl dark:text-white">This year</div>
+          <BaseLabel class="block" text="This year" />
           <span class="font-syne text-5xl font-bold text-secondary-100">
             {{ formatCurrencyAmount(currentYearTaxes / 100) }}
           </span>
         </BaseBox>
       </div>
     </section>
-    <section class="mb-6 pl-6">
+    <!-- User data -->
+    <section>
       <BaseContainer>
         <BaseBox>
           <div class="text-xl dark:text-white">User data</div>
           <pre class="dark:text-white"> {{ userData }}</pre>
+          <pre class="dark:text-white"> {{ authStore.accessToken }}</pre>
+          <pre class="dark:text-white"> {{ accessTokenCookie }}</pre>
         </BaseBox>
       </BaseContainer>
     </section>
@@ -283,6 +290,8 @@ const { data: userData } = useFetch<UserData>(
 );
 
 const showTourTeaser = ref(true);
+
+const accessTokenCookie = useCookie("accessToken");
 </script>
 
 <style>

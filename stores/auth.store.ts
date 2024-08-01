@@ -5,6 +5,7 @@ export const useAuthStore = defineStore("authStore", () => {
   const userId = ref("");
   const userName = ref("");
   const accessToken = ref("");
+  const expiration = ref();
 
   function setUserLoggedIn(bool: boolean): void {
     isUserLoggedIn.value = bool;
@@ -22,14 +23,20 @@ export const useAuthStore = defineStore("authStore", () => {
     accessToken.value = token;
   }
 
+  function setExpiration(exp: number): void {
+    expiration.value = exp;
+  }
+
   return {
     isUserLoggedIn,
     userId,
     userName,
     accessToken,
+    expiration,
     setUserLoggedIn,
     setUserId,
     setUserName,
     setAccessToken,
+    setExpiration,
   };
 });

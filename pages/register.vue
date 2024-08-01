@@ -15,23 +15,31 @@
             >
           </p>
         </div>
-        <div class="flex w-full flex-col gap-3">
-          <BaseInput v-model="username" placeholder="Username" />
-          <BaseInput v-model="email" placeholder="E-Mail" />
-          <BaseInput
-            ref="passwordInput"
-            v-model="password"
-            placeholder="Password"
-            :type="isPasswordVisible ? 'text' : 'password'"
-          />
+        <BaseBox class="flex w-full flex-col gap-3">
+          <div>
+            <BaseLabel text="Username" />
+            <BaseInput v-model="username" placeholder="Username" />
+          </div>
+          <div>
+            <BaseLabel text="E-Mail" />
+            <BaseInput v-model="email" placeholder="E-Mail" />
+          </div>
+          <div>
+            <BaseLabel text="Password" />
+            <BaseInput
+              ref="passwordInput"
+              v-model="password"
+              placeholder="Password"
+              :type="isPasswordVisible ? 'text' : 'password'"
+            />
+          </div>
           <BaseButton
             class="w-full"
             variant="yellow"
             text="Register"
             @click="register"
           />
-          <UDivider label="OR" />
-        </div>
+        </BaseBox>
       </div>
       <div class="flex h-full w-1/2 items-center px-12 pb-24">
         <img src="/img/invoi-illu.svg" alt="" />

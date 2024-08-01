@@ -4,22 +4,26 @@
       <div
         class="flex h-full w-1/2 flex-col justify-center px-24 py-12 dark:bg-blue-100"
       >
-        <div class="w-full">
-          <h1
-            class="mb-6 font-syne text-4xl font-extrabold text-blue-70 dark:text-white"
-          >
-            Login
-          </h1>
-          <div class="mb-3">
-            <label class="block text-gray-500 dark:text-gray-100" for="username"
-              >Username</label
+        <div class="pb-12">
+          <BaseHeadline
+            class="mb-8 text-blue-80 dark:text-white"
+            text="Einloggen"
+            type="h1"
+          />
+          <p class="w-6/12 text-xl text-slate-600 dark:text-white">
+            Falls du noch kein Konto hast, kannst du dich
+            <NuxtLink class="text-yellow-normal" to="/register"
+              >hier registrieren</NuxtLink
             >
+          </p>
+        </div>
+        <BaseBox class="w-full">
+          <div class="mb-3">
+            <BaseLabel text="Username" />
             <BaseInput v-model="username" type="text" />
           </div>
           <div class="mb-3">
-            <label class="block text-gray-500 dark:text-gray-100" for="password"
-              >Password</label
-            >
+            <BaseLabel text="Password" />
             <BaseInput v-model="password" type="password" />
           </div>
           <BaseButton
@@ -28,7 +32,7 @@
             text="Login"
             @click="login"
           />
-        </div>
+        </BaseBox>
       </div>
       <div class="flex h-full w-1/2 items-center px-12 pb-24">
         <img src="/img/invoi-illu.svg" alt="" />
@@ -53,8 +57,20 @@ const username = ref(null);
 const email = ref(null);
 const password = ref(null);
 
+type Response = {
+  timeToExpiration: number;
+  response: {
+    status: number;
+    data: {
+      token: string;
+      id: string;
+      username: string;
+    };
+  };
+};
+
 async function login() {
-  let response;
+  let response: Response;
   try {
     response = await $fetch("/api/login", {
       method: "POST",
@@ -65,11 +81,13 @@ async function login() {
       },
     });
     console.log(response);
-    if (response.status === 200) {
-      authStore.setAccessToken(response.data.token);
-      authStore.setUserId(response.data.id);
-      authStore.setUserName(response.data.username);
+    if (response.response.status === 200) {
+      console.log(response.response.status);
+      authStore.setAccessToken(response.response.data.token);
+      authStore.setUserId(response.response.data.id);
+      authStore.setUserName(response.response.data.username);
       authStore.setUserLoggedIn(true);
+      authStore.setExpiration(response.timeToExpiration);
       alertStore.setAlert(
         "success",
         "🎉 You have successfully logged in. Redirecting you to your dashboard."
@@ -79,8 +97,8 @@ async function login() {
       const accessToken = useCookie("accessToken", { maxAge: 3600 });
 
       const userId = useCookie("userId");
-      accessToken.value = response.data.token;
-      userId.value = response.data.id;
+      accessToken.value = response.response.data.token;
+      userId.value = response.response.data.id;
       navigateTo("/dashboard");
       setTimeout(() => {
         alertStore.resetAlert();

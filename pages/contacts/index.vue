@@ -4,17 +4,17 @@
       <div class="flex items-center gap-3">
         <BaseButton
           to="/contacts/create"
-          text="Create contact"
+          text="Kontakt erstellen"
           variant="yellow"
         />
         <BaseButton
           to="/contacts/import"
-          text="Import contacts"
+          text="Kontakte importieren"
           variant="outline"
         />
         <BaseButton
           to="/contacts/categories"
-          text="Manage categories"
+          text="Kategorien verwalten"
           variant="outline"
         />
       </div>
@@ -85,14 +85,14 @@
                     @click="toggleSelectAll"
                   />
                 </th>
-                <th class="px-6 py-5 text-left">Firstname</th>
-                <th class="px-6 py-5 text-left">Lastname</th>
-                <th class="px-6 py-5 text-left">DOB</th>
-                <th class="px-6 py-5 text-left">Street</th>
-                <th class="px-6 py-5 text-left">Zip</th>
-                <th class="px-6 py-5 text-left">City</th>
-                <th class="px-6 py-5 text-left">Categories</th>
-                <th class="px-6 py-5 text-left">Action</th>
+                <th class="px-6 py-5 text-left">Vorname</th>
+                <th class="px-6 py-5 text-left">Nachname</th>
+                <th class="px-6 py-5 text-left">Geburtsdatum</th>
+                <th class="px-6 py-5 text-left">Straße</th>
+                <th class="px-6 py-5 text-left">PLZ</th>
+                <th class="px-6 py-5 text-left">Stadt</th>
+                <th class="px-6 py-5 text-left">Kategorien</th>
+                <th class="px-6 py-5 text-left">Handlung</th>
               </tr>
             </thead>
             <tbody>
@@ -236,11 +236,11 @@ import { useAuthStore } from "~/stores/auth.store";
 const authStore = useAuthStore();
 
 definePageMeta({
-  title: "Contacts",
+  title: "Kontakte",
 });
 
 useHead({
-  title: "Contacts",
+  title: "Kontakte",
 });
 
 type Contact = {

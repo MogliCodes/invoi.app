@@ -1,5 +1,13 @@
 <template>
   <div class="flex flex-col sm:flex-row">
+    <div
+      class="fixed shadow-lg p-4 rounded-xl text-sm top-16 right-2 bg-yellow-100 text-yellow-700 z-50"
+    >
+      <div class="flex gap-4 items-center">
+        <UIcon name="i-heroicons-information-circle" class="scale-150" />
+        <span>Sitzung läuft ab in: {{ formattedTime }}</span>
+      </div>
+    </div>
     <TheSidebar v-if="authStore.isUserLoggedIn" />
     <main class="relative ml-auto w-10/12 bg-gray-100 py-24 dark:bg-blue-100">
       <StickyElement
@@ -57,6 +65,7 @@
               @click="toggleUserMenu"
             />
             <BaseMenuItem
+              @click="logout"
               icon="i-heroicons-arrow-left-on-rectangle"
               text="Logout"
               size="sm"
@@ -95,6 +104,49 @@ function toggleUserMenu() {
 }
 const userMenu = ref(null);
 onClickOutside(userMenu, () => (isUserMenuActive.value = false));
+
+async function logout() {
+  const response = await $fetch("/api/logout", {
+    method: "POST",
+    body: {
+      userId: authStore.userId,
+    },
+  });
+  if (response.status === 200) {
+    authStore.setUserLoggedIn(false);
+    authStore.setAccessToken(null);
+    authStore.setUserId(null);
+    navigateTo("/login");
+  }
+}
+
+const expiresInTime: Ref<number> = ref(authStore.expiration);
+
+const formattedTime = computed<string>(() => {
+  const days = Math.floor(expiresInTime.value / 86400000);
+  const hours = Math.floor((expiresInTime.value % 86400000) / 3600000);
+  const minutes = Math.floor(expiresInTime.value / (1000 * 60)) % 60;
+  const seconds = ((expiresInTime.value % 60000) / 1000).toFixed(0);
+
+  return `${days}d ${hours}h ${minutes}m ${seconds}s`;
+});
+
+setInterval(() => {
+  console.log(expiresInTime.value);
+  expiresInTime.value -= 1000;
+}, 1000);
+
+// function formatExpirationDate(time: number): string {
+//   // decrease time by 1 second
+//   time -= 1000;
+//   console.log(time);
+//   const days = Math.floor(time / 86400000);
+//   const hours = Math.floor((time % 86400000) / 3600000);
+//   const minutes = Math.floor(time / (1000 * 60)) % 60;
+//   const seconds = ((time % 60000) / 1000).toFixed(0);
+//
+//   return `${days}d ${hours}h ${minutes}m ${seconds}s`;
+// }
 </script>
 
 <style>
