@@ -132,7 +132,7 @@
           </div>
         </BaseBox>
       </section>
-      <section>
+      <section id="defaults" class="pt-20">
         <BaseHeadline
           type="h2"
           text="Defaults"
@@ -214,16 +214,13 @@ const taxRate = ref("");
 
 const config = useRuntimeConfig();
 const backendBaseUrl = config.public.BACKEND_BASE_URL;
-const { data: settings, refresh } = useFetch(
-  `${backendBaseUrl}/restapi/settings`,
-  {
-    method: "GET",
-    headers: {
-      Authorization: `Bearer ${authStore.accessToken}`,
-      userid: authStore.userId,
-    },
-  }
-);
+const { data: settings, refresh } = useFetch(`/api/settings/get`, {
+  method: "POST",
+  headers: {
+    Authorization: `Bearer ${authStore.accessToken}`,
+    userid: authStore.userId,
+  },
+});
 
 // useFetch post call to update settings
 async function updateSettings() {

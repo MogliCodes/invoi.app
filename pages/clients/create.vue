@@ -7,7 +7,11 @@
         <form @submit.prevent="createClient">
           <div class="mb-3">
             <BaseLabel text="Name" />
-            <BaseInput v-model="company" />
+            <BaseInput
+              is-required
+              error-message="Bitte gib einen Namen für den Kunden an"
+              v-model="company"
+            />
           </div>
           <div class="mb-3">
             <BaseLabel text="Straße" />

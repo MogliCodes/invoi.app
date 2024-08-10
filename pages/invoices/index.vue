@@ -1,6 +1,6 @@
 <template>
   <div class="container mx-auto">
-    <div class="mb-12 flex items-end justify-between">
+    <section class="mb-12 flex items-end justify-between">
       <div>
         <BaseButtonGroup>
           <BaseButton
@@ -20,7 +20,7 @@
           />
         </BaseButtonGroup>
       </div>
-    </div>
+    </section>
     <Transition>
       <section v-if="showAdvancedFilters" class="mb-8">
         <div class="flex gap-4">
@@ -32,7 +32,13 @@
         </div>
       </section>
     </Transition>
-    <div v-if="invoices && invoices.length">
+    <BaseNote v-if="invoices.length === 0">
+      <p>
+        Du hast noch keine Rechnungen angelegt. Klicke auf "Rechnung erstellen"
+        um eine neue Rechnung zu erstellen.
+      </p>
+    </BaseNote>
+    <div v-else>
       <div class="mb-2">
         <span class="text-sm font-bold text-secondary-100">{{
           invoices?.length

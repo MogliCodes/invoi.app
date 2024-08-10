@@ -153,7 +153,7 @@
       </div>
     </section>
     <!-- User data -->
-    <section>
+    <section v-if="debug">
       <BaseContainer>
         <BaseBox>
           <div class="text-xl dark:text-white">User data</div>
@@ -163,7 +163,7 @@
         </BaseBox>
       </BaseContainer>
     </section>
-    <section style="height: 1000px"></section>
+    <section v-if="debug" style="height: 1000px"></section>
   </div>
 </template>
 
@@ -279,6 +279,7 @@ type UserData = {
 const userId = authStore.userId;
 
 const config = useRuntimeConfig();
+const debug = config.public.DEBUG;
 const backendBaseUrl = config.public.BACKEND_BASE_URL;
 const { data: userData } = useFetch<UserData>(
   `${backendBaseUrl}/restapi/user/${userId}`,

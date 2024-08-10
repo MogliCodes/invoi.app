@@ -7,11 +7,11 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     public: {
+      debug: process.env.NUXT_PUBLIC_DEBUG,
       BACKEND_BASE_URL: process.env.NUXT_PUBLIC_BACKEND_BASE_URL,
       clientVersion: pkg.version,
     },
   },
-  devtools: true,
   modules: ["@nuxt/ui", "@nuxtjs/supabase", "@pinia/nuxt"],
   supabase: {
     url: process.env.SUPABASE_URL,

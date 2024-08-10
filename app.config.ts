@@ -9,7 +9,7 @@ export default defineAppConfig({
       color: {
         white: {
           outline:
-            "shadow-sm ring-gray-200 bg-gray-100 text-md focus:border-yellow-normal dark:bg-black dark:bg-opacity-10 text-gray-900 dark:text-white ring-2 ring-inset  dark:ring-white dark:ring-opacity-20 focus:ring-2 focus:ring-yellow-normal dark:focus:ring-primary-400",
+            "shadow-sm ring-gray-200 bg-white text-md focus:border-yellow-normal dark:bg-black dark:bg-opacity-10 text-gray-900 dark:text-white ring-2 ring-inset  dark:ring-white dark:ring-opacity-20 focus:ring-2 focus:ring-yellow-normal dark:focus:ring-primary-400",
         },
         gray: {
           outline:

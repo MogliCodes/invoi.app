@@ -1,6 +1,6 @@
 <template>
-  <div class="flex flex-col gap-6">
-    <section>
+  <div class="flex flex-col">
+    <section class="mb-12">
       <div class="flex items-center gap-3">
         <BaseButton
           to="/services/create"
@@ -14,19 +14,13 @@
         />
       </div>
     </section>
-    <section v-if="!services" class="flex">
-      <BaseBox class="text-center">
-        <BaseHeadline text="No services available" type="h2"></BaseHeadline>
+    <section v-if="!services?.length">
+      <BaseNote>
         <p>
-          There are currently no services available. <br />
-          Go ahead and create your first service!
+          You have not created any services yet. Click on "Create services" to
+          create a new service.
         </p>
-        <BaseButton
-          to="/services/create"
-          text="Create service"
-          variant="yellow"
-        />
-      </BaseBox>
+      </BaseNote>
     </section>
     <section v-else>
       <table class="min-w-full overflow-hidden rounded-lg dark:text-gray-400">

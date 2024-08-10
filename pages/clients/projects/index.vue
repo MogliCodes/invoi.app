@@ -1,6 +1,6 @@
 <template>
   <section>
-    <div class="flex items-center gap-3">
+    <div class="flex items-center gap-3 mb-12">
       <BaseButton
         to="/clients/projects/create"
         text="Create project"
@@ -8,22 +8,29 @@
       />
     </div>
   </section>
-  <section v-if="projects" class="mt-10">
-    <table class="w-full overflow-hidden rounded-lg dark:text-gray-400">
-      <thead class="bg-blue-90 text-white">
-        <tr>
-          <th class="px-6 py-5 text-left">Title</th>
-          <th class="px-6 py-5 text-left">Client</th>
-          <th class="px-6 py-5 text-left">Description</th>
-          <th class="px-6 py-5 text-left">Fortschritt</th>
-          <th class="px-6 py-5 text-left">Budget</th>
-          <th class="px-6 py-5 text-left">Aufgewendete Zeit</th>
-          <th class="px-6 py-5 text-right">Actions</th>
-        </tr>
-      </thead>
-      <tbody>
+  <section v-if="!projects">
+    <BaseNote>
+      <p>
+        You have not created any projects yet. Click the button above to create
+        your first project.
+      </p>
+    </BaseNote>
+  </section>
+  <section v-else class="mt-10">
+    <BaseTable class="w-full overflow-hidden rounded-lg dark:text-gray-400">
+      <template #head>
+        <th class="px-6 py-5 text-left">Title</th>
+        <th class="px-6 py-5 text-left">Client</th>
+        <th class="px-6 py-5 text-left">Description</th>
+        <th class="px-6 py-5 text-left">Fortschritt</th>
+        <th class="px-6 py-5 text-left">Budget</th>
+        <th class="px-6 py-5 text-left">Aufgewendete Zeit</th>
+        <th class="px-6 py-5 text-right">Actions</th>
+      </template>
+      <template #body>
         <tr
           v-for="project in projects"
+          :key="project._id"
           class="rounded bg-white p-4 even:bg-gray-200 dark:odd:bg-blue-80 dark:even:bg-blue-90"
         >
           <td class="px-6 py-3">{{ project.title }}</td>
@@ -54,8 +61,8 @@
             </span>
           </td>
         </tr>
-      </tbody>
-    </table>
+      </template>
+    </BaseTable>
   </section>
 </template>
 

@@ -81,6 +81,8 @@ async function register() {
       setTimeout(() => {
         showAlert.value = false;
       }, 5000);
+    } else {
+      navigateTo("/onboarding");
     }
   } catch (error) {
     console.error(error);

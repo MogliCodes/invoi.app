@@ -9,7 +9,9 @@
       </div>
     </div>
     <TheSidebar v-if="authStore.isUserLoggedIn" />
-    <main class="relative ml-auto w-10/12 bg-gray-100 py-24 dark:bg-blue-100">
+    <main
+      class="relative ml-auto w-10/12 bg-gray-100 py-24 dark:bg-blue-100 min-h-screen"
+    >
       <StickyElement
         v-if="useRoute().meta.title"
         class="mb-3"
@@ -75,7 +77,6 @@
         </div>
       </div>
     </main>
-    <div style="height: 2000px"></div>
   </div>
 </template>
 

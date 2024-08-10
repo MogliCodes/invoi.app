@@ -19,58 +19,67 @@
         />
       </div>
     </section>
-    <section class="mb-2 w-full">
-      <div class="flex w-full items-center justify-between gap-8">
-        <div class="flex gap-3">
-          <div>
-            <span class="text-sm font-bold text-secondary-100">{{
-              data?.length
-            }}</span>
-            <span class="text-sm font-bold text-secondary-100"> Contacts </span>
-          </div>
-        </div>
-        <div v-if="contactCount > 20" class="flex gap-6">
-          <div>
-            <USelect
-              v-model.number="pageSize"
-              color="white"
-              :options="pageSizeOptions"
-            />
-          </div>
-          <UPagination
-            v-model.number="page"
-            size="sm"
-            :page-count="pageSize"
-            :total="contactCount"
-          >
-            <template #prev>
-              <UTooltip text="Previous page">
-                <UButton
-                  icon="i-heroicons-arrow-small-left-20-solid"
-                  color="yellow"
-                  class="me-2 rtl:[&_span:first-child]:rotate-180"
-                  @click="page--"
-                />
-              </UTooltip>
-            </template>
-            <template #next>
-              <UTooltip text="Next page">
-                <UButton
-                  icon="i-heroicons-arrow-small-right-20-solid"
-                  color="yellow"
-                  class="ms-2 rtl:[&_span:last-child]:rotate-180"
-                  @click="page++"
-                />
-              </UTooltip> </template
-          ></UPagination>
-        </div>
-      </div>
-    </section>
+
     <section class="w-full">
-      <div v-if="!data?.length" class="flex flex-col items-start gap-4">
-        <p>No contacts created yet! Start creating your first contact.</p>
+      <div
+        v-if="!data?.length"
+        class="bg-blue-500 bg-opacity-10 border-2 border-blue-500 p-5 rounded-lg flex flex-col items-start gap-4 text-blue-950"
+      >
+        <p>
+          Du hast noch keine Kontakte angelegt. Klicke auf "Kontakt erstellen"
+          um einen neuen Kontakt zu erstellen.
+        </p>
       </div>
       <div v-else>
+        <section class="mb-2 w-full">
+          <div class="flex w-full items-center justify-between gap-8">
+            <div class="flex gap-3">
+              <div>
+                <span class="text-sm font-bold text-secondary-100">{{
+                  data?.length
+                }}</span>
+                <span class="text-sm font-bold text-secondary-100">
+                  Kontakte
+                </span>
+              </div>
+            </div>
+            <div v-if="contactCount > 20" class="flex gap-6">
+              <div>
+                <USelect
+                  v-model.number="pageSize"
+                  color="white"
+                  :options="pageSizeOptions"
+                />
+              </div>
+              <UPagination
+                v-model.number="page"
+                size="sm"
+                :page-count="pageSize"
+                :total="contactCount"
+              >
+                <template #prev>
+                  <UTooltip text="Previous page">
+                    <UButton
+                      icon="i-heroicons-arrow-small-left-20-solid"
+                      color="yellow"
+                      class="me-2 rtl:[&_span:first-child]:rotate-180"
+                      @click="page--"
+                    />
+                  </UTooltip>
+                </template>
+                <template #next>
+                  <UTooltip text="Next page">
+                    <UButton
+                      icon="i-heroicons-arrow-small-right-20-solid"
+                      color="yellow"
+                      class="ms-2 rtl:[&_span:last-child]:rotate-180"
+                      @click="page++"
+                    />
+                  </UTooltip> </template
+              ></UPagination>
+            </div>
+          </div>
+        </section>
         <div class="max-w-full overflow-x-auto rounded-lg shadow-lg">
           <table
             class="min-w-full overflow-hidden rounded-lg dark:text-gray-400"
@@ -146,49 +155,49 @@
             </tbody>
           </table>
         </div>
-      </div>
-      <div class="flex justify-between py-4">
-        <div class="flex items-center gap-2">
-          <USelectMenu
-            v-model="bulkAction"
-            class="cursor-pointer"
-            size="xl"
-            color="white"
-            :options="bulkActionOptions"
+        <div class="flex justify-between py-4">
+          <div class="flex items-center gap-2">
+            <USelectMenu
+              v-model="bulkAction"
+              class="cursor-pointer"
+              size="xl"
+              color="white"
+              :options="bulkActionOptions"
+            >
+              <template #label>
+                {{ bulkAction }}
+              </template>
+            </USelectMenu>
+            <BaseButton size="sm" text="Anwenden" @click="executeBulkAction" />
+          </div>
+          <UPagination
+            v-if="contactCount > 20"
+            v-model.number="page"
+            size="sm"
+            :page-count="pageSize"
+            :total="contactCount"
           >
-            <template #label>
-              {{ bulkAction }}
+            <template #prev="{ onClick }">
+              <UTooltip text="Previous page">
+                <UButton
+                  icon="i-heroicons-arrow-small-left-20-solid"
+                  color="primary"
+                  class="me-2 rtl:[&_span:first-child]:rotate-180"
+                  @click="onClick"
+                />
+              </UTooltip>
             </template>
-          </USelectMenu>
-          <BaseButton size="sm" text="Apply" @click="executeBulkAction" />
+            <template #next="{ onClick }">
+              <UTooltip text="Next page">
+                <UButton
+                  icon="i-heroicons-arrow-small-right-20-solid"
+                  color="primary"
+                  class="ms-2 rtl:[&_span:last-child]:rotate-180"
+                  @click="onClick"
+                />
+              </UTooltip> </template
+          ></UPagination>
         </div>
-        <UPagination
-          v-if="contactCount > 20"
-          v-model.number="page"
-          size="sm"
-          :page-count="pageSize"
-          :total="contactCount"
-        >
-          <template #prev="{ onClick }">
-            <UTooltip text="Previous page">
-              <UButton
-                icon="i-heroicons-arrow-small-left-20-solid"
-                color="primary"
-                class="me-2 rtl:[&_span:first-child]:rotate-180"
-                @click="onClick"
-              />
-            </UTooltip>
-          </template>
-          <template #next="{ onClick }">
-            <UTooltip text="Next page">
-              <UButton
-                icon="i-heroicons-arrow-small-right-20-solid"
-                color="primary"
-                class="ms-2 rtl:[&_span:last-child]:rotate-180"
-                @click="onClick"
-              />
-            </UTooltip> </template
-        ></UPagination>
       </div>
     </section>
     <UModal v-model="isOpen">

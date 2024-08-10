@@ -3,7 +3,15 @@
     <section>
       <BaseButton to="/invoices/templates/upload" text="Upload template" />
     </section>
-    <section>
+    <section v-if="!customTemplates.length">
+      <BaseNote>
+        <p>
+          You have not uploaded any custom templates yet. Click the button above
+          to upload a new template.
+        </p>
+      </BaseNote>
+    </section>
+    <section v-else>
       <div class="container mx-auto">
         <table class="min-w-full overflow-hidden rounded-lg dark:text-gray-400">
           <thead class="bg-blue-90 text-white">

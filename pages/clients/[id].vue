@@ -36,10 +36,16 @@
           </div>
         </BaseBox>
       </section>
+
       <section v-if="invoices">
         <BaseHeadline type="h2" :text="`Invoices to ${client.company}`" />
+        <section v-if="!invoices.length">
+          <BaseNote>
+            <p>Du hast noch keine Rechnungen für diesen Kunden erstellt.</p>
+          </BaseNote>
+        </section>
         <table
-          v-if="invoices"
+          v-else
           class="min-w-full overflow-hidden rounded-lg shadow-md dark:text-gray-400"
         >
           <thead class="bg-blue-90 text-white">
@@ -71,7 +77,13 @@
       </section>
       <section v-if="contacts">
         <BaseHeadline type="h2" :text="`Contacts at ${client.company}`" />
+        <section v-if="!contacts.length">
+          <BaseNote>
+            <p>Du hast noch keine Kontakte für diesen Kunden erstellt.</p>
+          </BaseNote>
+        </section>
         <table
+          v-else
           class="min-w-full overflow-hidden rounded-lg shadow-md dark:text-gray-400"
         >
           <thead class="bg-blue-90 text-white">
@@ -117,7 +129,15 @@
       </section>
       <section>
         <BaseHeadline type="h2" text="Client-specific rates and prices" />
-        <div class="flex flex-col items-start gap-4">
+        <section v-if="true">
+          <BaseNote>
+            <p>
+              Hier kannst du spezifische Preise für Dienstleistungen für diesen
+              Kunden hinterlegen.
+            </p>
+          </BaseNote>
+        </section>
+        <div v-else class="flex flex-col items-start gap-4">
           <table
             class="min-w-full overflow-hidden rounded-lg dark:text-gray-400"
           >

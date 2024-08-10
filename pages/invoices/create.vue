@@ -10,6 +10,17 @@
         />
       </div>
     </section>
+    <section v-if="!validSettings" class="mb-12">
+      <BaseNote>
+        <p>
+          Du hast bisher keine Bankverbindung hinterlegt. Bitte gehe zu den
+          Einstellungen und fülle die Bankverbindung aus.
+        </p>
+        <NuxtLink class="text-blue-600 font-bold" to="/settings#defaults">
+          Zu den Einstellungen
+        </NuxtLink>
+      </BaseNote>
+    </section>
     <!-- Invoice details -->
     <section>
       <BaseHeadline type="h2" text="Rechnungsdetails" />
@@ -318,17 +329,21 @@ type Settings = {
   message: any;
 };
 
-const { data: settings } = useFetch<Settings>(
-  `${backendBaseUrl}/restapi/settings`,
-  {
-    method: "GET",
-    headers: {
-      Authorization: `Bearer ${authStore.accessToken}`,
-      userid: authStore.userId,
-    },
-  }
-);
+const { data: settings } = useFetch<Settings>(`/api/settings/get`, {
+  method: "POST",
+  headers: {
+    Authorization: `Bearer ${authStore.accessToken}`,
+    userid: authStore.userId,
+  },
+});
 const defaultRate = ref(0);
+const validSettings = computed<boolean>(() => {
+  return (
+    settings?.value?.data?.bankName &&
+    settings?.value?.data?.iban &&
+    settings?.value?.data?.bic
+  );
+});
 
 const rows: Ref<Array<InvoicePosition>> = ref([
   {
@@ -487,10 +502,10 @@ async function getInvoicePreview() {
   showPreview.value = true;
 }
 
-// const showDraftSelectModal = ref(false);
-// function useDraft() {
-//   showDraftSelectModal.value = true;
-// }
+const showDraftSelectModal = ref(false);
+function useDraft() {
+  showDraftSelectModal.value = true;
+}
 
 function applyDraft() {
   if (!invoiceDrafts.value) return;
@@ -586,5 +601,10 @@ tr:hover .add-row-btn {
   transform: scale(1) translateY(50%);
   transform-origin: center;
   z-index: 100;
+}
+
+.box select,
+.box button {
+  @apply bg-slate-100;
 }
 </style>
