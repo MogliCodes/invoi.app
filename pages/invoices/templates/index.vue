@@ -13,17 +13,15 @@
     </section>
     <section v-else>
       <div class="container mx-auto">
-        <table class="min-w-full overflow-hidden rounded-lg dark:text-gray-400">
-          <thead class="bg-blue-90 text-white">
-            <tr>
-              <th class="px-6 py-5 text-left">ID</th>
-              <th class="px-6 py-5 text-left">Title</th>
-              <th class="px-6 py-5 text-left">Filename</th>
-              <th class="px-6 py-5 text-left">Tag</th>
-              <th class="px-6 py-5 text-right">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
+        <BaseTable>
+          <template #head>
+            <th class="px-6 py-5 text-left">ID</th>
+            <th class="px-6 py-5 text-left">Title</th>
+            <th class="px-6 py-5 text-left">Filename</th>
+            <th class="px-6 py-5 text-left">Tag</th>
+            <th class="px-6 py-5 text-right">Actions</th>
+          </template>
+          <template #body>
             <tr
               v-for="template in customTemplates"
               :key="template._id"
@@ -61,8 +59,8 @@
                 </span>
               </td>
             </tr>
-          </tbody>
-        </table>
+          </template>
+        </BaseTable>
       </div>
     </section>
   </main>

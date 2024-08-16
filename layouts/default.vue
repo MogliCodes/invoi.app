@@ -132,8 +132,11 @@ const formattedTime = computed<string>(() => {
   return `${days}d ${hours}h ${minutes}m ${seconds}s`;
 });
 onMounted(() => {
-  setInterval(() => {
-    console.log(expiresInTime.value);
+  const interval = setInterval(() => {
+    if (expiresInTime.value <= 0) {
+      clearInterval(interval);
+      logout();
+    }
     expiresInTime.value -= 1000;
   }, 1000);
 });

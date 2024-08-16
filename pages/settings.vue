@@ -20,11 +20,18 @@
           <div class="mb-6 flex flex-col gap-3">
             <div>
               <BaseLabel text="Profile Image" />
-              <BaseInput
-                v-model="profileImage"
-                type="file"
-                placeholder="Username"
-              />
+              <div class="flex">
+                <BaseInput
+                  v-model="profileImage"
+                  type="file"
+                  placeholder="Username"
+                />
+                <BaseButton
+                  type="submit"
+                  text="Upload"
+                  @click="uploadProfileImage"
+                />
+              </div>
             </div>
             <div>
               <BaseLabel text="Username" />
@@ -221,6 +228,26 @@ const { data: settings, refresh } = useFetch(`/api/settings/get`, {
     userid: authStore.userId,
   },
 });
+
+async function uploadProfileImage() {
+  const avatar = profileImage.value?.files?.[0];
+  if (!avatar) {
+    alertStore.setAlert("error", "No file selected");
+    setTimeout(() => {
+      alertStore.resetAlert();
+    }, 5000);
+  }
+  const formData = new FormData();
+  formData.append("avatar", avatar);
+  const res = await $fetch(`/api/user/avatar`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${authStore.accessToken}`,
+      userid: authStore.userId,
+    },
+    body: formData,
+  });
+}
 
 // useFetch post call to update settings
 async function updateSettings() {

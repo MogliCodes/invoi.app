@@ -10,7 +10,7 @@
         />
       </div>
     </section>
-    <section v-if="!validSettings" class="mb-12">
+    <section v-if="!validSettings" class="mb-6">
       <BaseNote>
         <p>
           Du hast bisher keine Bankverbindung hinterlegt. Bitte gehe zu den
@@ -18,6 +18,17 @@
         </p>
         <NuxtLink class="text-blue-600 font-bold" to="/settings#defaults">
           Zu den Einstellungen
+        </NuxtLink>
+      </BaseNote>
+    </section>
+    <section v-if="!templates" class="mb-12">
+      <BaseNote>
+        <p>
+          Du hast bisher keine Rechnungstemplates erstellt. Bitte erstelle ein
+          Template bevor du eine Rechnung erstellst.
+        </p>
+        <NuxtLink class="text-blue-600 font-bold" to="/invoices/templates">
+          Zu den Templates
         </NuxtLink>
       </BaseNote>
     </section>
@@ -279,9 +290,9 @@ const rateTypeOptions = ["hourly", "daily"];
 const taxOptions = ["7%", "19%"];
 const selectedTaxes = ref([]);
 
-/* ==============
+/* ==========================================
  * Data fetching
- ============== */
+ ========================================== */
 const { data: clients } = useFetch<Array<Client>>(`/api/clients/get`, {
   method: "POST",
   headers: {
@@ -292,6 +303,17 @@ const { data: clients } = useFetch<Array<Client>>(`/api/clients/get`, {
 
 const { data: generatedInvoiceNumber } = useFetch<string>(
   `/api/invoices/number`,
+  {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${authStore.accessToken}`,
+      userid: authStore.userId,
+    },
+  }
+);
+
+const { data: templates } = useFetch<Array<InvoiceTemplate>>(
+  `/api/templates/get`,
   {
     method: "POST",
     headers: {
@@ -318,11 +340,8 @@ const invoiceNumber: Ref<string> = ref(generatedInvoiceNumber.value || "");
 const selectedRateType = ref();
 const hasTaxes: Ref<boolean> = ref(true);
 const isReverseChargeInvoice: Ref<boolean> = ref(false);
-
 const contactsPerClient = ref();
-
 const config = useRuntimeConfig();
-const backendBaseUrl = config.public.BACKEND_BASE_URL;
 
 type Settings = {
   data: any;
@@ -603,8 +622,7 @@ tr:hover .add-row-btn {
   z-index: 100;
 }
 
-.box select,
-.box button {
+.box select {
   @apply bg-slate-100;
 }
 </style>

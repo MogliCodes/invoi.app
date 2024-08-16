@@ -19,7 +19,7 @@ router.post(
       .get()
       .setResource("contact")
       .setHeaders(headers)
-      .addParam("clientId", `${query.clientId}`)
+      .addParam("userid", `${query.clientId}`)
       .execute();
   })
 );
