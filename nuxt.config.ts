@@ -11,6 +11,7 @@ export default defineNuxtConfig({
       BACKEND_BASE_URL: process.env.NUXT_PUBLIC_BACKEND_BASE_URL,
       clientVersion: pkg.version,
     },
+    secretKey: process.env.SECRET_KEY,
   },
   modules: ["@nuxt/ui", "@nuxtjs/supabase", "@pinia/nuxt"],
   supabase: {

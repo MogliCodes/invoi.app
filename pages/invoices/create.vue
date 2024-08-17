@@ -10,8 +10,17 @@
         />
       </div>
     </section>
-    <section v-if="!validSettings" class="mb-6">
-      <BaseNote>
+    <section v-if="!validSettings || !clients.length" class="mb-6">
+      <BaseNote v-if="!clients.length" class="mb-6">
+        <p>
+          Du hast noch keinen Kunden angelegt. Bitte lege erst einen Kunden an,
+          bevor du eine Rechnung erstellst.
+        </p>
+        <NuxtLink class="text-blue-600 font-bold" to="/clients/create"
+          >Kunden anlegen</NuxtLink
+        >
+      </BaseNote>
+      <BaseNote v-if="!validSettings">
         <p>
           Du hast bisher keine Bankverbindung hinterlegt. Bitte gehe zu den
           Einstellungen und fülle die Bankverbindung aus.
@@ -32,236 +41,241 @@
         </NuxtLink>
       </BaseNote>
     </section>
-    <!-- Invoice details -->
-    <section>
-      <BaseHeadline type="h2" text="Rechnungsdetails" />
-      <BaseBox class="mb-6 flex gap-6">
-        <div class="flex w-1/2 flex-col gap-3">
-          <div v-if="clients && selectedClient">
-            <BaseLabel text="Kunde" />
-            <USelect
-              v-model="selectedClient"
-              size="md"
-              placeholder="Wähle einen Kunden"
-              option-attribute="company"
-              value-attribute="_id"
-              :options="clients"
-            >
-              <template #label>
-                {{ selectedClient?.company }}
-              </template>
-            </USelect>
-          </div>
-          <div v-if="selectedClient">
-            <BaseLabel text="Kontaktperson" />
-            <USelect
-              v-model="selectedContact"
-              size="md"
-              placeholder="Select a contact person"
-              :options="contactsPerClient"
-              value-attribute="_id"
-              option-attribute="firstname"
-            >
-              <template #label>
-                {{ selectedContact?.firstname }}
-                {{ selectedContact?.lastname }}}
-              </template>
-            </USelect>
-          </div>
-          <div>
-            <BaseLabel text="Titel" />
-            <BaseInput v-model="invoiceTitle" placeholder="Rechnung MM/JJJJ" />
-          </div>
-          <div>
-            <BaseLabel text="Rechnungsnummer" />
-            <BaseInput v-model="invoiceNumber" placeholder="invoiceNumber" />
-          </div>
-        </div>
-        <div class="flex w-1/2 flex-col gap-3">
-          <div>
-            <BaseLabel text="Rechnungsdatum" />
-            <BaseInput
-              v-model="invoiceDate"
-              type="date"
-              size="sm"
-              placeholder="JJJJ-XXX"
-            />
-          </div>
-          <div>
-            <BaseLabel text="Leistungszeitraum" />
-            <div class="flex gap-2">
+    <div v-if="validSettings">
+      <!-- Invoice details -->
+      <section v-if="validSettings">
+        <BaseHeadline type="h2" text="Rechnungsdetails" />
+        <BaseBox class="mb-6 flex gap-6">
+          <div class="flex w-1/2 flex-col gap-3">
+            <div v-if="clients && selectedClient">
+              <BaseLabel text="Kunde" />
+              <USelect
+                v-model="selectedClient"
+                size="md"
+                placeholder="Wähle einen Kunden"
+                option-attribute="company"
+                value-attribute="_id"
+                :options="clients"
+              >
+                <template #label>
+                  {{ selectedClient?.company }}
+                </template>
+              </USelect>
+            </div>
+            <div v-if="selectedClient">
+              <BaseLabel text="Kontaktperson" />
+              <USelect
+                v-model="selectedContact"
+                size="md"
+                placeholder="Select a contact person"
+                :options="contactsPerClient"
+                value-attribute="_id"
+                option-attribute="firstname"
+              >
+                <template #label>
+                  {{ selectedContact?.firstname }}
+                  {{ selectedContact?.lastname }}}
+                </template>
+              </USelect>
+            </div>
+            <div>
+              <BaseLabel text="Titel" />
               <BaseInput
-                v-model="performancePeriodStart"
-                type="date"
-                size="sm"
-                placeholder="invoiceDate"
-              />
-              <BaseInput
-                v-model="performancePeriodEnd"
-                type="date"
-                size="sm"
-                placeholder="invoiceDate"
+                v-model="invoiceTitle"
+                placeholder="Rechnung MM/JJJJ"
               />
             </div>
+            <div>
+              <BaseLabel text="Rechnungsnummer" />
+              <BaseInput v-model="invoiceNumber" placeholder="invoiceNumber" />
+            </div>
           </div>
-          <div>
-            <BaseLabel text="Satz" />
-            <USelectMenu
-              v-model="selectedRateType"
-              class="mb-3"
-              placeholder="Select rate type"
-              :options="rateTypeOptions"
-            >
-            </USelectMenu>
-          </div>
-          <div>
-            <BaseLabel text="Steuern" />
-            <USelectMenu
-              v-if="clients"
-              v-model="selectedTaxes"
-              multiple
-              class="mb-3"
-              placeholder="Select taxes"
-              :options="taxOptions"
-            >
-            </USelectMenu>
-          </div>
-          <div class="flex flex-col gap-2">
-            <UCheckbox v-model="hasTaxes" name="taxes" label="Add taxes" />
-            <UCheckbox
-              v-model="isReverseChargeInvoice"
-              name="taxes"
-              label="Is reverse charge invoice"
-            />
-            <UCheckbox label="Save as template" />
-          </div>
-        </div>
-      </BaseBox>
-    </section>
-    <!-- Invoice items -->
-    <section>
-      <BaseHeadline type="h2" text="Rechnungspositionen" />
-      <div class="shadow-lg">
-        <BaseTable>
-          <template #head>
-            <thead class="bg-blue-90 text-white">
-              <tr>
-                <th></th>
-                <th class="w-1/12 px-6 py-5 text-left">Position</th>
-                <th class="w-7/12 px-6 py-5 text-left">Beschreibung</th>
-                <th class="w-1/12 px-6 py-5 text-left">
-                  <span contenteditable>Preis</span>
-                </th>
-                <th class="w-1/12 px-6 py-5 text-left">Faktor</th>
-                <th class="w-2/12 px-6 py-5 text-right">Gesamtpreis</th>
-              </tr>
-            </thead>
-          </template>
-          <template #body>
-            <tbody id="rows">
-              <InvoicePosition
-                v-for="(row, index) in rows"
-                :key="`position-${index}`"
-                :row="row"
-                @add-row="insertRow(index)"
-                @update:row="updateRowTotal(index, $event)"
+          <div class="flex w-1/2 flex-col gap-3">
+            <div>
+              <BaseLabel text="Rechnungsdatum" />
+              <BaseInput
+                v-model="invoiceDate"
+                type="date"
+                size="sm"
+                placeholder="JJJJ-XXX"
               />
-            </tbody>
-            <tfoot>
-              <tr class="bg-gray-500 text-white dark:bg-gray-800">
-                <td colspan="5" class="px-6 py-3">Gesamt</td>
-                <td class="px-6 py-3 text-right">
-                  <span>{{ formatCurrencyAmount(totalAmount) }}</span>
-                </td>
-              </tr>
-              <tr
-                v-for="(tax, index) in selectedTaxes"
-                :key="`tax-${index}`"
-                class="px-6 py-3 text-right"
+            </div>
+            <div>
+              <BaseLabel text="Leistungszeitraum" />
+              <div class="flex gap-2">
+                <BaseInput
+                  v-model="performancePeriodStart"
+                  type="date"
+                  size="sm"
+                  placeholder="invoiceDate"
+                />
+                <BaseInput
+                  v-model="performancePeriodEnd"
+                  type="date"
+                  size="sm"
+                  placeholder="invoiceDate"
+                />
+              </div>
+            </div>
+            <div>
+              <BaseLabel text="Satz" />
+              <USelectMenu
+                v-model="selectedRateType"
+                class="mb-3"
+                placeholder="Select rate type"
+                :options="rateTypeOptions"
               >
-                <td class="px-6 py-3 text-right">{{ tax }}</td>
-              </tr>
-              <tr
-                v-if="hasTaxes"
-                class="bg-gray-600 text-white dark:bg-gray-900"
+              </USelectMenu>
+            </div>
+            <div>
+              <BaseLabel text="Steuern" />
+              <USelectMenu
+                v-if="clients"
+                v-model="selectedTaxes"
+                multiple
+                class="mb-3"
+                placeholder="Select taxes"
+                :options="taxOptions"
               >
-                <td colspan="5" class="px-6 py-3">Mwst.</td>
-                <td class="px-6 py-3 text-right">
-                  <span>{{ formatCurrencyAmount(taxes) }}</span>
-                </td>
-              </tr>
-              <tr class="bg-blue-80 text-white">
-                <td colspan="5" class="px-6 py-5">
-                  <span class="font-bold">Brutto-Rechnungssumme</span>
-                </td>
-                <td class="px-6 py-5 text-right">
-                  <span>{{ formatCurrencyAmount(totalWithTaxes) }}</span>
-                </td>
-              </tr>
-            </tfoot>
-          </template>
-        </BaseTable>
-      </div>
-      <section class="mt-6">
-        <div class="flex gap-3">
-          <BaseButton
-            :disabled="!isValidInvoice"
-            variant="yellow"
-            text="Create invoice"
-            @click="createInvoice"
-          />
-          <BaseButton
-            :disabled="!isValidInvoice"
-            variant="outline"
-            text="View preview"
-            @click="getInvoicePreview"
-          />
-          <BaseButton
-            :disabled="!isValidInvoice"
-            variant="outline"
-            text="Save as draft"
-            @click="saveAsDraft"
-          />
+              </USelectMenu>
+            </div>
+            <div class="flex flex-col gap-2">
+              <UCheckbox v-model="hasTaxes" name="taxes" label="Add taxes" />
+              <UCheckbox
+                v-model="isReverseChargeInvoice"
+                name="taxes"
+                label="Is reverse charge invoice"
+              />
+              <UCheckbox label="Save as template" />
+            </div>
+          </div>
+        </BaseBox>
+      </section>
+      <!-- Invoice items -->
+      <section>
+        <BaseHeadline type="h2" text="Rechnungspositionen" />
+        <div class="shadow-lg">
+          <BaseTable>
+            <template #head>
+              <thead class="bg-blue-90 text-white">
+                <tr>
+                  <th></th>
+                  <th class="w-1/12 px-6 py-5 text-left">Position</th>
+                  <th class="w-7/12 px-6 py-5 text-left">Beschreibung</th>
+                  <th class="w-1/12 px-6 py-5 text-left">
+                    <span contenteditable>Preis</span>
+                  </th>
+                  <th class="w-1/12 px-6 py-5 text-left">Faktor</th>
+                  <th class="w-2/12 px-6 py-5 text-right">Gesamtpreis</th>
+                </tr>
+              </thead>
+            </template>
+            <template #body>
+              <tbody id="rows">
+                <InvoicePosition
+                  v-for="(row, index) in rows"
+                  :key="`position-${index}`"
+                  :row="row"
+                  @add-row="insertRow(index)"
+                  @update:row="updateRowTotal(index, $event)"
+                />
+              </tbody>
+              <tfoot>
+                <tr class="bg-gray-500 text-white dark:bg-gray-800">
+                  <td colspan="5" class="px-6 py-3">Gesamt</td>
+                  <td class="px-6 py-3 text-right">
+                    <span>{{ formatCurrencyAmount(totalAmount) }}</span>
+                  </td>
+                </tr>
+                <tr
+                  v-for="(tax, index) in selectedTaxes"
+                  :key="`tax-${index}`"
+                  class="px-6 py-3 text-right"
+                >
+                  <td class="px-6 py-3 text-right">{{ tax }}</td>
+                </tr>
+                <tr
+                  v-if="hasTaxes"
+                  class="bg-gray-600 text-white dark:bg-gray-900"
+                >
+                  <td colspan="5" class="px-6 py-3">Mwst.</td>
+                  <td class="px-6 py-3 text-right">
+                    <span>{{ formatCurrencyAmount(taxes) }}</span>
+                  </td>
+                </tr>
+                <tr class="bg-blue-80 text-white">
+                  <td colspan="5" class="px-6 py-5">
+                    <span class="font-bold">Brutto-Rechnungssumme</span>
+                  </td>
+                  <td class="px-6 py-5 text-right">
+                    <span>{{ formatCurrencyAmount(totalWithTaxes) }}</span>
+                  </td>
+                </tr>
+              </tfoot>
+            </template>
+          </BaseTable>
         </div>
+        <section class="mt-6">
+          <div class="flex gap-3">
+            <BaseButton
+              :disabled="!isValidInvoice"
+              variant="yellow"
+              text="Create invoice"
+              @click="createInvoice"
+            />
+            <BaseButton
+              :disabled="!isValidInvoice"
+              variant="outline"
+              text="View preview"
+              @click="getInvoicePreview"
+            />
+            <BaseButton
+              :disabled="!isValidInvoice"
+              variant="outline"
+              text="Save as draft"
+              @click="saveAsDraft"
+            />
+          </div>
+        </section>
+        <section
+          v-if="showPreview"
+          class="fixed inset-0 z-30 flex items-center justify-center bg-black bg-opacity-80 p-12"
+        >
+          <div class="h-full w-full">
+            <div class="a4 mx-auto bg-white">
+              <div ref="preview" v-html="invoicePreviewHtml"></div>
+            </div>
+          </div>
+        </section>
       </section>
       <section
-        v-if="showPreview"
-        class="fixed inset-0 z-30 flex items-center justify-center bg-black bg-opacity-80 p-12"
+        v-if="isPending"
+        class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
       >
-        <div class="h-full w-full">
-          <div class="a4 mx-auto bg-white">
-            <div ref="preview" v-html="invoicePreviewHtml"></div>
-          </div>
+        <div
+          class="flex h-14 w-14 animate-spin items-center justify-center rounded-full bg-white"
+        >
+          <UIcon class="text-4xl" name="i-heroicons-arrow-path" />
         </div>
       </section>
-    </section>
-    <section
-      v-if="isPending"
-      class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
-    >
-      <div
-        class="flex h-14 w-14 animate-spin items-center justify-center rounded-full bg-white"
-      >
-        <UIcon class="text-4xl" name="i-heroicons-arrow-path" />
-      </div>
-    </section>
-    <UModal v-model="showDraftSelectModal">
-      <template #default>
-        <div class="p-6">
-          <BaseHeadline type="h2" text="Select a draft" />
-          <USelect
-            v-if="invoiceDrafts"
-            v-model="selectedInvoiceDraft"
-            :options="invoiceDrafts"
-            class="mb-3"
-            placeholder="Select a draft"
-            option-attribute="title"
-            value-attribute="_id"
-          />
-          <BaseButton text="Use draft" @click="applyDraft" />
-        </div>
-      </template>
-    </UModal>
+      <UModal v-model="showDraftSelectModal">
+        <template #default>
+          <div class="p-6">
+            <BaseHeadline type="h2" text="Select a draft" />
+            <USelect
+              v-if="invoiceDrafts"
+              v-model="selectedInvoiceDraft"
+              :options="invoiceDrafts"
+              class="mb-3"
+              placeholder="Select a draft"
+              option-attribute="title"
+              value-attribute="_id"
+            />
+            <BaseButton text="Use draft" @click="applyDraft" />
+          </div>
+        </template>
+      </UModal>
+    </div>
   </div>
 </template>
 

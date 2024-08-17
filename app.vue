@@ -2,7 +2,6 @@
   <div class="bg-blue-50 font-sans text-black dark:bg-blue-90">
     <NuxtLayout>
       <NuxtPage />
-      <div style="height: 1000px"></div>
     </NuxtLayout>
   </div>
 </template>

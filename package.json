@@ -13,7 +13,9 @@
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "sb": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "playwright"  : "playwright test",
+    "playwright:ui": "playwright test --ui"
   },
   "devDependencies": {
     "@nuxtjs/eslint-config-typescript": "^12.1.0",

@@ -8,7 +8,7 @@ router.post(
     console.log("POST /api/settings/get");
     const cookies = parseCookies(event);
     const headers = {
-      userId: cookies.userId,
+      userid: cookies.userId,
       authorization: cookies.accessToken,
     };
     const apiClient = new ApiClientBuilder();

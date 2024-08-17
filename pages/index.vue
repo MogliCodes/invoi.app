@@ -26,7 +26,7 @@
         </div>
       </div>
     </section>
-    <section class="bg-blue-100 py-12">
+    <section class="bg-blue-100 py-12 hidden">
       <div class="container mx-auto py-12">
         <div class="grid grid-cols-3">
           <div class="p-12">
@@ -81,23 +81,63 @@
       </div>
     </section>
     <section id="create-invoices" class="h-screen py-32">
-      <div class="container mx-auto grid grid-cols-2 gap-12">
+      <div class="container mx-auto gap-12">
         <div>
-          <BaseHeadline
-            class="mb-24 text-secondary-100"
-            type="h1"
-            text="Features"
-          />
-          <BaseHeadline
-            class="mb-4"
-            type="h2"
-            text="Create invoices in seconds"
-          />
-          <p class="text-xl text-gray-800">
-            Create professional invoices in seconds, tailored to your brand, and
-            leave the tedious paperwork behind. Elevate your business with
-            seamless invoicing at your fingertips.
-          </p>
+          <BaseHeadline class="mb-12 text-blue-90" type="h1" text="Features" />
+
+          <div class="grid md:grid-cols-3 gap-8">
+            <BaseBox class="p-10">
+              <UIcon
+                class="h-20 w-20 text-blue-600"
+                name="i-heroicons-document-chart-bar"
+              />
+              <BaseHeadline
+                class="mb-4"
+                type="h2"
+                text="Erstelle Rechnungen in Sekunden"
+              />
+              <p class="text-gray-600">
+                Erstelle professionelle Rechnungen in Sekunden, die auf Deine
+                Marke zugeschnitten sind, und lasse den lästigen Papierkram
+                hinter Dir. Erhebe Dein Geschäft mit nahtloser Rechnungsstellung
+                auf Knopfdruck.
+              </p></BaseBox
+            >
+            <BaseBox class="p-10">
+              <UIcon
+                class="h-20 w-20 text-blue-600"
+                name="i-heroicons-document-chart-bar"
+              />
+              <BaseHeadline
+                class="mb-4"
+                type="h2"
+                text="Nutze Deine eigenen Templates"
+              />
+              <p class="text-gray-600">
+                Erstelle professionelle Rechnungen in Sekunden, die auf Deine
+                Marke zugeschnitten sind, und lasse den lästigen Papierkram
+                hinter Dir. Erhebe Dein Geschäft mit nahtloser Rechnungsstellung
+                auf Knopfdruck.
+              </p></BaseBox
+            >
+            <BaseBox class="p-10">
+              <UIcon
+                class="h-20 w-20 text-blue-600"
+                name="i-heroicons-document-chart-bar"
+              />
+              <BaseHeadline
+                class="mb-4"
+                type="h2"
+                text="Trage Daten für deine Steuererklärung zusammen"
+              />
+              <p class="text-gray-600">
+                Erstelle professionelle Rechnungen in Sekunden, die auf Deine
+                Marke zugeschnitten sind, und lasse den lästigen Papierkram
+                hinter Dir. Erhebe Dein Geschäft mit nahtloser Rechnungsstellung
+                auf Knopfdruck.
+              </p></BaseBox
+            >
+          </div>
         </div>
       </div>
     </section>
@@ -108,22 +148,20 @@
             text-color="text-white"
             text-color-dark-mode="dark:text-white"
           >
-            invoi is an easy and flexible accounting and resource planning app
-            for freelancers and small businesses.
+            invoi.app ist eine einfache und flexible Rechnungssoftware für
+            Selbstständige und kleine Unternehmen.
           </BaseText>
         </div>
         <div class="w-1/5">
           <BaseHeadline type="h2" text="invoi" />
           <ul class="flex flex-col gap-2">
-            <li>About us</li>
-            <li>Pricing</li>
-            <li>Legal</li>
-            <li>Data Privacy</li>
+            <li>Über uns</li>
+            <li>Preise</li>
+            <li>Impressum</li>
+            <li>Datenschutz</li>
           </ul>
         </div>
-        <div class="w-1/5">
-          <BaseHeadline text="invoi" />
-        </div>
+        <div class="w-1/5"></div>
       </div>
     </footer>
   </div>

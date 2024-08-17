@@ -189,11 +189,14 @@ async function createClient(event: H3Event) {
   const backendBaseUrl = config.public.BACKEND_BASE_URL;
   const cookies = parseCookies(event);
   const body = await readBody(event);
+  console.log("cookies.userId", cookies.userId);
+  console.log("cookies.accessToken", cookies.accessToken);
   const res: any = await $fetch(`${backendBaseUrl}/restapi/client`, {
     method: "POST",
     body,
     headers: {
       authorization: cookies.accessToken,
+      userid: cookies.userId,
     },
   });
   return res;
