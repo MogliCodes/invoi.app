@@ -6,11 +6,10 @@ const router = createRouter();
 router.post(
   "/get",
   defineEventHandler(async (event: H3Event) => {
-    console.log("GET /api/services!!!!!!!!!!!!!!!!!!!!!!!!");
     const query = getQuery(event);
     const cookies = parseCookies(event);
     const headers = {
-      userId: cookies.userId,
+      userId: cookies?.userId,
       authorization: cookies.accessToken,
     };
     console.log("params", query);
@@ -20,6 +19,28 @@ router.post(
       .setResource("contact")
       .setHeaders(headers)
       .addParam("userid", `${query.clientId}`)
+      .execute();
+  })
+);
+
+router.post(
+  "/count",
+  defineEventHandler(async (event: H3Event) => {
+    const query = getQuery(event);
+    const cookies = parseCookies(event);
+    console.log("cookies", cookies);
+    const headers = {
+      userId: cookies?.userId,
+      authorization: cookies.accessToken,
+    };
+    console.log("headers", headers);
+    console.log("params", query);
+    const apiClient = new ApiClientBuilder();
+    return await apiClient
+      .get()
+      .setResource("contact")
+      .setEndpoint("count")
+      .setHeaders(headers)
       .execute();
   })
 );
@@ -227,14 +248,13 @@ async function bulkDeleteContact(event: H3Event) {
 
 async function getContactCount(event: H3Event) {
   const config = useRuntimeConfig();
-  const body = await readBody(event);
   const backendBaseUrl = config.public.BACKEND_BASE_URL;
   const cookies = parseCookies(event);
   const res: any = await $fetch(`${backendBaseUrl}/restapi/contact/count`, {
     method: "GET",
     headers: {
       authorization: cookies.accessToken,
-      UserId: body.userId,
+      userId: cookies.userId,
     },
   });
 

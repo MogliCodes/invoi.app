@@ -2,9 +2,6 @@
 import pkg from "./package.json";
 
 export default defineNuxtConfig({
-  ui: {
-    icons: ["material-symbols", "heroicons"],
-  },
   runtimeConfig: {
     public: {
       debug: process.env.NUXT_PUBLIC_DEBUG,

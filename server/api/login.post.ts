@@ -19,7 +19,6 @@ export default defineEventHandler(async (event) => {
         body,
       }
     );
-    consola.log("the response", response);
 
     // decode token from response
     const token = response.data.token;

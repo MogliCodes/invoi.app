@@ -3,7 +3,6 @@ import jwt from "jsonwebtoken";
 
 export default defineEventHandler(async (event: H3Event) => {
   const config = useRuntimeConfig();
-  console.log("config", config);
   const accessToken = getCookie(event, "accessToken");
   const jwtSecret = config.secretKey; // Use environment variable for production
 

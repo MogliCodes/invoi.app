@@ -259,19 +259,17 @@ const { data: currentYearTaxes } = useFetch(`/api/invoices/tax/year`, {
   },
 });
 
-const { data: revenues } = useFetch(
-  "http://localhost:8000/restapi/invoice/revenue/range/year?start=2021-01-01&end=2021-12-31",
-  {
-    method: "GET",
-    headers: {
-      userid: "6652501f2d7789c03fe430b0",
-    },
-    params: {
-      start: "2024-01-01",
-      end: "2024-12-31",
-    },
-  }
-);
+const { data: revenues } = useFetch("/api/revenues/get", {
+  method: "POST",
+  params: {
+    start: "2024-01-01",
+    end: "2024-12-31",
+  },
+  headers: {
+    Authorization: `Bearer ${authStore.accessToken}`,
+    UserId: authStore.userId,
+  },
+});
 
 type UserData = {
   username: string;
@@ -279,13 +277,15 @@ type UserData = {
 const userId = authStore.userId;
 
 const config = useRuntimeConfig();
-const debug = config.public.DEBUG;
+const debug = config.public.debug;
+console.log("config", config);
 const backendBaseUrl = config.public.BACKEND_BASE_URL;
 const { data: userData } = useFetch<UserData>(
   `${backendBaseUrl}/restapi/user/${userId}`,
   {
     headers: {
       Authorization: `Bearer ${authStore.accessToken}`,
+      userid: userId,
     },
   }
 );

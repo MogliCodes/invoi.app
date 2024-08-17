@@ -294,11 +294,12 @@ const {
   data: contactCount,
   refresh: refreshContactsCount,
 }: { data: Ref<number>; refresh: () => void } = useFetch(
-  `${backendBaseUrl}/restapi/contact/count`,
+  `/api/contacts/count`,
   {
+    method: "POST",
     headers: {
       Authorization: `Bearer ${authStore.accessToken}`,
-      ClientId: authStore.userId,
+      userId: authStore.userId,
     },
   }
 );
