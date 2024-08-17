@@ -45,7 +45,7 @@
       <!-- Invoice details -->
       <section v-if="validSettings">
         <BaseHeadline type="h2" text="Rechnungsdetails" />
-        <BaseBox class="mb-6 flex gap-6">
+        <BaseBox class="box mb-6 flex gap-6">
           <div class="flex w-1/2 flex-col gap-3">
             <div v-if="clients && selectedClient">
               <BaseLabel text="Kunde" />
@@ -121,7 +121,7 @@
               <BaseLabel text="Satz" />
               <USelectMenu
                 v-model="selectedRateType"
-                class="mb-3"
+                class="mb-3 select"
                 placeholder="Select rate type"
                 :options="rateTypeOptions"
               >
@@ -321,7 +321,7 @@ const { data: generatedInvoiceNumber } = useFetch<string>(
     method: "POST",
     headers: {
       Authorization: `Bearer ${authStore.accessToken}`,
-      userid: authStore.userId,
+      userId: authStore.userId,
     },
   }
 );
@@ -350,7 +350,9 @@ const invoiceTitle = ref();
 const invoiceDate = ref(currentDate);
 const performancePeriodStart = ref(currentDate);
 const performancePeriodEnd = ref(currentDate);
-const invoiceNumber: Ref<string> = ref(generatedInvoiceNumber.value || "");
+const invoiceNumber: Ref<string> = ref(
+  generatedInvoiceNumber.value?.number || ""
+);
 const selectedRateType = ref();
 const hasTaxes: Ref<boolean> = ref(true);
 const isReverseChargeInvoice: Ref<boolean> = ref(false);
@@ -636,7 +638,8 @@ tr:hover .add-row-btn {
   z-index: 100;
 }
 
-.box select {
+.box select,
+.box .select {
   @apply bg-slate-100;
 }
 </style>

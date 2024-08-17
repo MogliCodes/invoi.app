@@ -210,16 +210,17 @@ async function patchContact(event: H3Event) {
 async function deleteContact(event: H3Event) {
   const config = useRuntimeConfig();
   const backendBaseUrl = config.public.BACKEND_BASE_URL;
-  const query = getQuery(event);
+  const contactId = getRouterParams(event).id;
   const cookies = parseCookies(event);
   const body = await readBody(event);
 
   const res: any = await $fetch(
-    `${backendBaseUrl}/restapi/contact/${query.id}`,
+    `${backendBaseUrl}/restapi/contact/${contactId}`,
     {
       method: "DELETE",
       headers: {
-        authorization: cookies.accessToken,
+        Authorization: cookies.accessToken,
+        userId: cookies.userId,
       },
       body,
     }

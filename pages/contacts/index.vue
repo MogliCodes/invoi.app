@@ -263,18 +263,16 @@ type Contact = {
   user: string;
 };
 
-/** ================
+/** ================================
  * Pagination
- ================ */
+ ================================ */
 const page = ref(1);
 const pageSizeOptions = [10, 20, 30, 40, 50];
 const pageSize = ref(pageSizeOptions[1]);
 
-/** ================
+/** ================================
  * Data fetching
- ================ */
-const config = useRuntimeConfig();
-const backendBaseUrl = config.public.BACKEND_BASE_URL;
+ ================================ */
 const { data, refresh: refreshContacts } = useFetch<Contact[]>(
   `/api/contacts`,
   {
@@ -325,15 +323,16 @@ function initiateDeletion(contactId: string): void {
   currentContactId.value = contactId;
 }
 async function deleteContact() {
+  console.log("deleteContact");
   try {
-    await useFetch(`/api/contacts?id=${currentContactId.value}`, {
+    await useFetch(`/api/contacts/${currentContactId.value}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${authStore.accessToken}`,
-        UserId: authStore.userId,
+        userId: authStore.userId,
       },
     });
-    refreshContacts();
+    await refreshContacts();
     refreshContactsCount();
     isOpen.value = false;
   } catch (error) {
@@ -362,11 +361,11 @@ async function bulkDelete() {
       method: "POST",
       headers: {
         Authorization: `Bearer ${authStore.accessToken}`,
-        userid: authStore.userId,
+        userId: authStore.userId,
       },
       body: selectedContacts.value,
     });
-    refreshContacts();
+    await refreshContacts();
     refreshContactsCount();
     selectAll.value = false;
     isOpen.value = false;

@@ -32,7 +32,7 @@
         </div>
       </section>
     </Transition>
-    <BaseNote v-if="invoices.length === 0">
+    <BaseNote v-if="invoices && invoices.length === 0">
       <p>
         Du hast noch keine Rechnungen angelegt. Klicke auf "Rechnung erstellen"
         um eine neue Rechnung zu erstellen.
@@ -91,7 +91,7 @@
               <td class="px-6 py-3">
                 <span :title="invoice.title">{{ invoice.title }}</span>
               </td>
-              <td class="truncate px-6 py-3">
+              <td class="px-6 py-3">
                 <span
                   :title="getClientName(invoice.client)"
                   class="line-clamp-1"
@@ -219,7 +219,6 @@
 <script setup lang="ts">
 import { useAuthStore } from "~/stores/auth.store";
 import { useAlertStore } from "~/stores/alert";
-import { isInvoiceDue, getStatusPillBgClasses } from "~/utils/utils";
 
 definePageMeta({
   title: "Rechnungen",
@@ -330,8 +329,8 @@ async function deleteInvoice() {
         ClientId: authStore.userId,
       },
     });
-    refreshInvoiceCount();
-    refreshInvoices();
+    await refreshInvoiceCount();
+    await refreshInvoices();
     isOpen.value = false;
     console.log(res);
     if (res.status === 200) {
@@ -355,8 +354,8 @@ async function bulkDeleteInvoices() {
       },
       body: selectedInvoices.value,
     });
-    refreshInvoices();
-    refreshInvoiceCount();
+    await refreshInvoices();
+    await refreshInvoiceCount();
     isOpen.value = false;
     console.log(res);
     if (res.status === 200) {
