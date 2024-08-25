@@ -2,6 +2,11 @@
 import pkg from "./package.json";
 
 export default defineNuxtConfig({
+  app: {
+    head: {
+      link: [{ rel: "icon", type: "image/png", href: "/invoi.svg" }],
+    },
+  },
   runtimeConfig: {
     public: {
       debug: process.env.NUXT_PUBLIC_DEBUG,

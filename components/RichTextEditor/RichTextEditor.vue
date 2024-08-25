@@ -70,7 +70,7 @@
       />
     </div>
     <div v-if="props.modelValue && editor" class="editor p-2">
-      <editor-content :editor="editor" />
+      <editor-content :disabled="true" :editor="editor" />
     </div>
   </div>
 </template>

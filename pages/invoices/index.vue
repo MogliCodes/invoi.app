@@ -52,7 +52,9 @@
         <span class="text-sm font-bold text-secondary-100"> Rechnungen</span>
       </div>
       <div class="overflow-hidden rounded-lg">
-        <table class="min-w-full overflow-hidden shadow-lg dark:text-gray-400">
+        <table
+          class="min-w-full text-xs md:text-sm lg:text-md overflow-hidden shadow-lg dark:text-gray-400"
+        >
           <thead class="bg-blue-90 text-white">
             <tr>
               <th class="py-5 pl-6 text-left">
@@ -92,10 +94,7 @@
                 <span :title="invoice.title">{{ invoice.title }}</span>
               </td>
               <td class="px-6 py-3">
-                <span
-                  :title="getClientName(invoice.client)"
-                  class="line-clamp-1"
-                >
+                <span :title="getClientName(invoice.client)">
                   {{ getClientName(invoice.client) }}
                 </span>
               </td>

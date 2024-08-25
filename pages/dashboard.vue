@@ -47,11 +47,11 @@
             class="flex justify-between border-r-2 pr-3 dark:border-gray-600"
           >
             <div>
+              <BaseLabel text="Kontakte" />
               <span
                 class="mb-2 block font-syne text-5xl font-bold text-secondary-100"
                 >{{ contactCount }}</span
               >
-              <span class="text-xl dark:text-white">Contacts</span>
             </div>
             <UIcon
               class="h-20 w-20 text-gray-300 dark:text-gray-600"
@@ -63,11 +63,11 @@
             class="flex justify-between border-r-2 px-3 dark:border-gray-600"
           >
             <div>
+              <BaseLabel text="Rechnungen" />
               <span
                 class="mb-2 block font-syne text-5xl font-bold text-secondary-100"
                 >{{ invoiceCount }}</span
               >
-              <span class="text-xl dark:text-white">Invoices</span>
             </div>
             <UIcon
               class="h-20 w-20 text-gray-300 dark:text-gray-600"
@@ -76,11 +76,11 @@
           </NuxtLink>
           <NuxtLink to="/clients" class="flex justify-between pl-3">
             <div>
+              <BaseLabel text="Kunden" />
               <span
                 class="mb-2 block font-syne text-5xl font-bold text-secondary-100"
                 >{{ clientCount }}</span
               >
-              <span class="text-xl dark:text-white">Clients</span>
             </div>
             <UIcon
               class="h-20 w-20 text-gray-300 dark:text-gray-600"
@@ -97,26 +97,57 @@
         type="h2"
         text="Revenues"
       />
-      <div class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-        <BaseBox>
-          <div class="text-xl dark:text-white">This month</div>
-          <span class="font-syne text-5xl font-bold text-secondary-100">
-            {{ formatCurrencyAmount(currentMonthRevnue / 100) }}
-          </span>
-        </BaseBox>
-        <BaseBox>
-          <div class="text-xl dark:text-white">This quarter</div>
-          <span class="font-syne text-5xl font-bold text-secondary-100">
-            {{ formatCurrencyAmount(currentQuarterRevnue / 100) }}
-          </span>
-        </BaseBox>
-        <BaseBox>
-          <div class="text-xl dark:text-white">This year</div>
-          <span class="font-syne text-5xl font-bold text-secondary-100">
-            {{ formatCurrencyAmount(currentYearRevnue / 100) }}
-          </span>
-        </BaseBox>
-      </div>
+      <BaseBox>
+        <div class="grid grid-cols-3 gap-3">
+          <article
+            class="flex justify-between border-r-2 pr-3 dark:border-gray-600"
+          >
+            <div>
+              <BaseLabel text="This month" />
+              <span
+                class="mb-2 block font-syne text-5xl font-bold text-secondary-100"
+                >{{ currentMonthRevnue }}</span
+              >
+            </div>
+            <UIcon
+              class="h-20 w-20 text-gray-300 dark:text-gray-600"
+              name="i-heroicons-arrow-trending-up"
+            />
+          </article>
+          <article
+            class="flex justify-between border-r-2 pr-3 dark:border-gray-600 pl-3"
+          >
+            <div>
+              <BaseLabel text="This quarter" />
+              <span
+                class="mb-2 block font-syne text-5xl font-bold text-secondary-100"
+                >{{
+                  formatCurrencyAmount(formatCentToAmount(currentQuarterRevnue))
+                }}</span
+              >
+            </div>
+            <UIcon
+              class="h-20 w-20 text-gray-300 dark:text-gray-600"
+              name="i-heroicons-calendar-days"
+            />
+          </article>
+          <article class="flex justify-between pl-3">
+            <div>
+              <BaseLabel text="This year" />
+              <span
+                class="mb-2 block font-syne text-5xl font-bold text-secondary-100"
+                >{{
+                  formatCurrencyAmount(formatCentToAmount(currentYearRevnue))
+                }}</span
+              >
+            </div>
+            <UIcon
+              class="h-20 w-20 text-gray-300 dark:text-gray-600"
+              name="i-heroicons-chart-bar"
+            />
+          </article>
+        </div>
+      </BaseBox>
     </section>
     <!-- Revenue graph -->
     <section v-if="false" class="">
@@ -131,26 +162,57 @@
         class="mb-3 font-syne text-2xl font-bold text-gray-400"
         type="h2"
       />
-      <div class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-        <BaseBox>
-          <BaseLabel class="block" text="This month" />
-          <span class="font-syne text-5xl font-bold text-secondary-100">
-            {{ formatCurrencyAmount(currentMonthTaxes / 100) }}
-          </span>
-        </BaseBox>
-        <BaseBox>
-          <BaseLabel class="block" text="This quarter" />
-          <span class="font-syne text-5xl font-bold text-secondary-100">
-            {{ formatCurrencyAmount(currentQuarterTaxes / 100) }}
-          </span>
-        </BaseBox>
-        <BaseBox>
-          <BaseLabel class="block" text="This year" />
-          <span class="font-syne text-5xl font-bold text-secondary-100">
-            {{ formatCurrencyAmount(currentYearTaxes / 100) }}
-          </span>
-        </BaseBox>
-      </div>
+      <BaseBox>
+        <div class="grid grid-cols-3 gap-3">
+          <article
+            class="flex justify-between border-r-2 pr-3 dark:border-gray-600"
+          >
+            <div>
+              <BaseLabel text="This month" />
+              <span
+                class="mb-2 block font-syne text-5xl font-bold text-secondary-100"
+                >{{ currentMonthTaxes }}</span
+              >
+            </div>
+            <UIcon
+              class="h-20 w-20 text-gray-300 dark:text-gray-600"
+              name="i-heroicons-arrow-trending-up"
+            />
+          </article>
+          <article
+            class="flex justify-between border-r-2 pr-3 dark:border-gray-600 pl-3"
+          >
+            <div>
+              <BaseLabel text="This quarter" />
+              <span
+                class="mb-2 block font-syne text-5xl font-bold text-secondary-100"
+                >{{
+                  formatCurrencyAmount(formatCentToAmount(currentQuarterTaxes))
+                }}</span
+              >
+            </div>
+            <UIcon
+              class="h-20 w-20 text-gray-300 dark:text-gray-600"
+              name="i-heroicons-calendar-days"
+            />
+          </article>
+          <article class="flex justify-between pl-3">
+            <div>
+              <BaseLabel text="This year" />
+              <span
+                class="mb-2 block font-syne text-5xl font-bold text-secondary-100"
+                >{{
+                  formatCurrencyAmount(formatCentToAmount(currentYearTaxes))
+                }}</span
+              >
+            </div>
+            <UIcon
+              class="h-20 w-20 text-gray-300 dark:text-gray-600"
+              name="i-heroicons-chart-bar"
+            />
+          </article>
+        </div>
+      </BaseBox>
     </section>
     <!-- User data -->
     <section v-if="debug">

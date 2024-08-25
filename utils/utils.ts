@@ -59,3 +59,7 @@ export function getStatusPillBgClasses(invoice: Invoice) {
 
   return "bg-amber-200 text-amber-900";
 }
+
+export function formatDate(date: Date): string {
+  return new Date(date).toLocaleDateString("de-DE");
+}

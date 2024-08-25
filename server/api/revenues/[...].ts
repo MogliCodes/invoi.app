@@ -12,12 +12,14 @@ router.post(
       userId: cookies.userId,
       authorization: cookies.accessToken,
     };
+    const body = await readBody(event);
 
     const apiClient = new ApiClientBuilder();
     return await apiClient
       .setResource("invoice")
       .setEndpoint("revenues/year")
       .setHeaders(headers)
+      .setBody(body)
       .get()
       .execute();
   })

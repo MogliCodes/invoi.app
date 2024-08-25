@@ -40,7 +40,11 @@
           </BaseText>
           <div class="flex gap-4">
             <BaseButton text="Create demo data" @click="createDemoContacts" />
-            <BaseButton variant="red" text="Delete demo contacts" />
+            <BaseButton
+              variant="red"
+              text="Delete demo contacts"
+              @click="delteDemoContacts"
+            />
           </div>
         </div>
       </BaseBox>
@@ -56,6 +60,16 @@ const accessToken = authStore.accessToken;
 async function createDemoContacts() {
   useFetch(`/api/contacts/demo`, {
     method: "POST",
+    headers: {
+      userId,
+      authorization: `Bearer ${accessToken}`,
+    },
+  });
+}
+
+async function delteDemoContacts() {
+  useFetch(`/api/contacts/demo`, {
+    method: "DELETE",
     headers: {
       userId,
       authorization: `Bearer ${accessToken}`,

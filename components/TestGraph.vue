@@ -15,7 +15,7 @@ onMounted(() => {
 function setupGraph() {
   // Set up the SVG
   const svg = d3.select("svg");
-  const margin = { top: 20, right: 20, bottom: 50, left: 50 };
+  const margin = { top: 40, right: 60, bottom: 50, left: 60 };
   const width = parseInt(svg.style("width")) - margin.left - margin.right;
   const height = 500 - margin.top - margin.bottom;
 
@@ -35,7 +35,7 @@ function setupGraph() {
   const yAxis = d3
     .axisLeft(yScale)
     .ticks(5)
-    .tickFormat((d) => `$${d}`);
+    .tickFormat((d) => `${d}€`);
 
   // Line generator
   const line = d3
@@ -62,6 +62,20 @@ function setupGraph() {
 
   // Draw the line
   g.append("path").datum(props.values).attr("class", "line").attr("d", line);
+
+  // Add dashed vertical lines for each month
+  g.selectAll(".vertical-line")
+    .data(props.values)
+    .enter()
+    .append("line")
+    .attr("class", "vertical-line")
+    .attr("x1", (d) => xScale(d.month))
+    .attr("y1", 0)
+    .attr("x2", (d) => xScale(d.month))
+    .attr("y2", height)
+    .style("stroke", "lightgray")
+    .style("stroke-width", 1)
+    .style("stroke-dasharray", "4,4");
 
   // Add the X-axis
   g.append("g")

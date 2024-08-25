@@ -45,6 +45,26 @@ router.post(
 );
 
 router.post(
+  "/number/:year",
+  defineEventHandler(async (event: H3Event) => {
+    const apiClient = new ApiClientBuilder();
+    const cookies = parseCookies(event);
+    const params = getRouterParams(event);
+    const headers = {
+      userId: cookies.userId,
+      authorization: cookies.accessToken,
+    };
+
+    return await apiClient
+      .setResource("invoice")
+      .setEndpoint(`number/${params.year}`)
+      .setHeaders(headers)
+      .get()
+      .execute();
+  })
+);
+
+router.post(
   "/number",
   defineEventHandler(async (event: H3Event) => {
     const apiClient = new ApiClientBuilder();

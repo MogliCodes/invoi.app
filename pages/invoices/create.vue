@@ -47,7 +47,7 @@
         <BaseHeadline type="h2" text="Rechnungsdetails" />
         <BaseBox class="box mb-6 flex gap-6">
           <div class="flex w-1/2 flex-col gap-3">
-            <div v-if="clients && selectedClient">
+            <div v-if="clients">
               <BaseLabel text="Kunde" />
               <USelect
                 v-model="selectedClient"
@@ -67,7 +67,7 @@
               <USelect
                 v-model="selectedContact"
                 size="md"
-                placeholder="Select a contact person"
+                placeholder="Wähle eine Kontaktperson"
                 :options="contactsPerClient"
                 value-attribute="_id"
                 option-attribute="firstname"
@@ -81,13 +81,26 @@
             <div>
               <BaseLabel text="Titel" />
               <BaseInput
+                is-required
                 v-model="invoiceTitle"
-                placeholder="Rechnung MM/JJJJ"
+                placeholder="Gib einen Titel ein"
               />
             </div>
             <div>
               <BaseLabel text="Rechnungsnummer" />
-              <BaseInput v-model="invoiceNumber" placeholder="invoiceNumber" />
+              <BaseInput
+                is-required
+                v-model="invoiceNumber"
+                placeholder="Vergebe eine Rechnungsnummer"
+              />
+              <BaseButton
+                v-if="showGenerateInvoiceNumberButton"
+                class="mt-2"
+                size="xs"
+                variant="secondary"
+                text="Generiere Rechnungsnummer"
+                @click="generateInvoiceNumberForYear"
+              />
             </div>
           </div>
           <div class="flex w-1/2 flex-col gap-3">
@@ -97,7 +110,7 @@
                 v-model="invoiceDate"
                 type="date"
                 size="sm"
-                placeholder="JJJJ-XXX"
+                placeholder="Gib ein Datum ein"
               />
             </div>
             <div>
@@ -122,31 +135,26 @@
               <USelectMenu
                 v-model="selectedRateType"
                 class="mb-3 select"
-                placeholder="Select rate type"
+                placeholder="Satz auswählen"
                 :options="rateTypeOptions"
               >
               </USelectMenu>
             </div>
-            <div>
-              <BaseLabel text="Steuern" />
-              <USelectMenu
-                v-if="clients"
-                v-model="selectedTaxes"
-                multiple
-                class="mb-3"
-                placeholder="Select taxes"
-                :options="taxOptions"
-              >
-              </USelectMenu>
-            </div>
             <div class="flex flex-col gap-2">
-              <UCheckbox v-model="hasTaxes" name="taxes" label="Add taxes" />
+              <UCheckbox
+                v-model="hasTaxes"
+                name="taxes"
+                label="Steuern hinzufügen"
+              />
               <UCheckbox
                 v-model="isReverseChargeInvoice"
                 name="taxes"
-                label="Is reverse charge invoice"
+                label="Rechnung nach Reverse Charge Verfahren"
               />
-              <UCheckbox label="Save as template" />
+              <UCheckbox
+                v-model="shouldBeSavedAsDraft"
+                label="Als Vorlage speichern"
+              />
             </div>
           </div>
         </BaseBox>
@@ -220,19 +228,19 @@
             <BaseButton
               :disabled="!isValidInvoice"
               variant="yellow"
-              text="Create invoice"
+              text="Rechnung erstellen"
               @click="createInvoice"
             />
             <BaseButton
               :disabled="!isValidInvoice"
               variant="outline"
-              text="View preview"
+              text="Vorschau anzeigen"
               @click="getInvoicePreview"
             />
             <BaseButton
               :disabled="!isValidInvoice"
               variant="outline"
-              text="Save as draft"
+              text="Als Vorlage speichern"
               @click="saveAsDraft"
             />
           </div>
@@ -420,6 +428,47 @@ watch(selectedClient, async (newVal) => {
   );
 });
 
+/**
+ * Watch for changes to the invoide date. If it changes, set a ref to true, that determines if a button should be displayed the allows to generate an adequate invoice number.
+ */
+
+const showGenerateInvoiceNumberButton = ref(false);
+
+watch(invoiceDate, async (newVal) => {
+  if (!newVal) return;
+  const date = new Date(newVal);
+  const year = date.getFullYear();
+  const currentYear = new Date().getFullYear();
+  if (year !== currentYear) {
+    showGenerateInvoiceNumberButton.value = true;
+  } else {
+    showGenerateInvoiceNumberButton.value = false;
+  }
+  console.log("invoiceDate", newVal);
+
+  // Set perfermance period end to the selected invoice date and start 7 days before
+  // format dates accordingly like 01.01.1970
+  const formattedDate = new Date(newVal).toLocaleDateString("en-CA");
+  performancePeriodStart.value = formattedDate;
+  performancePeriodEnd.value = formattedDate;
+});
+
+async function generateInvoiceNumberForYear(): void {
+  const date = new Date(invoiceDate.value);
+  const invoiceYear = date.getFullYear();
+  console.log("generateInvoiceNumberForYear", invoiceYear);
+  const response = await $fetch(`/api/invoices/number/${invoiceYear}`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${authStore.accessToken}`,
+      userId: authStore.userId,
+    },
+  });
+  invoiceNumber.value = response.number;
+  showGenerateInvoiceNumberButton.value = false;
+  console.log(response);
+}
+
 useSortable("#rows", rows);
 const totalAmount = computed(() => {
   return rows.value.reduce(
@@ -486,6 +535,9 @@ const formattedRows = computed(() => {
 });
 
 async function createInvoice() {
+  if (shouldBeSavedAsDraft.value) {
+    saveAsDraft();
+  }
   const invoiceToCreate = {
     nr: invoiceNumber.value,
     contact: selectedContact.value,
@@ -567,6 +619,8 @@ function applyDraft() {
   console.log(items);
 }
 
+const shouldBeSavedAsDraft = ref(false);
+
 async function saveAsDraft() {
   const invoiceToCreate = {
     nr: invoiceNumber.value,
@@ -584,8 +638,9 @@ async function saveAsDraft() {
     isReverseChargeInvoice: isReverseChargeInvoice.value,
     status: "unpaid",
   };
-  console.log(invoiceToCreate);
+  console.log("invoiceToCreate", invoiceToCreate);
   try {
+    console.log("saving draft");
     isPending.value = true;
     const response = await $fetch("/api/invoices/draft", {
       method: "POST",
@@ -597,6 +652,8 @@ async function saveAsDraft() {
         userid: authStore.userId,
       },
     });
+    if (!response) return;
+    console.log("response", response);
     response.status === 201
       ? (isPending.value = false)
       : (isPending.value = true);

@@ -1,13 +1,18 @@
 <template>
   <section v-if="invoice">
     <div class="container mx-auto">
-      <div>
-        <header class="mb-12 flex justify-between">
+      <div class="flex flex-col gap-6">
+        <header class="flex justify-between">
           <div>
-            <BaseHeadline class="mb-6" type="h1" :text="invoice.title" />
-            <div>
-              <InvoiceStatusPill :invoice="invoice" />
-            </div>
+            <BaseHeadline class="mb-2" type="h1" :text="invoice.nr" />
+            <BaseHeadline class="" type="h2" :text="invoice.title" />
+            <NuxtLink to="/invoices">
+              <IconButton
+                variant="secondary"
+                size="md"
+                icon="i-heroicons-chevron-left"
+              />
+            </NuxtLink>
           </div>
           <div>
             <BaseButton
@@ -17,7 +22,32 @@
             />
           </div>
         </header>
-        <section class="grid grid-cols-2 gap-6">
+        <BaseBox>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <BaseLabel class="block" text="Rechnungsdatum" />
+              <span class="block">{{ formatDate(invoice.date) }}</span>
+            </div>
+            <div>
+              <BaseLabel class="block" text="Leistungszeitraum" />
+              <span class="block">{{
+                formatDate(invoice.performancePeriodStart)
+              }}</span>
+              <span class="block">{{
+                formatDate(invoice.performancePeriodEnd)
+              }}</span>
+            </div>
+            <div>
+              <BaseLabel class="block" text="Kundennummer" />
+              <span class="block">{{ invoice.client }}</span>
+            </div>
+            <div>
+              <BaseLabel class="block" text="Status" />
+              <InvoiceStatusPill class="text-xs" :invoice="invoice" />
+            </div>
+          </div>
+        </BaseBox>
+        <section class="">
           <div class="flex flex-col gap-6">
             <BaseTable>
               <template #head>
@@ -30,10 +60,18 @@
               <template #body>
                 <BaseTableRow v-for="(row, index) in JSON.parse(invoice.items)">
                   <BaseTableCell>{{ index + 1 }}</BaseTableCell>
-                  <BaseTableCell>{{ row.description }}</BaseTableCell>
-                  <BaseTableCell>{{ row.hours }}</BaseTableCell>
+                  <BaseTableCell
+                    ><RichTextRenderer
+                      v-model="row.description"
+                    ></RichTextRenderer
+                  ></BaseTableCell>
+                  <BaseTableCell>{{
+                    formatCurrencyAmount(formatCentToAmount(row.hours))
+                  }}</BaseTableCell>
                   <BaseTableCell>{{ row.factor }}</BaseTableCell>
-                  <BaseTableCell>{{ row.total }}</BaseTableCell>
+                  <BaseTableCell>{{
+                    formatCurrencyAmount(formatCentToAmount(row.total))
+                  }}</BaseTableCell>
                 </BaseTableRow>
               </template>
             </BaseTable>
@@ -41,7 +79,7 @@
               <div></div>
               <div class="grid grid-cols-3 gap-3">
                 <div>
-                  <span class="block">Total amount</span>
+                  <BaseLabel class="block" text="Rechnungssumme Netto" />
                   <span
                     class="block font-syne text-3xl font-bold text-secondary-100"
                     >{{
@@ -50,7 +88,7 @@
                   >
                 </div>
                 <div>
-                  <span class="block">Taxes</span>
+                  <BaseLabel class="block" text="Mwst. 19%" />
                   <span
                     class="block font-syne text-3xl font-bold text-secondary-100"
                     >{{
@@ -59,7 +97,7 @@
                   >
                 </div>
                 <div>
-                  <span class="block">Total amount</span>
+                  <BaseLabel class="block" text="Rechnungssumme Brutto" />
                   <span
                     class="block font-syne text-3xl font-bold text-secondary-100"
                     >{{
@@ -73,6 +111,13 @@
             </BaseBox>
           </div>
         </section>
+        <NuxtLink to="/invoices">
+          <IconButton
+            variant="secondary"
+            size="md"
+            icon="i-heroicons-chevron-left"
+          />
+        </NuxtLink>
       </div>
     </div>
   </section>
@@ -80,8 +125,9 @@
 
 <script setup lang="ts">
 import { useAuthStore } from "~/stores/auth.store";
-import { getStatusPillBgClasses } from "~/utils/utils";
+import { formatDate } from "~/utils/utils";
 import InvoiceStatusPill from "~/components/Invoice/InvoiceStatusPill.vue";
+import RichTextRenderer from "~/components/RichTextRenderer/RichTextRenderer.vue";
 
 const authStore = useAuthStore();
 const route = useRoute();

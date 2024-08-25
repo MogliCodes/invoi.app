@@ -4,13 +4,8 @@
       <div class="flex items-center gap-3">
         <BaseButton
           to="/services/create"
-          text="Create services"
+          text="Leistung anlegen"
           variant="yellow"
-        />
-        <BaseButton
-          to="/services/import"
-          text="Import services"
-          variant="outline"
         />
       </div>
     </section>
@@ -23,23 +18,26 @@
       </BaseNote>
     </section>
     <section v-else>
-      <table class="min-w-full overflow-hidden rounded-lg dark:text-gray-400">
-        <thead class="bg-blue-90 text-white">
-          <tr>
-            <th class="py-5 pl-6 text-left">
-              <UCheckbox
-                v-model="selectAll"
-                :checked="selectAll"
-                @click="toggleSelectAll(toRef(services))"
-              />
-            </th>
-            <th class="py-5 pl-6 text-left">Name</th>
-            <th class="px-6 py-5 text-left">Description</th>
-            <th class="px-6 py-5 text-left">Price</th>
-            <th class="px-6 py-5 text-left">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
+      <div class="mb-2">
+        <span class="text-sm font-bold text-secondary-100"
+          >{{ services?.length }} Leistungen</span
+        >
+      </div>
+      <BaseTable>
+        <template #head>
+          <th class="py-5 pl-6 text-left">
+            <UCheckbox
+              v-model="selectAll"
+              :checked="selectAll"
+              @click="toggleSelectAll(toRef(services))"
+            />
+          </th>
+          <th class="py-5 pl-6 text-left">Name</th>
+          <th class="px-6 py-5 text-left">Beschreibung</th>
+          <th class="px-6 py-5 text-left">Preis</th>
+          <th class="px-6 py-5 text-left">Handlung</th>
+        </template>
+        <template #body>
           <tr
             v-for="service in services"
             class="rounded bg-white p-4 even:bg-gray-200 dark:odd:bg-blue-80 dark:even:bg-blue-90"
@@ -65,22 +63,8 @@
               </span>
             </td>
           </tr>
-        </tbody>
-      </table>
-      <div class="mt-6 flex items-center gap-2">
-        <USelectMenu
-          v-model="bulkAction"
-          class="cursor-pointer"
-          size="xl"
-          color="white"
-          :options="bulkActionOptions"
-        >
-          <template #label>
-            {{ bulkAction }}
-          </template>
-        </USelectMenu>
-        <BaseButton size="sm" text="Apply" @click="executeBulkAction" />
-      </div>
+        </template>
+      </BaseTable>
     </section>
   </div>
   <BulkActionModal
@@ -102,7 +86,7 @@ import BulkActionModal from "~/components/BulkActionModal.vue";
 const authStore = useAuthStore();
 
 definePageMeta({
-  title: "Services",
+  title: "Leistungen",
 });
 
 type Service = {
