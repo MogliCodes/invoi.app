@@ -1,8 +1,8 @@
 <template>
   <table
-    class="min-w-full overflow-hidden shadow-lg rounded-lg dark:text-gray-400"
+    class="min-w-full overflow-y-hidden shadow-lg rounded-lg dark:text-gray-400"
   >
-    <thead class="bg-blue-90 text-white">
+    <thead class="overflow-hidden rounded-t-lg bg-blue-90 text-white">
       <tr>
         <slot name="head"></slot>
       </tr>

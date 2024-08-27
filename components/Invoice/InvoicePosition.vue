@@ -1,5 +1,13 @@
 <template>
+  <BaseTableRow v-if="props.row.isSubtotal">
+    <td></td>
+    <td class="px-6 py-3" colspan="4">Zwischensumme</td>
+    <td class="px-6 py-3 text-right">
+      {{ formatToCurrency(props.row.total) }}
+    </td>
+  </BaseTableRow>
   <BaseTableRow
+    v-else
     class="relative rounded bg-white p-4 even:bg-gray-200 dark:odd:bg-blue-80 dark:even:bg-blue-90"
   >
     <td
@@ -7,6 +15,7 @@
     >
       <UIcon
         @click="emit('addRow')"
+        @click.right="rightClick"
         name="i-heroicons-plus"
         class="text-xl text-white"
       />
@@ -32,7 +41,7 @@ type Props = {
   row: InvoicePosition;
 };
 const props = defineProps<Props>();
-const emit = defineEmits(["update:row", "addRow"]);
+const emit = defineEmits(["update:row", "addRow", "addSubtotal"]);
 
 const description = ref(props.row.description);
 const hours = ref(props.row.hours);
@@ -51,4 +60,8 @@ watch([description, hours, factor, total], () => {
     total: total.value,
   });
 });
+
+function rightClick(): void {
+  emit("addSubtotal");
+}
 </script>

@@ -32,7 +32,7 @@
               <BaseLabel text="Tax ID" />
               <BaseInput v-model="taxId" type="text" />
             </div>
-            <BaseButton text="Save client" @click="patchClient" />
+            <BaseButton text="Speichern" @click="patchClient" />
           </div>
         </BaseBox>
       </section>

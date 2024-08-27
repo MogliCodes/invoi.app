@@ -19,10 +19,7 @@ const colorClass = computed(() => {
 </script>
 
 <template>
-  <div
-    class="fixed inset-x-6 top-4 z-50 block rounded-lg p-4 shadow-2xl"
-    :class="colorClass"
-  >
+  <div class="inset-x-6 block rounded-lg p-4 shadow-2xl" :class="colorClass">
     <span>{{ props.message }}</span>
     <a :href="props.link">{{ props.link }}</a>
   </div>

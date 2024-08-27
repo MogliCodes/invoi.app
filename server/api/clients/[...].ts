@@ -242,11 +242,11 @@ async function patchClient(event: H3Event) {
   const res: any = await $fetch(
     `${backendBaseUrl}/restapi/client/${query.id}`,
     {
-      method: "GET",
+      method: "PATCH",
       body,
       headers: {
         authorization: cookies.accessToken,
-        Userid: cookies.Userid,
+        userid: cookies.userId,
       },
     }
   );

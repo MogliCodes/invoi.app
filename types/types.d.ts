@@ -33,6 +33,7 @@ type InvoicePosition = {
   hours: number;
   factor: number;
   total: number;
+  isSubtotal: boolean;
 };
 
 type Project = {

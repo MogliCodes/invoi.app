@@ -1,16 +1,16 @@
 <template>
   <div class="flex flex-col sm:flex-row">
     <div
-      class="fixed shadow-lg p-4 rounded-xl text-sm top-16 right-2 bg-yellow-100 text-yellow-700 z-50"
+      class="fixed right-2 top-16 z-50 rounded-xl bg-yellow-100 p-4 text-sm text-yellow-700 shadow-lg"
     >
-      <div class="flex gap-4 items-center">
+      <div class="flex items-center gap-4">
         <UIcon name="i-heroicons-information-circle" class="scale-150" />
         <span>Sitzung läuft ab in: {{ formattedTime }}</span>
       </div>
     </div>
     <TheSidebar v-if="authStore.isUserLoggedIn" />
     <main
-      class="relative ml-auto w-10/12 bg-gray-100 py-24 dark:bg-blue-100 min-h-screen"
+      class="relative ml-auto min-h-screen w-10/12 bg-gray-100 py-24 dark:bg-blue-100"
     >
       <StickyElement
         v-if="useRoute().meta.title"
@@ -26,17 +26,19 @@
       <div class="p-6 pt-0">
         <slot />
       </div>
-      <BaseAlert
-        v-if="alertStore.isActive"
-        :message="alertStore.alertMessage"
-        :link="alertStore.alertLink"
-        :type="alertStore.alertType"
-      />
+      <div class="fixed bottom-4 right-4 w-1/4">
+        <BaseAlert
+          v-if="alertStore.isActive"
+          :message="alertStore.alertMessage"
+          :link="alertStore.alertLink"
+          :type="alertStore.alertType"
+        />
+      </div>
       <div
         class="fixed right-6 top-1.5 z-50 flex items-center justify-center gap-1"
       >
         <div
-          class="flex h-9 w-9 items-center justify-center rounded-lg bg-white transition hover:bg-gray-50 dark:bg-blue-90"
+          class="flex size-9 items-center justify-center rounded-lg bg-white transition hover:bg-gray-50 dark:bg-blue-90"
         >
           <UIcon
             class="cursor-pointer text-2xl text-gray-500 dark:text-gray-300"
@@ -67,11 +69,11 @@
               @click="toggleUserMenu"
             />
             <BaseMenuItem
-              @click="logout"
               icon="i-heroicons-arrow-left-on-rectangle"
               text="Logout"
               size="sm"
               class="flex cursor-pointer items-center gap-2 rounded-lg border-2 border-slate-100 px-4 py-2 hover:bg-slate-200 focus:border-2 focus:outline-0"
+              @click="logout"
             />
           </div>
         </div>

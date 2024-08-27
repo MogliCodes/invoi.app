@@ -30,16 +30,19 @@
             </div>
             <div>
               <BaseLabel class="block" text="Leistungszeitraum" />
-              <span class="block">{{
+              <span class="">{{
                 formatDate(invoice.performancePeriodStart)
               }}</span>
-              <span class="block">{{
+              <span> – </span>
+              <span class="">{{
                 formatDate(invoice.performancePeriodEnd)
               }}</span>
             </div>
             <div>
-              <BaseLabel class="block" text="Kundennummer" />
-              <span class="block">{{ invoice.client }}</span>
+              <BaseLabel class="block" text="Kunde" />
+              <span v-if="client && client?.company" class="block">{{
+                client.company
+              }}</span>
             </div>
             <div>
               <BaseLabel class="block" text="Status" />
@@ -128,6 +131,7 @@ import { useAuthStore } from "~/stores/auth.store";
 import { formatDate } from "~/utils/utils";
 import InvoiceStatusPill from "~/components/Invoice/InvoiceStatusPill.vue";
 import RichTextRenderer from "~/components/RichTextRenderer/RichTextRenderer.vue";
+import { useAlertStore } from "~/stores/alert";
 
 const authStore = useAuthStore();
 const route = useRoute();
@@ -159,4 +163,15 @@ async function markAsPaid(invoice: Invoice) {
     },
   });
 }
+
+const { data: client } = useFetch<Client>(
+  `/api/clients/${invoice?.value?.client}`,
+  {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${authStore.accessToken}`,
+      Userid: authStore.userId,
+    },
+  }
+);
 </script>

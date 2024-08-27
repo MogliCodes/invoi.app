@@ -162,7 +162,7 @@
       <!-- Invoice items -->
       <section>
         <BaseHeadline type="h2" text="Rechnungspositionen" />
-        <div class="shadow-lg">
+        <div class="rounded-lg shadow-lg">
           <BaseTable>
             <template #head>
               <thead class="bg-blue-90 text-white">
@@ -185,6 +185,7 @@
                   :key="`position-${index}`"
                   :row="row"
                   @add-row="insertRow(index)"
+                  @add-subtotal="addSubtotal(index)"
                   @update:row="updateRowTotal(index, $event)"
                 />
               </tbody>
@@ -395,6 +396,7 @@ const rows: Ref<Array<InvoicePosition>> = ref([
     hours: defaultRate.value,
     factor: 0,
     total: 0,
+    isSubtotal: false,
   },
 ]);
 
@@ -409,6 +411,7 @@ watch([settings, selectedRateType], async (newVal) => {
       ...row,
       hours: defaultRate.value,
       total: row.hours * row.factor,
+      isSubtotal: false,
     };
   });
 });
@@ -471,10 +474,9 @@ async function generateInvoiceNumberForYear(): void {
 
 useSortable("#rows", rows);
 const totalAmount = computed(() => {
-  return rows.value.reduce(
-    (accumulator, currentItem) => accumulator + currentItem.total,
-    0
-  );
+  return rows.value
+    .filter((row) => row.isSubtotal)
+    .reduce((accumulator, currentItem) => accumulator + currentItem.total, 0);
 });
 const taxes = computed(() => {
   return hasTaxes.value ? totalAmount.value * 0.19 : 0;
@@ -513,9 +515,21 @@ function insertRow(index: number) {
     hours: defaultRate.value,
     factor: 0,
     total: 0,
+    isSubtotal: false,
   };
   rows.value.splice(index + 1, 0, element);
   rows.value.map((row, index) => (row.position = index + 1));
+}
+
+function addSubtotal(index: number) {
+  const subtotal = rows.value
+    .filter((row) => row.position <= index)
+    .reduce((acc, row) => acc + row.total, 0);
+  rows.value[index] = {
+    ...rows.value[index],
+    total: subtotal,
+    isSubtotal: true,
+  };
 }
 
 function updateRowTotal(index: number, event: any): void {

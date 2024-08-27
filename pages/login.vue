@@ -19,12 +19,22 @@
         </div>
         <BaseBox class="w-full">
           <div class="mb-3">
-            <BaseLabel text="Username" />
-            <BaseInput v-model="username" type="text" />
+            <BaseLabel text="Benutzer" />
+            <BaseInput
+              v-model="username"
+              :is-required="true"
+              type="text"
+              placeholder="Benutzer eingeben"
+            />
           </div>
           <div class="mb-3">
-            <BaseLabel text="Password" />
-            <BaseInput v-model="password" type="password" />
+            <BaseLabel text="Passwort" />
+            <BaseInput
+              v-model="password"
+              :is-required="true"
+              type="password"
+              placeholder="Passwort eingeben"
+            />
           </div>
           <BaseButton
             class="w-full"
