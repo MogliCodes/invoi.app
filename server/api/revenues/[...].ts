@@ -25,4 +25,27 @@ router.post(
   })
 );
 
+router.post(
+  "/client/:clientId",
+  defineEventHandler(async (event: H3Event) => {
+    console.log("revenues/client/:clientId");
+    const cookies = parseCookies(event);
+    const headers = {
+      userId: cookies.userId,
+      authorization: cookies.accessToken,
+    };
+    const body = await readBody(event);
+    const params = getRouterParams(event);
+    console.log("clientId", params.clientId);
+    const apiClient = new ApiClientBuilder();
+    return await apiClient
+      .setResource("invoice")
+      .setEndpoint(`revenue/${params.clientId}`)
+      .setHeaders(headers)
+      .setBody(body)
+      .get()
+      .execute();
+  })
+);
+
 export default useBase("/api/revenues", router.handler);

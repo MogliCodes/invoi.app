@@ -75,6 +75,18 @@
           </tbody>
         </table>
       </section>
+      <section v-if="revenueByClient">
+        <BaseHeadline type="h2" :text="`Umsätze durch ${client.company}`" />
+        <BaseBox>
+          <div class="flex flex-col">
+            <BaseLabel text="Insgesamt" />
+            <span class="text-secondary-100 text-3xl font-bold font-syne">{{
+              formatCurrencyAmount(formatCentToAmount(revenueByClient))
+            }}</span>
+          </div>
+        </BaseBox>
+      </section>
+
       <section v-if="contacts">
         <BaseHeadline type="h2" :text="`Contacts at ${client.company}`" />
         <section v-if="!contacts.length">
@@ -163,7 +175,6 @@
 <script setup lang="ts">
 import { useAuthStore } from "~/stores/auth.store";
 import { useAlertStore } from "~/stores/alert";
-
 const authStore = useAuthStore();
 const alertStore = useAlertStore();
 const accessToken = authStore.accessToken;
@@ -198,6 +209,17 @@ const { data: projects } = useFetch<Array<Project>>(
 
 const { data: contacts } = useFetch<Array<Contact>>(
   `/api/contacts/get?clientId=${route.params.id}`,
+  {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${authStore.accessToken}`,
+      Userid: authStore.userId,
+    },
+  }
+);
+
+const { data: revenueByClient } = useFetch(
+  `/api/revenues/client/${route.params.id}`,
   {
     method: "POST",
     headers: {
