@@ -533,7 +533,9 @@ function addSubtotal(index: number) {
 }
 
 function updateRowTotal(index: number, event: any): void {
-  rows.value[index] = event;
+  console.log("updateRowTotal", index, event);
+  const row = { ...rows.value[index], total: newTotal }; // Create a new object
+  rows.value.splice(index, 1, row); // Replace the object in the array
 }
 
 const formattedRows = computed(() => {
