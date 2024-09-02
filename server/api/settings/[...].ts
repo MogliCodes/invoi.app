@@ -53,7 +53,11 @@ router.patch(
       authorization: cookies.accessToken,
     };
     const apiClient = new ApiClientBuilder();
-    return await apiClient.patch().setHeaders(headers).execute();
+    return await apiClient
+      .patch()
+      .setHeaders(headers)
+      .setResource("settings")
+      .execute();
   })
 );
 
