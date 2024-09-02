@@ -23,6 +23,10 @@ export default defineEventHandler(async (event) => {
     // decode token from response
     const token = response.data.token;
     const secret = process.env.SECRET_KEY || "";
+    console.log("token", token);
+    console.log("secret", secret);
+    const secretFromConfig = config.secretKey;
+    console.log("secretFromConfig", secretFromConfig);
     const decoded: jwt.JwtPayload = jwt.verify(token, secret) as JwtPayload;
     const { exp = 0 } = decoded;
     const formattedExpirationDate = new Date(exp * 1000).toISOString();

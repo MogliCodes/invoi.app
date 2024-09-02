@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full flex flex-col gap-4">
+  <div class="flex w-full flex-col gap-4">
     <!-- Onboarding teaser -->
     <section
       v-if="showTourTeaser"
@@ -19,7 +19,7 @@
         </p>
         <BaseButton text="Start the tour" variant="amber" />
         <div
-          class="absolute right-6 top-6 flex h-9 w-9 items-center justify-center rounded-lg bg-yellow-400"
+          class="absolute right-6 top-6 flex size-9 items-center justify-center rounded-lg bg-yellow-400"
         >
           <UIcon
             class="text-2xl"
@@ -28,7 +28,7 @@
           />
         </div>
         <UIcon
-          class="absolute -bottom-10 right-10 h-[300px] w-[300px]"
+          class="absolute -bottom-10 right-10 size-[300px]"
           name="i-heroicons-document-chart-bar"
         />
       </div>
@@ -54,7 +54,7 @@
               >
             </div>
             <UIcon
-              class="h-20 w-20 text-gray-300 dark:text-gray-600"
+              class="size-20 text-gray-300 dark:text-gray-600"
               name="i-heroicons-user-circle"
             />
           </NuxtLink>
@@ -70,7 +70,7 @@
               >
             </div>
             <UIcon
-              class="h-20 w-20 text-gray-300 dark:text-gray-600"
+              class="size-20 text-gray-300 dark:text-gray-600"
               name="i-heroicons-document-chart-bar"
             />
           </NuxtLink>
@@ -83,7 +83,7 @@
               >
             </div>
             <UIcon
-              class="h-20 w-20 text-gray-300 dark:text-gray-600"
+              class="size-20 text-gray-300 dark:text-gray-600"
               name="i-heroicons-building-office"
             />
           </NuxtLink>
@@ -106,16 +106,18 @@
               <BaseLabel text="This month" />
               <span
                 class="mb-2 block font-syne text-5xl font-bold text-secondary-100"
-                >{{ currentMonthRevnue }}</span
+                >{{
+                  formatCurrencyAmount(formatCentToAmount(currentMonthRevnue))
+                }}</span
               >
             </div>
             <UIcon
-              class="h-20 w-20 text-gray-300 dark:text-gray-600"
+              class="size-20 text-gray-300 dark:text-gray-600"
               name="i-heroicons-arrow-trending-up"
             />
           </article>
           <article
-            class="flex justify-between border-r-2 pr-3 dark:border-gray-600 pl-3"
+            class="flex justify-between border-r-2 px-3 dark:border-gray-600"
           >
             <div>
               <BaseLabel text="This quarter" />
@@ -127,7 +129,7 @@
               >
             </div>
             <UIcon
-              class="h-20 w-20 text-gray-300 dark:text-gray-600"
+              class="size-20 text-gray-300 dark:text-gray-600"
               name="i-heroicons-calendar-days"
             />
           </article>
@@ -142,7 +144,7 @@
               >
             </div>
             <UIcon
-              class="h-20 w-20 text-gray-300 dark:text-gray-600"
+              class="size-20 text-gray-300 dark:text-gray-600"
               name="i-heroicons-chart-bar"
             />
           </article>
@@ -171,16 +173,18 @@
               <BaseLabel text="This month" />
               <span
                 class="mb-2 block font-syne text-5xl font-bold text-secondary-100"
-                >{{ currentMonthTaxes }}</span
+                >{{
+                  formatCurrencyAmount(formatCentToAmount(currentMonthTaxes))
+                }}</span
               >
             </div>
             <UIcon
-              class="h-20 w-20 text-gray-300 dark:text-gray-600"
+              class="size-20 text-gray-300 dark:text-gray-600"
               name="i-heroicons-arrow-trending-up"
             />
           </article>
           <article
-            class="flex justify-between border-r-2 pr-3 dark:border-gray-600 pl-3"
+            class="flex justify-between border-r-2 px-3 dark:border-gray-600"
           >
             <div>
               <BaseLabel text="This quarter" />
@@ -192,7 +196,7 @@
               >
             </div>
             <UIcon
-              class="h-20 w-20 text-gray-300 dark:text-gray-600"
+              class="size-20 text-gray-300 dark:text-gray-600"
               name="i-heroicons-calendar-days"
             />
           </article>
@@ -207,7 +211,7 @@
               >
             </div>
             <UIcon
-              class="h-20 w-20 text-gray-300 dark:text-gray-600"
+              class="size-20 text-gray-300 dark:text-gray-600"
               name="i-heroicons-chart-bar"
             />
           </article>

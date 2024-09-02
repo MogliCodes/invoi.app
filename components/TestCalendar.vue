@@ -74,7 +74,7 @@ const config = useRuntimeConfig();
 const backendBaseUrl = config.public.BACKEND_BASE_URL;
 const projectsPerClient = ref();
 
-const { data: clients } = useFetch<Array<Client>>(
+const { data: clients } = useFetch<Array<CustomClient>>(
   `${backendBaseUrl}/restapi/client`,
   {
     headers: {

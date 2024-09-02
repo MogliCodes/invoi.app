@@ -251,7 +251,7 @@ async function uploadProfileImage() {
 
 // useFetch post call to update settings
 async function updateSettings() {
-  const res = await $fetch(`${backendBaseUrl}/restapi/settings`, {
+  const res = await $fetch(`/api/settings`, {
     method: "PATCH",
     headers: {
       Authorization: `Bearer ${authStore.accessToken}`,
@@ -318,7 +318,7 @@ watch(settings, () => {
 });
 
 async function initSettigns() {
-  const res = await $fetch(`${backendBaseUrl}/restapi/settings`, {
+  const res = await $fetch(`/api/settings/init`, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${authStore.accessToken}`,
@@ -348,7 +348,7 @@ async function initSettigns() {
     alertStore.setAlert("success", res.message);
     setTimeout(() => {
       alertStore.resetAlert();
-    }, 5e3);
+    }, 5000);
   }
 }
 </script>

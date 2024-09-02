@@ -1,4 +1,4 @@
-type Client = {
+type CustomClient = {
   _id: string;
   company: string;
   street: string;
@@ -34,6 +34,12 @@ type InvoicePosition = {
   factor: number;
   total: number;
   isSubtotal: boolean;
+};
+
+type InvoiceTemplate = {
+  _id: string;
+  title: string;
+  template: string;
 };
 
 type Project = {

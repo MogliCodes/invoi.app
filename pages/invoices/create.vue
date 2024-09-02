@@ -10,13 +10,13 @@
         />
       </div>
     </section>
-    <section v-if="!validSettings || !clients.length" class="mb-6">
-      <BaseNote v-if="!clients.length" class="mb-6">
+    <section v-if="!validSettings || !clients?.length" class="mb-6">
+      <BaseNote v-if="!clients?.length" class="mb-6">
         <p>
           Du hast noch keinen Kunden angelegt. Bitte lege erst einen Kunden an,
           bevor du eine Rechnung erstellst.
         </p>
-        <NuxtLink class="text-blue-600 font-bold" to="/clients/create"
+        <NuxtLink class="font-bold text-blue-600" to="/clients/create"
           >Kunden anlegen</NuxtLink
         >
       </BaseNote>
@@ -25,7 +25,7 @@
           Du hast bisher keine Bankverbindung hinterlegt. Bitte gehe zu den
           Einstellungen und fülle die Bankverbindung aus.
         </p>
-        <NuxtLink class="text-blue-600 font-bold" to="/settings#defaults">
+        <NuxtLink class="font-bold text-blue-600" to="/settings#defaults">
           Zu den Einstellungen
         </NuxtLink>
       </BaseNote>
@@ -36,7 +36,7 @@
           Du hast bisher keine Rechnungstemplates erstellt. Bitte erstelle ein
           Template bevor du eine Rechnung erstellst.
         </p>
-        <NuxtLink class="text-blue-600 font-bold" to="/invoices/templates">
+        <NuxtLink class="font-bold text-blue-600" to="/invoices/templates">
           Zu den Templates
         </NuxtLink>
       </BaseNote>
@@ -62,7 +62,7 @@
                 </template>
               </USelect>
             </div>
-            <div v-if="selectedClient">
+            <div v-if="selectedClient && !!contactsPerClient.length">
               <BaseLabel text="Kontaktperson" />
               <USelect
                 v-model="selectedContact"
@@ -81,16 +81,16 @@
             <div>
               <BaseLabel text="Titel" />
               <BaseInput
-                is-required
                 v-model="invoiceTitle"
+                is-required
                 placeholder="Gib einen Titel ein"
               />
             </div>
             <div>
               <BaseLabel text="Rechnungsnummer" />
               <BaseInput
-                is-required
                 v-model="invoiceNumber"
+                is-required
                 placeholder="Vergebe eine Rechnungsnummer"
               />
               <BaseButton
@@ -134,7 +134,7 @@
               <BaseLabel text="Satz" />
               <USelectMenu
                 v-model="selectedRateType"
-                class="mb-3 select"
+                class="select mb-3"
                 placeholder="Satz auswählen"
                 :options="rateTypeOptions"
               >
@@ -162,65 +162,68 @@
       <!-- Invoice items -->
       <section>
         <BaseHeadline type="h2" text="Rechnungspositionen" />
-        <div class="rounded-lg shadow-lg">
+        <div class="overflow-hidden rounded-lg shadow-lg">
           <BaseTable>
             <template #head>
-              <thead class="bg-blue-90 text-white">
-                <tr>
-                  <th></th>
-                  <th class="w-1/12 px-6 py-5 text-left">Position</th>
-                  <th class="w-7/12 px-6 py-5 text-left">Beschreibung</th>
-                  <th class="w-1/12 px-6 py-5 text-left">
-                    <span contenteditable>Preis</span>
-                  </th>
-                  <th class="w-1/12 px-6 py-5 text-left">Faktor</th>
-                  <th class="w-2/12 px-6 py-5 text-right">Gesamtpreis</th>
-                </tr>
-              </thead>
+              <th class="w-1/12 px-6 py-5 text-left">Position</th>
+              <th class="w-7/12 px-6 py-5 text-left">Beschreibung</th>
+              <th class="w-1/12 px-6 py-5 text-left">
+                <span contenteditable>Preis</span>
+              </th>
+              <th class="w-1/12 px-6 py-5 text-left">Faktor</th>
+              <th class="w-1/12 px-6 py-5 text-right">Gesamtpreis</th>
+              <th class="w-1/12 px-6 py-5 text-right">Aktionen</th>
             </template>
             <template #body>
-              <tbody id="rows">
-                <InvoicePosition
-                  v-for="(row, index) in rows"
-                  :key="`position-${index}`"
-                  :row="row"
-                  @add-row="insertRow(index)"
-                  @add-subtotal="addSubtotal(index)"
-                  @update:row="updateRowTotal(index, $event)"
-                />
-              </tbody>
-              <tfoot>
-                <tr class="bg-gray-500 text-white dark:bg-gray-800">
-                  <td colspan="5" class="px-6 py-3">Gesamt</td>
-                  <td class="px-6 py-3 text-right">
-                    <span>{{ formatCurrencyAmount(totalAmount) }}</span>
-                  </td>
-                </tr>
-                <tr
-                  v-for="(tax, index) in selectedTaxes"
-                  :key="`tax-${index}`"
-                  class="px-6 py-3 text-right"
-                >
-                  <td class="px-6 py-3 text-right">{{ tax }}</td>
-                </tr>
-                <tr
-                  v-if="hasTaxes"
-                  class="bg-gray-600 text-white dark:bg-gray-900"
-                >
-                  <td colspan="5" class="px-6 py-3">Mwst.</td>
-                  <td class="px-6 py-3 text-right">
-                    <span>{{ formatCurrencyAmount(taxes) }}</span>
-                  </td>
-                </tr>
-                <tr class="bg-blue-80 text-white">
-                  <td colspan="5" class="px-6 py-5">
-                    <span class="font-bold">Brutto-Rechnungssumme</span>
-                  </td>
-                  <td class="px-6 py-5 text-right">
-                    <span>{{ formatCurrencyAmount(totalWithTaxes) }}</span>
-                  </td>
-                </tr>
-              </tfoot>
+              <InvoicePosition
+                v-for="(row, index) in rows"
+                :key="`position-${index}`"
+                :row="row"
+                @add-row="insertRow(index)"
+                @add-subtotal="addSubtotal(index)"
+                @update:row="updateRowTotal(index, $event)"
+                @delete-row="deleteRow"
+              />
+            </template>
+            <template #foot>
+              <!-- Gesamt -->
+              <tr class="bg-gray-500 text-white dark:bg-gray-800">
+                <td colspan="4" class="px-6 py-3">Gesamt</td>
+                <td class="px-6 py-3 text-right">
+                  <span>{{ formatCurrencyAmount(totalAmount) }}</span>
+                </td>
+                <td></td>
+              </tr>
+              <!-- Steuern -->
+              <tr
+                v-for="(tax, index) in selectedTaxes"
+                :key="`tax-${index}`"
+                class="px-6 py-3 text-right"
+              >
+                <td colspan="4" class="px-6 py-3 text-right">{{ tax }}</td>
+                <td></td>
+              </tr>
+              <!-- Mwst. -->
+              <tr
+                v-if="hasTaxes"
+                class="bg-gray-600 text-white dark:bg-gray-900"
+              >
+                <td colspan="4" class="px-6 py-3">Mwst.</td>
+                <td class="px-6 py-3 text-right">
+                  <span>{{ formatCurrencyAmount(taxes) }}</span>
+                </td>
+                <td></td>
+              </tr>
+              <!-- Brutto-Rechnungssumme -->
+              <tr class="bg-blue-80 text-white">
+                <td colspan="4" class="px-6 py-5">
+                  <span class="font-bold">Brutto-Rechnungssumme</span>
+                </td>
+                <td class="px-6 py-5 text-right">
+                  <span>{{ formatCurrencyAmount(totalWithTaxes) }}</span>
+                </td>
+                <td></td>
+              </tr>
             </template>
           </BaseTable>
         </div>
@@ -250,7 +253,7 @@
           v-if="showPreview"
           class="fixed inset-0 z-30 flex items-center justify-center bg-black bg-opacity-80 p-12"
         >
-          <div class="h-full w-full">
+          <div class="size-full">
             <div class="a4 mx-auto bg-white">
               <div ref="preview" v-html="invoicePreviewHtml"></div>
             </div>
@@ -262,7 +265,7 @@
         class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
       >
         <div
-          class="flex h-14 w-14 animate-spin items-center justify-center rounded-full bg-white"
+          class="flex size-14 animate-spin items-center justify-center rounded-full bg-white"
         >
           <UIcon class="text-4xl" name="i-heroicons-arrow-path" />
         </div>
@@ -310,13 +313,13 @@ const preview = ref(null);
 onClickOutside(preview, () => (showPreview.value = false));
 
 const rateTypeOptions = ["hourly", "daily"];
-const taxOptions = ["7%", "19%"];
+// const taxOptions = ["7%", "19%"];
 const selectedTaxes = ref([]);
 
 /* ==========================================
  * Data fetching
  ========================================== */
-const { data: clients } = useFetch<Array<Client>>(`/api/clients/get`, {
+const { data: clients } = useFetch<Array<CustomClient>>(`/api/clients/get`, {
   method: "POST",
   headers: {
     Authorization: `Bearer ${authStore.accessToken}`,
@@ -324,7 +327,7 @@ const { data: clients } = useFetch<Array<Client>>(`/api/clients/get`, {
   },
 });
 
-const { data: generatedInvoiceNumber } = useFetch<string>(
+const { data: generatedInvoiceNumber } = useFetch<{ number: string }>(
   `/api/invoices/number`,
   {
     method: "POST",
@@ -350,7 +353,7 @@ const { data: templates } = useFetch<Array<InvoiceTemplate>>(
  * Invoice data
  ============== */
 const isPending = ref(false);
-const selectedClient: Ref<Client | null> = ref(
+const selectedClient: Ref<CustomClient | null> = ref(
   clients.value ? clients.value[0] : null
 );
 const selectedContact: Ref<Contact | null> = ref(null);
@@ -366,7 +369,6 @@ const selectedRateType = ref();
 const hasTaxes: Ref<boolean> = ref(true);
 const isReverseChargeInvoice: Ref<boolean> = ref(false);
 const contactsPerClient = ref();
-const config = useRuntimeConfig();
 
 type Settings = {
   data: any;
@@ -389,16 +391,28 @@ const validSettings = computed<boolean>(() => {
   );
 });
 
-const rows: Ref<Array<InvoicePosition>> = ref([
-  {
-    position: 1,
-    description: "Füge eine Beschreibung hinzu",
-    hours: defaultRate.value,
-    factor: 0,
-    total: 0,
-    isSubtotal: false,
-  },
-]);
+const initialRow: Ref<InvoicePosition> = ref({
+  position: 1,
+  description: "Füge eine Beschreibung hinzu",
+  hours: defaultRate.value,
+  factor: 0,
+  total: 0,
+  isSubtotal: false,
+});
+
+const rows: Ref<Array<InvoicePosition>> = ref([]);
+rows.value.push(initialRow.value);
+
+// const rows: Ref<Array<InvoicePosition>> = ref([
+//   {
+//     position: 1,
+//     description: "Füge eine Beschreibung hinzu",
+//     hours: defaultRate.value,
+//     factor: 0,
+//     total: 0,
+//     isSubtotal: false,
+//   },
+// ]);
 
 watch([settings, selectedRateType], async (newVal) => {
   if (!newVal) return;
@@ -418,7 +432,6 @@ watch([settings, selectedRateType], async (newVal) => {
 
 watch(selectedClient, async (newVal) => {
   if (!newVal) return;
-  console.log(newVal);
   contactsPerClient.value = await $fetch(
     `/api/contacts/get?clientId=${newVal}`,
     {
@@ -432,7 +445,7 @@ watch(selectedClient, async (newVal) => {
 });
 
 /**
- * Watch for changes to the invoide date. If it changes, set a ref to true, that determines if a button should be displayed the allows to generate an adequate invoice number.
+ * Watch for changes to the invoice date. If it changes, set a ref to true, that determines if a button should be displayed the allows to generate an adequate invoice number.
  */
 
 const showGenerateInvoiceNumberButton = ref(false);
@@ -442,24 +455,18 @@ watch(invoiceDate, async (newVal) => {
   const date = new Date(newVal);
   const year = date.getFullYear();
   const currentYear = new Date().getFullYear();
-  if (year !== currentYear) {
-    showGenerateInvoiceNumberButton.value = true;
-  } else {
-    showGenerateInvoiceNumberButton.value = false;
-  }
-  console.log("invoiceDate", newVal);
+  showGenerateInvoiceNumberButton.value = year !== currentYear;
 
-  // Set perfermance period end to the selected invoice date and start 7 days before
+  // Set performance period end to the selected invoice date and start 7 days before
   // format dates accordingly like 01.01.1970
   const formattedDate = new Date(newVal).toLocaleDateString("en-CA");
   performancePeriodStart.value = formattedDate;
   performancePeriodEnd.value = formattedDate;
 });
 
-async function generateInvoiceNumberForYear(): void {
+async function generateInvoiceNumberForYear(): Promise<void> {
   const date = new Date(invoiceDate.value);
   const invoiceYear = date.getFullYear();
-  console.log("generateInvoiceNumberForYear", invoiceYear);
   const response = await $fetch(`/api/invoices/number/${invoiceYear}`, {
     method: "POST",
     headers: {
@@ -469,13 +476,14 @@ async function generateInvoiceNumberForYear(): void {
   });
   invoiceNumber.value = response.number;
   showGenerateInvoiceNumberButton.value = false;
-  console.log(response);
 }
 
 useSortable("#rows", rows);
 const totalAmount = computed(() => {
   return rows.value
-    .filter((row) => row.isSubtotal)
+    .filter((row) => {
+      return !row.isSubtotal;
+    })
     .reduce((accumulator, currentItem) => accumulator + currentItem.total, 0);
 });
 const taxes = computed(() => {
@@ -498,17 +506,18 @@ const isValidInvoice = computed(() => {
  * Invoice processing
  ============== */
 function addPosition() {
-  rows.value.push({
+  const newPosition: InvoicePosition = {
     position: rows.value.length + 1,
     description: "Füge eine Beschreibung hinzu",
     hours: defaultRate.value,
     factor: 0,
     total: 0,
-  });
+    isSubtotal: false,
+  };
+  rows.value.push(newPosition);
 }
 
 function insertRow(index: number) {
-  console.log("insertRow", index);
   const element = {
     position: index + 2,
     description: "Füge eine Beschreibung hinzu",
@@ -522,20 +531,35 @@ function insertRow(index: number) {
 }
 
 function addSubtotal(index: number) {
-  const subtotal = rows.value
-    .filter((row) => row.position <= index)
-    .reduce((acc, row) => acc + row.total, 0);
-  rows.value[index] = {
-    ...rows.value[index],
-    total: subtotal,
+  const subTotal = calculateSubtotal(index + 1);
+  rows.value.push({
+    position: rows.value.length + 1,
+    description: "Zwischensumme",
+    hours: 0,
+    factor: 0,
+    total: subTotal,
     isSubtotal: true,
-  };
+  });
+}
+
+function calculateSubtotal(index: number) {
+  let total = 0;
+  for (let i = index - 1; i >= 0; i--) {
+    if (rows.value[i].isSubtotal) {
+      break; // Stop if another subtotal is found
+    }
+    total += rows.value[i].total;
+  }
+  return total;
+}
+
+function deleteRow(event: number) {
+  const indexToDelete = rows.value.findIndex((row) => row.position === event);
+  rows.value.splice(indexToDelete, 1);
 }
 
 function updateRowTotal(index: number, event: any): void {
-  console.log("updateRowTotal", index, event);
-  const row = { ...rows.value[index], total: newTotal }; // Create a new object
-  rows.value.splice(index, 1, row); // Replace the object in the array
+  rows.value[index] = event;
 }
 
 const formattedRows = computed(() => {
@@ -552,7 +576,7 @@ const formattedRows = computed(() => {
 
 async function createInvoice() {
   if (shouldBeSavedAsDraft.value) {
-    saveAsDraft();
+    await saveAsDraft();
   }
   const invoiceToCreate = {
     nr: invoiceNumber.value,
@@ -604,11 +628,7 @@ async function getInvoicePreview() {
   invoicePreviewHtml.value = data.value;
   showPreview.value = true;
 }
-
 const showDraftSelectModal = ref(false);
-function useDraft() {
-  showDraftSelectModal.value = true;
-}
 
 function applyDraft() {
   if (!invoiceDrafts.value) return;
@@ -616,7 +636,13 @@ function applyDraft() {
     (draft) => draft._id === selectedInvoiceDraft.value
   );
   if (!draft) return;
-  selectedClient.value = draft.client;
+
+  if (clients && clients.value) {
+    selectedClient.value = clients.value.find(
+      (client) => client._id === draft.client
+    )!;
+  }
+
   invoiceNumber.value = draft.nr;
   invoiceTitle.value = draft.title;
   invoiceDate.value = new Date(draft.date).toLocaleDateString("en-CA");
@@ -632,7 +658,6 @@ function applyDraft() {
     };
   });
   showDraftSelectModal.value = false;
-  console.log(items);
 }
 
 const shouldBeSavedAsDraft = ref(false);
@@ -654,9 +679,7 @@ async function saveAsDraft() {
     isReverseChargeInvoice: isReverseChargeInvoice.value,
     status: "unpaid",
   };
-  console.log("invoiceToCreate", invoiceToCreate);
   try {
-    console.log("saving draft");
     isPending.value = true;
     const response = await $fetch("/api/invoices/draft", {
       method: "POST",
@@ -669,7 +692,6 @@ async function saveAsDraft() {
       },
     });
     if (!response) return;
-    console.log("response", response);
     response.status === 201
       ? (isPending.value = false)
       : (isPending.value = true);

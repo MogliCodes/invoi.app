@@ -20,4 +20,41 @@ router.post(
   })
 );
 
+router.post(
+  "/init",
+  defineEventHandler(async (event: H3Event) => {
+    console.log("POST /api/settings/init");
+    const cookies = parseCookies(event);
+    const headers = {
+      userid: cookies.userId,
+      authorization: cookies.accessToken,
+    };
+    const body = await readBody(event);
+    console.log("body", body);
+    const apiClient = new ApiClientBuilder();
+    const res = await apiClient
+      .post()
+      .setResource("settings")
+      .setBody(body)
+      .setHeaders(headers)
+      .execute();
+    console.log("res", res);
+    return res;
+  })
+);
+
+router.patch(
+  "/",
+  defineEventHandler(async (event: H3Event) => {
+    console.log("POST /api/settings/get");
+    const cookies = parseCookies(event);
+    const headers = {
+      userid: cookies.userId,
+      authorization: cookies.accessToken,
+    };
+    const apiClient = new ApiClientBuilder();
+    return await apiClient.patch().setHeaders(headers).execute();
+  })
+);
+
 export default useBase("/api/settings", router.handler);

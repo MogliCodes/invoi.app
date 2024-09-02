@@ -1,13 +1,13 @@
 <template>
   <div class="flex flex-col sm:flex-row">
-    <div
-      class="fixed right-2 top-16 z-50 rounded-xl bg-yellow-100 p-4 text-sm text-yellow-700 shadow-lg"
-    >
-      <div class="flex items-center gap-4">
-        <UIcon name="i-heroicons-information-circle" class="scale-150" />
-        <span>Sitzung läuft ab in: {{ formattedTime }}</span>
-      </div>
-    </div>
+    <!--    <div-->
+    <!--      class="fixed right-2 top-16 z-50 rounded-xl bg-yellow-100 p-4 text-sm text-yellow-700 shadow-lg"-->
+    <!--    >-->
+    <!--      <div class="flex items-center gap-4">-->
+    <!--        <UIcon name="i-heroicons-information-circle" class="scale-150" />-->
+    <!--        <span>Sitzung läuft ab in: {{ formattedTime }}</span>-->
+    <!--      </div>-->
+    <!--    </div>-->
     <TheSidebar v-if="authStore.isUserLoggedIn" />
     <main
       class="relative ml-auto min-h-screen w-10/12 bg-gray-100 py-24 dark:bg-blue-100"
