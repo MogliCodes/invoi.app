@@ -74,7 +74,7 @@
               <BaseInput v-model="vatId" placeholder="Umsatzsteuer-ID" />
             </div>
           </div>
-          <BaseButton text="Save settings" @click="updateSettings" />
+          <BaseButton text="Einstellungen speichern" @click="updateSettings" />
         </BaseBox>
       </section>
       <section>
@@ -251,6 +251,7 @@ async function uploadProfileImage() {
 
 // useFetch post call to update settings
 async function updateSettings() {
+  console.log("updateSettings", email.value);
   const res = await $fetch(`/api/settings`, {
     method: "PATCH",
     headers: {

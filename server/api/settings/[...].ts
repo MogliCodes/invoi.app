@@ -52,11 +52,13 @@ router.patch(
       userid: cookies.userId,
       authorization: cookies.accessToken,
     };
+    const body = await readBody(event);
     const apiClient = new ApiClientBuilder();
     return await apiClient
       .patch()
       .setHeaders(headers)
       .setResource("settings")
+      .setBody(body)
       .execute();
   })
 );
