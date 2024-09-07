@@ -17,6 +17,9 @@ export default defineNuxtConfig({
   },
   modules: ["@nuxt/ui", "@pinia/nuxt"],
   vite: {
+    define: {
+      __VUE_PROD_DEVTOOLS__: true,
+    },
     server: {
       fs: {
         strict: false,
