@@ -283,11 +283,16 @@ async function deleteInvoiceTemplate(event: H3Event) {
   }
 }
 
+function delay() {
+  return new Promise((resolve) => setTimeout(resolve, 3000));
+}
+
 async function getInvoices(event: H3Event) {
   const config = useRuntimeConfig();
   const backendBaseUrl = config.public.BACKEND_BASE_URL;
   const cookies = parseCookies(event);
   const body = await readBody(event);
+  delay();
   const res: any = await $fetch(`${backendBaseUrl}/restapi/invoice`, {
     method: "GET",
     body,

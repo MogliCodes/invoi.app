@@ -1,6 +1,6 @@
 <template>
   <table
-    class="min-w-full overflow-y-hidden rounded-lg shadow-lg dark:text-gray-400"
+    class="min-w-full overflow-hidden rounded-lg shadow-lg dark:text-gray-400"
   >
     <thead class="overflow-hidden rounded-t-lg bg-blue-90 text-white">
       <tr>

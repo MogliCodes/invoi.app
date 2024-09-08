@@ -134,6 +134,7 @@ import RichTextRenderer from "~/components/RichTextRenderer/RichTextRenderer.vue
 import { useAlertStore } from "~/stores/alert";
 
 const authStore = useAuthStore();
+const alertStore = useAlertStore();
 const route = useRoute();
 console.log(route.params.id);
 const { data: invoice } = useFetch<Invoice>(
@@ -151,7 +152,7 @@ async function markAsPaid(invoice: Invoice) {
   console.log("markAsPaid", invoice._id);
   const apiUrl = `/api/invoices/${invoice._id}/mark-as-paid`;
   console.log("apiUrl", apiUrl);
-  await $fetch(apiUrl, {
+  const res = await $fetch(apiUrl, {
     method: "PATCH",
     headers: {
       Authorization: `Bearer ${authStore.accessToken}`,
@@ -162,6 +163,13 @@ async function markAsPaid(invoice: Invoice) {
       status: "paid",
     },
   });
+  if (res.status === 200) {
+    alertStore.setAlert("success", res.message);
+    navigateTo("/invoices");
+    setTimeout(() => {
+      alertStore.resetAlert();
+    }, 5000);
+  }
 }
 
 const { data: client } = useFetch<Client>(

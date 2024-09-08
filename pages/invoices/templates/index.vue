@@ -3,7 +3,7 @@
     <section>
       <BaseButton to="/invoices/templates/upload" text="Upload template" />
     </section>
-    <section v-if="!customTemplates.length">
+    <section v-if="!customTemplates?.length">
       <BaseNote>
         <p>
           You have not uploaded any custom templates yet. Click the button above
@@ -13,7 +13,7 @@
     </section>
     <section v-else>
       <div class="container mx-auto">
-        <BaseTable>
+        <BaseTable v-if="customTemplates && !!customTemplates.length">
           <template #head>
             <th class="px-6 py-5 text-left">ID</th>
             <th class="px-6 py-5 text-left">Title</th>
@@ -67,7 +67,7 @@
   <UModal v-model="isOpen">
     <div class="flex flex-col items-center p-8 text-center">
       <div
-        class="mx-auto mb-4 flex h-10 w-10 items-center justify-center rounded-full bg-red-500"
+        class="mx-auto mb-4 flex size-10 items-center justify-center rounded-full bg-red-500"
       >
         <UIcon class="text-2xl text-red-900" name="i-heroicons-trash" />
       </div>

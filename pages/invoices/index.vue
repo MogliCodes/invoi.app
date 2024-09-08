@@ -40,16 +40,21 @@
     </BaseNote>
     <div v-else>
       <div class="mb-2">
-        <span class="text-sm font-bold text-secondary-100">{{
-          invoices?.length
-        }}</span>
-        <span class="text-sm font-bold text-secondary-100"> von </span>
-        <span
-          v-if="invoiceCount"
-          class="text-sm font-bold text-secondary-100"
-          >{{ invoiceCount }}</span
-        >
-        <span class="text-sm font-bold text-secondary-100"> Rechnungen</span>
+        <div v-if="!!invoices?.length">
+          <span class="text-sm font-bold text-secondary-100">{{
+            invoices?.length
+          }}</span>
+          <span class="text-sm font-bold text-secondary-100"> von </span>
+          <span
+            v-if="invoiceCount"
+            class="text-sm font-bold text-secondary-100"
+            >{{ invoiceCount }}</span
+          >
+          <span class="text-sm font-bold text-secondary-100"> Rechnungen</span>
+        </div>
+        <div v-else>
+          <USkeleton class="h-4 w-[150px] bg-secondary-100" />
+        </div>
       </div>
       <div class="overflow-hidden rounded-lg">
         <table
@@ -226,21 +231,24 @@ definePageMeta({
 const authStore = useAuthStore();
 const config = useRuntimeConfig();
 const backendBaseUrl = config.public.BACKEND_BASE_URL;
-const { data: invoices, refresh: refreshInvoices } = useFetch<Invoice[]>(
-  `/api/invoices/get`,
-  {
-    method: "POST",
-    headers: {
-      userid: authStore.userId,
-      Authorization: `Bearer ${authStore.accessToken}`,
-    },
-  }
-);
+const {
+  data: invoices,
+  refresh: refreshInvoices,
+  pending: invoicesPending,
+} = useFetch<Invoice[]>(`/api/invoices/get`, {
+  lazy: true,
+  method: "POST",
+  headers: {
+    userid: authStore.userId,
+    Authorization: `Bearer ${authStore.accessToken}`,
+  },
+});
 
 const { data: invoiceCount, refresh: refreshInvoiceCount } = useFetch<
   Invoice[]
 >(`/api/invoices/count/get`, {
   method: "POST",
+  lazy: true,
   headers: {
     userId: authStore.userId,
     Authorization: `Bearer ${authStore.accessToken}`,
@@ -249,6 +257,7 @@ const { data: invoiceCount, refresh: refreshInvoiceCount } = useFetch<
 
 const { data: clients } = useFetch<Client[]>(`/api/clients/get`, {
   method: "POST",
+  lazy: true,
   headers: {
     userId: authStore.userId,
     Authorization: `Bearer ${authStore.accessToken}`,

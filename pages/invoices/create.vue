@@ -89,6 +89,7 @@
             <div>
               <BaseLabel text="Rechnungsnummer" />
               <BaseInput
+                v-if="invoiceNumber"
                 v-model="invoiceNumber"
                 is-required
                 placeholder="Vergebe eine Rechnungsnummer"
