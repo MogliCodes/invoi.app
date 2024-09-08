@@ -45,6 +45,26 @@ router.post(
 );
 
 router.post(
+  "/client",
+  defineEventHandler(async (event: H3Event) => {
+    // http://localhost:8000/restapi/invoice/client?client=${route.params.id
+    const query = getQuery(event);
+    const cookies = parseCookies(event);
+    const apiClient = new ApiClientBuilder();
+    const headers = {
+      userId: cookies.userId,
+      authorization: cookies.accessToken,
+    };
+    return await apiClient
+      .setResource("invoice")
+      .setEndpoint(`client?client=${query.client}`)
+      .setHeaders(headers)
+      .get()
+      .execute();
+  })
+);
+
+router.post(
   "/number/:year",
   defineEventHandler(async (event: H3Event) => {
     const apiClient = new ApiClientBuilder();

@@ -50,11 +50,18 @@
         </div>
         <div class="relative flex">
           <UAvatar
+            v-if="settings?.avatar"
             class="relative z-20 cursor-pointer"
             src="https://avatars.githubusercontent.com/u/739984?v=4"
             alt="Avatar"
             @click="toggleUserMenu"
           />
+          <span
+            v-else
+            class="relative z-20 flex size-8 cursor-pointer items-center justify-center rounded-full bg-gray-400 text-sm font-normal"
+            @click="toggleUserMenu"
+            >{{ initials }}</span
+          >
           <div
             ref="userMenu"
             class="absolute right-0 top-10 origin-top-right rounded-lg bg-gray-100 p-2 shadow-xl transition"
@@ -101,6 +108,21 @@ if (accessToken.value) {
 } else {
   navigateTo("/login");
 }
+
+const { data: settings, refresh } = useFetch(`/api/settings/get`, {
+  method: "POST",
+  headers: {
+    Authorization: `Bearer ${authStore.accessToken}`,
+    userid: authStore.userId,
+  },
+});
+
+const initials = computed<string>(() => {
+  if (settings?.value?.data.firstname && settings?.value?.data.lastname) {
+    return `${settings?.value.data.firstname[0]}${settings?.value.data.lastname[0]}`;
+  }
+  return "";
+});
 
 const isUserMenuActive = ref(false);
 function toggleUserMenu() {

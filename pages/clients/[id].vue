@@ -80,7 +80,7 @@
         <BaseBox>
           <div class="flex flex-col">
             <BaseLabel text="Insgesamt" />
-            <span class="text-secondary-100 text-3xl font-bold font-syne">{{
+            <span class="font-syne text-3xl font-bold text-secondary-100">{{
               formatCurrencyAmount(formatCentToAmount(revenueByClient))
             }}</span>
           </div>
@@ -188,8 +188,9 @@ const { data: client } = useFetch<Client>(`/api/clients/${route.params.id}`, {
 });
 
 const { data: invoices } = useFetch<Array<Invoice>>(
-  `http://localhost:8000/restapi/invoice/client?client=${route.params.id}`,
+  `/api/invoices/client?client=${route.params.id}`,
   {
+    method: "POST",
     headers: {
       Authorization: `Bearer ${authStore.accessToken}`,
       Userid: authStore.userId,

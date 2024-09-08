@@ -39,26 +39,34 @@
       </p>
     </BaseNote>
     <div v-else>
-      <div class="mb-2">
-        <div v-if="!!invoices?.length">
-          <span class="text-sm font-bold text-secondary-100">{{
-            invoices?.length
-          }}</span>
-          <span class="text-sm font-bold text-secondary-100"> von </span>
-          <span
-            v-if="invoiceCount"
-            class="text-sm font-bold text-secondary-100"
-            >{{ invoiceCount }}</span
-          >
-          <span class="text-sm font-bold text-secondary-100"> Rechnungen</span>
+      <div class="mb-2 flex items-center gap-8">
+        <div class="">
+          <div v-if="!!invoices?.length">
+            <span class="text-sm font-bold text-secondary-100">{{
+              invoices?.length
+            }}</span>
+            <span class="text-sm font-bold text-secondary-100"> von </span>
+            <span
+              v-if="invoiceCount"
+              class="text-sm font-bold text-secondary-100"
+              >{{ invoiceCount }}</span
+            >
+            <span class="text-sm font-bold text-secondary-100">
+              Rechnungen</span
+            >
+          </div>
+          <div v-else>
+            <USkeleton class="h-4 w-[150px] bg-secondary-100" />
+          </div>
         </div>
-        <div v-else>
-          <USkeleton class="h-4 w-[150px] bg-secondary-100" />
+        <div class="flex gap-4 text-sm">
+          <USelectMenu placeholder="Wähle ein Jahr aus" />
+          <USelectMenu placeholder="Wähle einen Kunden aus" />
         </div>
       </div>
-      <div class="overflow-hidden rounded-lg">
+      <div>
         <table
-          class="lg:text-md min-w-full overflow-hidden text-xs shadow-lg md:text-sm dark:text-gray-400"
+          class="lg:text-md min-w-full overflow-hidden rounded-lg text-xs shadow-lg md:text-sm dark:text-gray-400"
         >
           <thead class="bg-blue-90 text-white">
             <tr>

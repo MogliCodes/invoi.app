@@ -8,25 +8,21 @@
       <section>
         <BaseHeadline
           class="mb-2 text-xl font-bold dark:text-white"
-          text="General"
+          text="Allgemein"
           type="h2"
         />
         <BaseBox>
-          <BaseHeadline
-            class="mb-2 text-xl font-bold dark:text-white"
-            text="User information"
-            type="h3"
-          />
           <div class="mb-6 flex flex-col gap-3">
             <div>
-              <BaseLabel text="Profile Image" />
-              <div class="flex">
-                <BaseInput
+              <BaseLabel text="Profilbild" />
+              <div class="flex gap-4">
+                <UInput
                   v-model="profileImage"
                   type="file"
                   placeholder="Username"
                 />
                 <BaseButton
+                  size="xs"
                   type="submit"
                   text="Upload"
                   @click="uploadProfileImage"
@@ -34,7 +30,7 @@
               </div>
             </div>
             <div>
-              <BaseLabel text="Username" />
+              <BaseLabel text="Benutzername" />
               <BaseInput v-model="username" placeholder="Username" />
             </div>
             <div>
@@ -42,36 +38,36 @@
               <BaseInput v-model="email" placeholder="E-Mail" />
             </div>
             <div>
-              <BaseLabel text="Firstname" />
-              <BaseInput v-model="firstname" placeholder="Firstname" />
+              <BaseLabel text="Vorname" />
+              <BaseInput v-model="firstname" placeholder="Vorname" />
             </div>
             <div>
-              <BaseText><label>Lastname</label></BaseText>
-              <BaseInput v-model="lastname" placeholder="Lastname" />
+              <BaseLabel text="Nachname" />
+              <BaseInput v-model="lastname" placeholder="Nachname" />
             </div>
             <div>
-              <BaseLabel text="Street" />
-              <BaseInput v-model="street" placeholder="Street" />
+              <BaseLabel text="Straße" />
+              <BaseInput v-model="street" placeholder="Straße" />
             </div>
             <div>
-              <BaseLabel text="ZIP" />
-              <BaseInput v-model="zip" placeholder="ZIP" />
+              <BaseLabel text="PLZ" />
+              <BaseInput v-model="zip" placeholder="PLZ" />
             </div>
             <div>
-              <BaseLabel text="City" />
-              <BaseInput v-model="city" placeholder="City" />
+              <BaseLabel text="Ort" />
+              <BaseInput v-model="city" placeholder="Ort" />
             </div>
             <div>
-              <BaseLabel text="Phone" />
-              <BaseInput v-model="phone" placeholder="Phone" />
+              <BaseLabel text="Telefon" />
+              <BaseInput v-model="phone" placeholder="Telefon" />
             </div>
             <div>
-              <BaseLabel text="Tax ID" />
+              <BaseLabel text="Steuernummer" />
               <BaseInput v-model="taxId" placeholder="Steuernummer" />
             </div>
             <div>
-              <BaseLabel text="VAT ID" />
-              <BaseInput v-model="vatId" placeholder="Umsatzsteuer-ID" />
+              <BaseLabel text="USt-IdNr." />
+              <BaseInput v-model="vatId" placeholder="USt-IdNr." />
             </div>
           </div>
           <BaseButton text="Einstellungen speichern" @click="updateSettings" />
@@ -190,7 +186,7 @@ import { useAuthStore } from "~/stores/auth.store";
 import { useAlertStore } from "~/stores/alert";
 
 definePageMeta({
-  title: "Settings",
+  title: "Einstellungen",
 });
 
 const authStore = useAuthStore();

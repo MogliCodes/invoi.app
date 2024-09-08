@@ -37,5 +37,10 @@ export default defineAppConfig({
         },
       },
     },
+    input: {
+      file: {
+        base: "w-full bg-gray-100 ring-2 ring-gray-200",
+      },
+    },
   },
 });
