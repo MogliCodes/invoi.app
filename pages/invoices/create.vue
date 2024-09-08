@@ -62,7 +62,7 @@
                 </template>
               </USelect>
             </div>
-            <div v-if="selectedClient && !!contactsPerClient.length">
+            <div v-if="selectedClient && !!contactsPerClient?.length">
               <BaseLabel text="Kontaktperson" />
               <USelect
                 v-model="selectedContact"
@@ -507,7 +507,7 @@ const isValidInvoice = computed(() => {
  ============== */
 function addPosition() {
   const newPosition: InvoicePosition = {
-    position: rows.value.length + 1,
+    position: rows.value?.length + 1,
     description: "Füge eine Beschreibung hinzu",
     hours: defaultRate.value,
     factor: 0,
@@ -533,7 +533,7 @@ function insertRow(index: number) {
 function addSubtotal(index: number) {
   const subTotal = calculateSubtotal(index + 1);
   rows.value.push({
-    position: rows.value.length + 1,
+    position: rows.value?.length + 1,
     description: "Zwischensumme",
     hours: 0,
     factor: 0,
