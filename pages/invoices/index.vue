@@ -53,7 +53,7 @@
       </div>
       <div class="overflow-hidden rounded-lg">
         <table
-          class="min-w-full text-xs md:text-sm lg:text-md overflow-hidden shadow-lg dark:text-gray-400"
+          class="lg:text-md min-w-full overflow-hidden text-xs shadow-lg md:text-sm dark:text-gray-400"
         >
           <thead class="bg-blue-90 text-white">
             <tr>
@@ -174,7 +174,7 @@
     <UModal v-model="isOpen">
       <div class="flex flex-col items-center p-8 text-center">
         <div
-          class="mx-auto mb-4 flex h-10 w-10 items-center justify-center rounded-full bg-red-500"
+          class="mx-auto mb-4 flex size-10 items-center justify-center rounded-full bg-red-500"
         >
           <UIcon class="text-2xl text-red-900" name="i-heroicons-trash" />
         </div>
@@ -239,22 +239,21 @@ const { data: invoices, refresh: refreshInvoices } = useFetch<Invoice[]>(
 
 const { data: invoiceCount, refresh: refreshInvoiceCount } = useFetch<
   Invoice[]
->(`${backendBaseUrl}/restapi/invoice/count`, {
+>(`/api/invoices/count/get`, {
+  method: "POST",
   headers: {
     userId: authStore.userId,
     Authorization: `Bearer ${authStore.accessToken}`,
   },
 });
 
-const { data: clients } = useFetch<Client[]>(
-  `${backendBaseUrl}/restapi/client`,
-  {
-    headers: {
-      userId: authStore.userId,
-      Authorization: `Bearer ${authStore.accessToken}`,
-    },
-  }
-);
+const { data: clients } = useFetch<Client[]>(`/api/clients/get`, {
+  method: "POST",
+  headers: {
+    userId: authStore.userId,
+    Authorization: `Bearer ${authStore.accessToken}`,
+  },
+});
 
 function getClientName(clientId: string) {
   const client = clients?.value?.find(

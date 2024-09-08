@@ -84,7 +84,7 @@ router.post(
 );
 
 router.post(
-  "/count",
+  "/count/get",
   defineEventHandler(async (event: H3Event) => {
     return await getInvoiceCount(event);
   })
@@ -439,6 +439,9 @@ async function getInvoiceCount(event: H3Event) {
   const config = useRuntimeConfig();
   const backendBaseUrl = config.public.BACKEND_BASE_URL;
   const cookies = parseCookies(event);
+  console.log("cookies", cookies);
+  console.log("backendBaseUrl", backendBaseUrl);
+  console.log("event", event);
   const res: any = await $fetch(`${backendBaseUrl}/restapi/invoice/count`, {
     method: "GET",
     headers: {
@@ -454,6 +457,9 @@ async function createInvoice(event: H3Event) {
   const backendBaseUrl = config.public.BACKEND_BASE_URL;
   const cookies = parseCookies(event);
   const body = await readBody(event);
+  console.log("backendBaseUrl", backendBaseUrl);
+  console.log("cookies", cookies);
+  console.log("body", body);
   const res: any = await $fetch(`${backendBaseUrl}/restapi/invoice`, {
     method: "POST",
     body,

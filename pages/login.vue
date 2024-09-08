@@ -25,6 +25,7 @@
               :is-required="true"
               type="text"
               placeholder="Benutzer eingeben"
+              error-message="Bitte gib deinen Benutzernamen ein."
             />
           </div>
           <div class="mb-3">
@@ -34,6 +35,7 @@
               :is-required="true"
               type="password"
               placeholder="Passwort eingeben"
+              error-message="Bitte gib dein Passwort ein."
             />
           </div>
           <BaseButton

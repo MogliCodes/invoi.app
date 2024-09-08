@@ -3,72 +3,70 @@
     <BaseHeadline
       class="mb-8 dark:text-white"
       type="h1"
-      text="Create contact"
+      text="Kontakt erstellen"
     />
     <div class="grid grid-cols-2">
-      <BaseBox>
-        <form @submit.prevent="createContact">
-          <BaseText
-            type="h3"
-            class="mb-8 block text-2xl font-bold dark:text-white"
-            >Contact base information</BaseText
-          >
-          <div class="mb-3">
+      <div>
+        <BaseHeadline class="dark:text-white" type="h2" text="Kontaktdaten" />
+        <BaseBox>
+          <form @submit.prevent="createContact">
             <div class="mb-3">
-              <BaseLabel text="Client" />
-              <USelect
-                v-model="selectedClient"
-                size="md"
-                :options="clients"
-                placeholder="Select a client"
-                value-attribute="_id"
-                option-attribute="company"
-              ></USelect>
+              <div class="mb-3">
+                <BaseLabel text="Kunde" />
+                <USelect
+                  v-model="selectedClient"
+                  size="md"
+                  :options="clients"
+                  placeholder="Wähle einen Kunden aus"
+                  value-attribute="_id"
+                  option-attribute="company"
+                ></USelect>
+              </div>
+              <div>
+                <BaseLabel text="Vorname" />
+                <BaseInput
+                  v-model="firstname"
+                  is-required
+                  error-message="Bitte gib einen Vornamen ein"
+                />
+              </div>
             </div>
-            <div>
-              <BaseLabel text="First name" />
+            <div class="mb-3">
+              <BaseLabel text="Nachname" />
               <BaseInput
-                v-model="firstname"
+                v-model="lastname"
                 is-required
-                error-message="Please provide a first name"
+                error-message="Bitte gib einen Nachnamen ein"
               />
             </div>
-          </div>
-          <div class="mb-3">
-            <BaseLabel text="Last name" />
-            <BaseInput
-              v-model="lastname"
-              is-required
-              error-message="Please provide a last name"
+            <div class="mb-3">
+              <BaseLabel text="E-Mail" />
+              <BaseInput v-model="email" />
+            </div>
+            <div class="mb-3">
+              <BaseLabel text="Geburtsdatum" />
+              <BaseInput v-model="dob" />
+            </div>
+            <div class="mb-3">
+              <BaseLabel text="Straße" />
+              <BaseInput v-model="street" />
+            </div>
+            <div class="mb-3">
+              <BaseLabel text="PLZ" />
+              <BaseInput v-model="zipcode" />
+            </div>
+            <div class="mb-3">
+              <BaseLabel text="Stadt" />
+              <BaseInput v-model="city" />
+            </div>
+            <BaseButton
+              :disabled="!isValidContact"
+              type="submit"
+              text="Kontakt erstellen"
             />
-          </div>
-          <div class="mb-3">
-            <BaseLabel text="E-Mail" />
-            <BaseInput v-model="email" />
-          </div>
-          <div class="mb-3">
-            <BaseLabel text="Date of birth" />
-            <BaseInput v-model="dob" />
-          </div>
-          <div class="mb-3">
-            <BaseLabel text="Street" />
-            <BaseInput v-model="street" />
-          </div>
-          <div class="mb-3">
-            <BaseLabel text="ZIP Code" />
-            <BaseInput v-model="zipcode" />
-          </div>
-          <div class="mb-3">
-            <BaseLabel text="City" />
-            <BaseInput v-model="city" />
-          </div>
-          <BaseButton
-            :disabled="!isValidContact"
-            type="submit"
-            text="Create contact"
-          />
-        </form>
-      </BaseBox>
+          </form>
+        </BaseBox>
+      </div>
     </div>
     <BaseNotification
       v-if="showNotification"
