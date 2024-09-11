@@ -63,7 +63,9 @@
             >
               <td class="py-3 pl-6">{{ invoice.nr }}</td>
               <td class="py-3 pl-6">{{ invoice.title }}</td>
-              <td class="py-3 pl-6">{{ invoice.status }}</td>
+              <td class="py-3 pl-6">
+                <InvoiceStatusPill :invoice="invoice" />
+              </td>
               <td class="py-3 pl-6">
                 {{
                   formatCurrencyAmount(

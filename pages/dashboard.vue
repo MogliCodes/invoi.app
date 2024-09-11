@@ -258,7 +258,7 @@ const { data: contactCount } = useFetch(`/api/contacts/count`, {
   },
 });
 
-const { data: invoiceCount } = useFetch(`/api/invoices/count`, {
+const { data: invoiceCount } = useFetch(`/api/invoices/count/get`, {
   method: "POST",
   headers: {
     Authorization: `Bearer ${authStore.accessToken}`,
