@@ -1,5 +1,5 @@
 <template>
-  <div class="container mx-auto">
+  <div v-if="allDataFetched" class="container mx-auto">
     <!-- Page head -->
     <section class="mb-12">
       <div class="flex gap-4">
@@ -290,6 +290,17 @@
       </UModal>
     </div>
   </div>
+  <div v-else>
+    <div
+      class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
+    >
+      <div
+        class="flex size-14 animate-spin items-center justify-center rounded-full bg-white"
+      >
+        <UIcon class="text-4xl" name="i-heroicons-arrow-path" />
+      </div>
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -320,42 +331,44 @@ const selectedTaxes = ref([]);
 /* ==========================================
  * Data fetching
  ========================================== */
-const { data: clients } = useFetch<Array<CustomClient>>(`/api/clients/get`, {
+const { data: clients, status: clientsFetchStatus } = useFetch<
+  Array<CustomClient>
+>(`/api/clients/get`, {
+  lazy: true,
   method: "POST",
   headers: {
     Authorization: `Bearer ${authStore.accessToken}`,
-    userid: authStore.userId,
+    userId: authStore.userId,
   },
 });
 
-const { data: generatedInvoiceNumber } = useFetch<{ number: string }>(
-  `/api/invoices/number`,
-  {
+const { data: generatedInvoiceNumber, status: generatedInvoiceNumberStatus } =
+  useFetch<{ number: string }>(`/api/invoices/number`, {
+    lazy: true,
     method: "POST",
     headers: {
       Authorization: `Bearer ${authStore.accessToken}`,
       userId: authStore.userId,
     },
-  }
-);
+  });
 
-const { data: templates } = useFetch<Array<InvoiceTemplate>>(
-  `/api/templates/get`,
-  {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${authStore.accessToken}`,
-      userid: authStore.userId,
-    },
-  }
-);
+const { data: templates, status: templatesFetchStatus } = useFetch<
+  Array<InvoiceTemplate>
+>(`/api/templates/get`, {
+  lazy: true,
+  method: "POST",
+  headers: {
+    Authorization: `Bearer ${authStore.accessToken}`,
+    userId: authStore.userId,
+  },
+});
 
 /* ==============
  * Invoice data
  ============== */
 const isPending = ref(false);
 const selectedClient: Ref<CustomClient | null> = ref(
-  clients.value ? clients.value[0] : null
+  clients?.value ? clients?.value[0] : null
 );
 const selectedContact: Ref<Contact | null> = ref(null);
 const currentDate = new Date().toLocaleDateString("en-CA");
@@ -364,7 +377,7 @@ const invoiceDate = ref(currentDate);
 const performancePeriodStart = ref(currentDate);
 const performancePeriodEnd = ref(currentDate);
 const invoiceNumber: Ref<string> = ref(
-  generatedInvoiceNumber.value?.number || ""
+  generatedInvoiceNumber?.value?.number || ""
 );
 const selectedRateType = ref();
 const hasTaxes: Ref<boolean> = ref(true);
@@ -376,13 +389,17 @@ type Settings = {
   message: any;
 };
 
-const { data: settings } = useFetch<Settings>(`/api/settings/get`, {
-  method: "POST",
-  headers: {
-    Authorization: `Bearer ${authStore.accessToken}`,
-    userid: authStore.userId,
-  },
-});
+const { data: settings, settings: fetchStatus } = useFetch<Settings>(
+  `/api/settings/get`,
+  {
+    lazy: true,
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${authStore.accessToken}`,
+      userid: authStore.userId,
+    },
+  }
+);
 const defaultRate = ref(0);
 const validSettings = computed<boolean>(() => {
   return (
@@ -395,14 +412,14 @@ const validSettings = computed<boolean>(() => {
 const initialRow: Ref<InvoicePosition> = ref({
   position: 1,
   description: "Füge eine Beschreibung hinzu",
-  hours: defaultRate.value,
+  hours: defaultRate?.value,
   factor: 0,
   total: 0,
   isSubtotal: false,
 });
 
 const rows: Ref<Array<InvoicePosition>> = ref([]);
-rows.value.push(initialRow.value);
+rows.value.push(initialRow?.value);
 
 // const rows: Ref<Array<InvoicePosition>> = ref([
 //   {
@@ -421,7 +438,7 @@ watch([settings, selectedRateType], async (newVal) => {
     selectedRateType.value === "daily"
       ? settings?.value?.data?.defaultDailyRate
       : settings?.value?.data?.defaultHourlyRate;
-  rows.value = rows.value.map((row) => {
+  rows.value = rows?.value?.map((row) => {
     return {
       ...row,
       hours: defaultRate.value,
@@ -488,10 +505,12 @@ const totalAmount = computed(() => {
     .reduce((accumulator, currentItem) => accumulator + currentItem.total, 0);
 });
 const taxes = computed(() => {
-  return hasTaxes.value ? totalAmount.value * 0.19 : 0;
+  return hasTaxes.value ? totalAmount?.value * 0.19 : 0;
 });
 const totalWithTaxes = computed(() => {
-  return hasTaxes.value ? totalAmount.value + taxes.value : totalAmount.value;
+  return hasTaxes.value
+    ? totalAmount?.value + taxes?.value
+    : totalAmount?.value;
 });
 
 const isValidInvoice = computed(() => {
@@ -708,16 +727,24 @@ async function saveAsDraft() {
   }
 }
 
-const { data: invoiceDrafts } = useFetch<Array<Invoice>>(
-  `/api/invoices/draft/get`,
-  {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${authStore.accessToken}`,
-      userid: authStore.userId,
-    },
-  }
-);
+const { data: invoiceDrafts, status: invoiceDraftsFetchStatus } = useFetch<
+  Array<Invoice>
+>(`/api/invoices/draft/get`, {
+  method: "POST",
+  headers: {
+    Authorization: `Bearer ${authStore.accessToken}`,
+    userid: authStore.userId,
+  },
+});
+
+const allDataFetched = computed<boolean>(() => {
+  return (
+    clientsFetchStatus.value === "success" &&
+    generatedInvoiceNumberStatus.value === "success" &&
+    templatesFetchStatus.value === "success" &&
+    invoiceDraftsFetchStatus.value === "success"
+  );
+});
 
 const selectedInvoiceDraft = ref();
 </script>
