@@ -5,44 +5,44 @@
         <div class="pb-12">
           <BaseHeadline
             class="mb-8 text-blue-80 dark:text-white"
-            text="Sign up for  a free account"
+            text="Erstelle ein kostenloses Konto"
             type="h1"
           />
           <p class="w-6/12 text-xl text-slate-600 dark:text-white">
-            If you already have an account you can
+            Falls du bereits ein Konto hast, kannst du dich
             <NuxtLink class="text-yellow-normal" to="/login"
-              >login here</NuxtLink
-            >
+              >hier einloggen</NuxtLink
+            >.
           </p>
         </div>
         <BaseBox class="flex w-full flex-col gap-3">
           <div>
-            <BaseLabel text="Username" />
-            <BaseInput v-model="username" placeholder="Username" />
+            <BaseLabel text="Benutzername" />
+            <BaseInput v-model="username" placeholder="Benutzername" />
           </div>
           <div>
             <BaseLabel text="E-Mail" />
             <BaseInput v-model="email" placeholder="E-Mail" />
           </div>
           <div>
-            <BaseLabel text="Password" />
+            <BaseLabel text="Passwort" />
             <BaseInput
               ref="passwordInput"
               v-model="password"
-              placeholder="Password"
+              placeholder="Passwort"
               :type="isPasswordVisible ? 'text' : 'password'"
             />
           </div>
           <BaseButton
             class="w-full"
             variant="yellow"
-            text="Register"
+            text="Kostenlos anmelden"
             @click="register"
           />
         </BaseBox>
       </div>
       <div class="flex h-full w-1/2 items-center px-12 pb-24">
-        <img src="/img/invoi-illu.svg" alt="" />
+        <img src="/img/undraw_printing-invoices_osgs.svg" alt="" />
       </div>
     </div>
   </section>
@@ -82,7 +82,7 @@ async function register() {
         showAlert.value = false;
       }, 5000);
     } else {
-      navigateTo("/onboarding");
+      navigateTo("/thank-you");
     }
   } catch (error) {
     console.error(error);

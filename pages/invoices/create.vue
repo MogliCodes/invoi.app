@@ -638,6 +638,11 @@ async function createInvoice() {
       navigateTo("/invoices");
     }
   } catch (error) {
+    isPending.value = false;
+    alertStore.setAlert("error", error);
+    setTimeout(() => {
+      alertStore.resetAlert();
+    }, 10000);
     console.error(error);
   }
 }
@@ -708,7 +713,7 @@ async function saveAsDraft() {
       lazy: true,
       headers: {
         authorization: `Bearer ${accessToken}`,
-        userid: authStore.userId,
+        userId: authStore.userId,
       },
     });
     if (!response) return;

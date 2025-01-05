@@ -10,7 +10,10 @@
         : 'cursor-pointer',
     ]"
   >
-    {{ props.text }}
+    <div class="flex items-center justify-center gap-2">
+      <UIcon v-if="icon" class="scale-125" :name="icon" />
+      {{ props.text }}
+    </div>
   </component>
 </template>
 
@@ -18,6 +21,7 @@
 import type { ConcreteComponent } from "vue";
 
 type Props = {
+  icon?: string;
   disabled?: boolean;
   text: string;
   to?: string;

@@ -1,24 +1,24 @@
 t
 <template>
-  <section class="min-h-screen flex justify-center items-center">
+  <section class="flex min-h-screen items-center justify-center">
     <BaseBox v-if="step === 0" class="w-1/3">
       <BaseHeadline type="h2" text="Einstellungen" />
       <p>
         Damit du invoi.app brauchen wir noch ein paar Informationen von dir.
         Bitte fülle die folgenden Felder aus.
       </p>
-      <form action="">
+      <form class="flex flex-col gap-2" action="">
         <div>
           <BaseLabel text="Vorname" />
-          <BaseInput v-model="firstName" placeholder="Vorname" />
+          <BaseInput v-model="firstname" placeholder="Vorname" />
         </div>
         <div>
           <BaseLabel text="Nachname" />
-          <BaseInput v-model="lastName" placeholder="Nachname" />
+          <BaseInput v-model="lastname" placeholder="Nachname" />
         </div>
         <div>
           <BaseLabel text="Straße" />
-          <BaseInput v-model="street" placeholder="E-Mail" />
+          <BaseInput v-model="street" placeholder="Straße" />
         </div>
         <div>
           <BaseLabel text="PLZ" />
@@ -29,7 +29,7 @@ t
           <BaseInput v-model="city" placeholder="Ort" />
         </div>
         <div class="flex justify-end pt-2">
-          <BaseButton @click="step++" type="button" text="Weiter" />
+          <BaseButton type="button" text="Weiter" @click="step++" />
         </div>
       </form>
     </BaseBox>
@@ -56,14 +56,14 @@ t
           <BaseLabel text="Webseite" />
           <BaseInput v-model="website" placeholder="Webseite" />
         </div>
-        <div class="justify-between flex pt-2">
+        <div class="flex justify-between pt-2">
           <BaseButton
-            @click="step--"
             variant="outline"
             type="button"
             text="Zurück"
+            @click="step--"
           />
-          <BaseButton @click="step++" type="button" text="Weiter" />
+          <BaseButton type="button" text="Weiter" @click="step++" />
         </div>
       </form>
     </BaseBox>
@@ -92,15 +92,15 @@ t
         </div>
         <div class="flex justify-between pt-2">
           <BaseButton
-            @click="step--"
             variant="outline"
             type="button"
             text="Zurück"
+            @click="step--"
           />
           <BaseButton
             type="submit"
-            @click="navigateTo('/dashboard')"
             text="Speichern & weiter"
+            @click="saveAndContinue"
           />
         </div>
       </form>
@@ -109,9 +109,32 @@ t
 </template>
 
 <script setup lang="ts">
+import { useSettings } from "~/composables/useSettings";
+
 definePageMeta({
   layout: "onboarding",
 });
 
 const step = ref(0);
+const {
+  firstname,
+  lastname,
+  street,
+  zip,
+  city,
+  phone,
+  taxId,
+  website,
+  update,
+} = useSettings();
+
+async function saveAndContinue() {
+  try {
+    // Save data to the server
+    await update();
+    navigateTo("/dashboard");
+  } catch (error) {
+    alert("Something went wrong. Please try again.");
+  }
+}
 </script>

@@ -47,7 +47,7 @@
         </BaseBox>
       </div>
       <div class="flex h-full w-1/2 items-center px-12 pb-24">
-        <img src="/img/invoi-illu.svg" alt="" />
+        <img src="/img/undraw_printing-invoices_osgs.svg" alt="" />
       </div>
     </div>
   </section>

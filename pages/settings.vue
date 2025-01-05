@@ -12,7 +12,7 @@
           type="h2"
         />
         <BaseBox>
-          <div class="mb-6 flex flex-col gap-3">
+          <div class="flex flex-col gap-3">
             <div>
               <BaseLabel text="Profilbild" />
               <div class="flex gap-4">
@@ -45,6 +45,21 @@
               <BaseLabel text="Nachname" />
               <BaseInput v-model="lastname" placeholder="Nachname" />
             </div>
+          </div>
+        </BaseBox>
+      </section>
+      <section id="company">
+        <BaseHeadline
+          class="mb-2 text-xl font-bold dark:text-white"
+          type="h2"
+          text="Firma"
+        />
+        <BaseBox>
+          <div class="flex flex-col gap-3">
+            <div>
+              <BaseLabel text="Firmenname" />
+              <BaseInput v-model="companyName" placeholder="ACME GmbH" />
+            </div>
             <div>
               <BaseLabel text="Straße" />
               <BaseInput v-model="street" placeholder="Straße" />
@@ -70,27 +85,28 @@
               <BaseInput v-model="vatId" placeholder="USt-IdNr." />
             </div>
           </div>
-          <BaseButton text="Einstellungen speichern" @click="updateSettings" />
         </BaseBox>
       </section>
-      <section>
+      <section id="bank-info">
         <BaseHeadline
           class="mb-2 text-xl font-bold dark:text-white"
           text="Bank information"
           type="h2"
         />
-        <BaseBox class="flex flex-col gap-3">
-          <div>
-            <BaseLabel text="Bank name" />
-            <BaseInput v-model="bankName" placeholder="Bank name" />
-          </div>
-          <div>
-            <BaseLabel text="IBAN" />
-            <BaseInput v-model="iban" placeholder="IBAN" />
-          </div>
-          <div>
-            <BaseLabel text="BIC" />
-            <BaseInput v-model="bic" placeholder="BIC" />
+        <BaseBox>
+          <div class="flex flex-col gap-3">
+            <div>
+              <BaseLabel text="Bank name" />
+              <BaseInput v-model="bankName" placeholder="Bank name" />
+            </div>
+            <div>
+              <BaseLabel text="IBAN" />
+              <BaseInput v-model="iban" placeholder="IBAN" />
+            </div>
+            <div>
+              <BaseLabel text="BIC" />
+              <BaseInput v-model="bic" placeholder="BIC" />
+            </div>
           </div>
         </BaseBox>
       </section>
@@ -102,12 +118,7 @@
         />
         <BaseBox>
           <div>
-            <BaseHeadline
-              class="mb-2 font-bold dark:text-white"
-              text="Invoices"
-              type="h3"
-            />
-            <div class="flex w-2/3 flex-col gap-3">
+            <div class="flex w-full flex-col gap-3">
               <div>
                 <BaseLabel text="Invoice number schema" />
                 <BaseInput
@@ -135,7 +146,7 @@
           </div>
         </BaseBox>
       </section>
-      <section id="defaults" class="pt-20">
+      <section id="defaults">
         <BaseHeadline
           type="h2"
           text="Defaults"
@@ -179,6 +190,12 @@
         </BaseBox>
       </section>
     </div>
+    <BaseButton
+      icon="i-heroicons-check"
+      class="fixed bottom-10 right-10 shadow-xl"
+      text="Speichern"
+      @click="updateSettings"
+    />
   </div>
 </template>
 <script setup lang="ts">
@@ -196,6 +213,7 @@ const username = ref(authStore.userName);
 const email = ref("");
 const firstname = ref("");
 const lastname = ref("");
+const companyName = ref("");
 const street = ref("");
 const zip = ref("");
 const city = ref("");
@@ -259,6 +277,7 @@ async function updateSettings() {
       email: email.value,
       firstname: firstname.value,
       lastname: lastname.value,
+      company: companyName.value,
       street: street.value,
       zipCode: zip.value,
       city: city.value,
@@ -295,6 +314,7 @@ watch(settings, () => {
   email.value = settings.value.data.email;
   firstname.value = settings.value.data.firstname;
   lastname.value = settings.value.data.lastname;
+  companyName.value = settings.value.data.company;
   street.value = settings.value.data.street;
   zip.value = settings.value.data.zipCode;
   city.value = settings.value.data.city;

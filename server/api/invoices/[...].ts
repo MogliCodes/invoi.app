@@ -33,11 +33,17 @@ router.post(
 router.post(
   "/draft",
   defineEventHandler(async (event: H3Event) => {
+    const cookies = parseCookies(event);
+    const headers = {
+      userId: cookies.userId,
+      authorization: cookies.accessToken,
+    };
     const body = await readBody(event);
     const apiClient = new ApiClientBuilder();
     return await apiClient
       .setResource("invoice")
       .setEndpoint("draft")
+      .setHeaders(headers)
       .setBody(body)
       .post()
       .execute();
@@ -248,28 +254,24 @@ async function getTemplateById(event: H3Event) {
 }
 
 async function uploadInvoiceTemplate(event: H3Event) {
-  console.log("uploadInvoiceTemplate");
   try {
     const config = useRuntimeConfig();
     const backendBaseUrl = config.public.BACKEND_BASE_URL;
     const cookies = parseCookies(event);
     const body = await readFormData(event);
     const headers = event.headers;
-    console.log("headers YO", headers.get("templatename"));
-    console.log("body", body);
-    const res: any = await $fetch(
-      `${backendBaseUrl}/restapi/invoice/templates/upload`,
-      {
-        method: "POST",
-        body,
-        headers: {
-          authorization: cookies.accessToken,
-          userid: cookies.userId,
-          templateName: headers.get("templatename") || "",
-          templateTags: headers.get("templatetags") || "",
-        },
-      }
-    );
+    const url = `${backendBaseUrl}/restapi/invoice/templates/upload`;
+    consola.info("Making request to: ", url);
+    const res: any = await $fetch(`${url}`, {
+      method: "POST",
+      body,
+      headers: {
+        authorization: cookies.accessToken,
+        userId: cookies.userId,
+        templateName: headers.get("templatename") || "",
+        templateTags: headers.get("templatetags") || "",
+      },
+    });
     console.log("res in nitro", res);
     return res;
   } catch (e) {

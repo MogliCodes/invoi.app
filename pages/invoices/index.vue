@@ -318,8 +318,9 @@ function initiateDeletion(contactId: string): void {
 }
 
 function executeBulkAction(): void {
+  console.log("bulkAction", bulkAction.value);
   switch (bulkAction.value) {
-    case "Delete":
+    case "Löschen":
       isOpen.value = true;
       break;
     case "Mark as paid":

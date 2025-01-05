@@ -33,6 +33,32 @@
         />
       </div>
     </section>
+    <section class="flex flex-col gap-2">
+      <BaseNote v-if="!validUserData">
+        <p>Bitte vervollständige dein Nutzerprofil</p>
+        <nuxt-link class="font-bold text-blue-600" to="/settings"
+          >Zu den Einstellungen</nuxt-link
+        >
+      </BaseNote>
+      <BaseNote v-if="!validCompanyData">
+        <p>
+          Die Angaben zu deinem Unternehmen sind unvollständig. Bitte
+          vervollständige deine Unternehmensdaten, um Rechnungen zu erstellen.
+        </p>
+        <nuxt-link class="font-bold text-blue-600" to="/settings#company"
+          >Zu den Einstellungen</nuxt-link
+        >
+      </BaseNote>
+      <BaseNote v-if="!validBankData">
+        <p>
+          Die Angaben zu deiner Bankverbindung sind unvollständig. Bitte füge
+          die Bankverbindung hinzu, um Rechnungen zu erstellen.
+        </p>
+        <nuxt-link class="font-bold text-blue-600" to="/settings#bank-info"
+          >Zu den Einstellungen</nuxt-link
+        >
+      </BaseNote>
+    </section>
     <!-- Overview -->
     <section class="">
       <BaseHeadline
@@ -359,6 +385,8 @@ const { data: userData } = useFetch<UserData>(
 const showTourTeaser = ref(true);
 
 const accessTokenCookie = useCookie("accessToken");
+
+const { validUserData, validCompanyData, validBankData } = useSettings();
 </script>
 
 <style>

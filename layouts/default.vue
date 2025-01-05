@@ -26,7 +26,7 @@
       <div class="p-6 pt-0">
         <slot />
       </div>
-      <div class="fixed bottom-4 right-4 w-1/4">
+      <div class="fixed bottom-4 left-1/2 -translate-x-1/2">
         <BaseAlert
           v-if="alertStore.isActive"
           :message="alertStore.alertMessage"

@@ -28,13 +28,10 @@ router.post(
   defineEventHandler(async (event: H3Event) => {
     const query = getQuery(event);
     const cookies = parseCookies(event);
-    console.log("cookies", cookies);
     const headers = {
       userId: cookies?.userId,
       authorization: cookies.accessToken,
     };
-    console.log("headers", headers);
-    console.log("params", query);
     const apiClient = new ApiClientBuilder();
     return await apiClient
       .get()

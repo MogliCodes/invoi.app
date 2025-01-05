@@ -72,22 +72,26 @@ const handleTemplateUpload = async () => {
   const formData = new FormData();
   formData.append("templateFirstPage", templateFileFirstPage);
 
-  const res = await $fetch("/api/invoices/templates/upload", {
-    method: "POST",
-    body: formData,
-    headers: {
-      Authorization: `Bearer ${authStore.accessToken}`,
-      Userid: authStore.userId,
-      TemplateName: templateName.value,
-      TemplateTags: [selectedTemplateTag.value],
-    },
-  });
-  if (res.status === 200) {
-    emit("upload-template");
-    alertStore.setAlert("success", res.message);
-    setTimeout(() => {
-      alertStore.resetAlert();
-    }, 5000);
+  try {
+    const res = await $fetch("/api/invoices/templates/upload", {
+      method: "POST",
+      body: formData,
+      headers: {
+        Authorization: `Bearer ${authStore.accessToken}`,
+        userId: authStore.userId,
+        TemplateName: templateName.value,
+        TemplateTags: [selectedTemplateTag.value],
+      },
+    });
+    if (res.status === 200) {
+      emit("upload-template");
+      alertStore.setAlert("success", res.message);
+      setTimeout(() => {
+        alertStore.resetAlert();
+      }, 5000);
+    }
+  } catch (error) {
+    consola.error(error);
   }
 };
 </script>

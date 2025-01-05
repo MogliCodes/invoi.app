@@ -3,19 +3,23 @@
     <BaseContainer>
       <BaseTable>
         <template #head>
-          <BaseTableHeadCell>Invoice Number</BaseTableHeadCell>
-          <BaseTableHeadCell>Customer</BaseTableHeadCell>
-          <BaseTableHeadCell>Amount</BaseTableHeadCell>
-          <BaseTableHeadCell>Due Date</BaseTableHeadCell>
+          <BaseTableHeadCell>Rechnungsnummer</BaseTableHeadCell>
+          <BaseTableHeadCell>Titel</BaseTableHeadCell>
+          <BaseTableHeadCell>Kunde</BaseTableHeadCell>
+          <BaseTableHeadCell>Rechnungsdatum</BaseTableHeadCell>
           <BaseTableHeadCell>Status</BaseTableHeadCell>
         </template>
         <template #body>
           <BaseTableRow v-for="invoice in invoiceDrafts" :key="invoice._id">
             <BaseTableCell>{{ invoice.nr }}</BaseTableCell>
             <BaseTableCell>{{ invoice.title }}</BaseTableCell>
-            <BaseTableCell>{{ invoice.client }}</BaseTableCell>
-            <BaseTableCell>{{ invoice.date }}</BaseTableCell>
-            <BaseTableCell>{{ invoice.status }}</BaseTableCell>
+            <BaseTableCell>{{ getClientName(invoice.client) }}</BaseTableCell>
+            <BaseTableCell>{{
+              new Date(invoice.date).toLocaleDateString()
+            }}</BaseTableCell>
+            <BaseTableCell
+              ><InvoiceStatusPill :invoice="invoice"
+            /></BaseTableCell>
           </BaseTableRow>
         </template>
       </BaseTable>
@@ -29,7 +33,7 @@ import BaseTableRow from "~/components/BaseTable/BaseTableRow.vue";
 import BaseTableHeadCell from "~/components/BaseTable/BaseTableHeadCell.vue";
 
 definePageMeta({
-  title: "Drafts",
+  title: "Vorlagen",
 });
 
 const authStore = useAuthStore();
@@ -44,4 +48,20 @@ const { data: invoiceDrafts } = useFetch<Array<Invoice>>(
     },
   }
 );
+
+const { fetchOne } = useClients();
+const clients = ref<Array<Client>>([]);
+
+if (invoiceDrafts.value) {
+  invoiceDrafts.value.forEach((invoice) => {
+    fetchOne(invoice.client).then((client) => {
+      clients.value.push(client);
+    });
+  });
+}
+
+function getClientName(clientId: string) {
+  const client = clients.value.find((client) => client._id === clientId);
+  return client ? client.company : "";
+}
 </script>

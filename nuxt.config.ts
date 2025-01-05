@@ -7,6 +7,7 @@ export default defineNuxtConfig({
       link: [{ rel: "icon", type: "image/png", href: "/invoi.svg" }],
     },
   },
+
   runtimeConfig: {
     public: {
       debug: process.env.NUXT_PUBLIC_DEBUG,
@@ -15,7 +16,9 @@ export default defineNuxtConfig({
     },
     secretKey: process.env.SECRET_KEY,
   },
+
   modules: ["@nuxt/ui", "@pinia/nuxt"],
+
   vite: {
     define: {
       __VUE_PROD_DEVTOOLS__: true,
@@ -26,10 +29,14 @@ export default defineNuxtConfig({
       },
     },
   },
+
   pinia: {
     autoImports: ["defineStore"],
   },
+
   nitro: {
     preset: "node-server",
   },
+
+  compatibilityDate: "2024-12-23",
 });

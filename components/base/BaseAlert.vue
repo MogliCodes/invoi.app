@@ -13,14 +13,19 @@ const colorClass = computed(() => {
     case "info":
       return `bg-sky-300 text-sky-900`;
     case "success":
-      return `bg-green-400 text-green-900`;
+      return `bg-green-400 text-green-900 border-green-500`;
   }
 });
 </script>
 
 <template>
-  <div class="inset-x-6 block rounded-lg p-4 shadow-2xl" :class="colorClass">
+  <div
+    class="inset-x-6 block rounded-lg border-2 p-4 shadow-2xl"
+    :class="colorClass"
+  >
+    <span v-if="type === 'success'">🚀 </span>
     <span>{{ props.message }}</span>
+    <span v-if="type === 'success'"> 🚀</span>
     <a :href="props.link">{{ props.link }}</a>
   </div>
 </template>
