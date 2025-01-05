@@ -386,7 +386,15 @@ const showTourTeaser = ref(true);
 
 const accessTokenCookie = useCookie("accessToken");
 
-const { validUserData, validCompanyData, validBankData } = useSettings();
+const {
+  validUserData,
+  validCompanyData,
+  validBankData,
+  bankName,
+  firstname,
+  fetchSettings,
+} = useSettings();
+await fetchSettings();
 </script>
 
 <style>

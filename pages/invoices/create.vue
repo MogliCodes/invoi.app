@@ -89,7 +89,7 @@
             <div>
               <BaseLabel text="Rechnungsnummer" />
               <BaseInput
-                v-if="invoiceNumber"
+                v-if="generatedInvoiceNumberStatus === 'success'"
                 v-model="invoiceNumber"
                 is-required
                 placeholder="Vergebe eine Rechnungsnummer"
@@ -342,15 +342,18 @@ const { data: clients, status: clientsFetchStatus } = useFetch<
   },
 });
 
-const { data: generatedInvoiceNumber, status: generatedInvoiceNumberStatus } =
-  useFetch<{ number: string }>(`/api/invoices/number`, {
-    lazy: true,
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${authStore.accessToken}`,
-      userId: authStore.userId,
-    },
-  });
+const {
+  data: generatedInvoiceNumber,
+  status: generatedInvoiceNumberStatus,
+  pending: isInvoiceNumberPending,
+} = useFetch<{ number: string }>(`/api/invoices/number`, {
+  lazy: true,
+  method: "POST",
+  headers: {
+    Authorization: `Bearer ${authStore.accessToken}`,
+    userId: authStore.userId,
+  },
+});
 
 const { data: templates, status: templatesFetchStatus } = useFetch<
   Array<InvoiceTemplate>
@@ -377,7 +380,7 @@ const invoiceDate = ref(currentDate);
 const performancePeriodStart = ref(currentDate);
 const performancePeriodEnd = ref(currentDate);
 const invoiceNumber: Ref<string> = ref(
-  generatedInvoiceNumber?.value?.number || ""
+  generatedInvoiceNumber?.value?.number || "2025-999"
 );
 const selectedRateType = ref();
 const hasTaxes: Ref<boolean> = ref(true);
