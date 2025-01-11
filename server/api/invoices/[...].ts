@@ -310,10 +310,13 @@ function delay() {
 }
 
 async function getInvoices(event: H3Event) {
+  console.log("getInvoices");
   const config = useRuntimeConfig();
   const backendBaseUrl = config.public.BACKEND_BASE_URL;
   const cookies = parseCookies(event);
   const body = await readBody(event);
+  const params = getQuery(event);
+  console.log("params", params);
   delay();
   const res: any = await $fetch(`${backendBaseUrl}/restapi/invoice`, {
     method: "GET",
@@ -321,6 +324,10 @@ async function getInvoices(event: H3Event) {
     headers: {
       authorization: cookies.accessToken,
       userid: cookies.userId,
+    },
+    params: {
+      year: params.year,
+      client: params.client,
     },
   });
   return res;

@@ -33,6 +33,18 @@
         />
       </div>
     </section>
+    <section>
+      <BaseHeadline
+        class="mb-3 font-syne text-2xl font-bold text-gray-400"
+        type="h2"
+        text="Overview"
+      />
+      <BaseBox class="w-1/3">
+        <BaseLabel text="Daten für ausgewähltes Jahr anzeigen" />
+        <USelect name="Jahr" :options="years" v-model="selectedYear" />
+        <pre>{{ selectedYear }}</pre>
+      </BaseBox>
+    </section>
     <section class="flex flex-col gap-2">
       <BaseNote v-if="!validUserData">
         <p>Bitte vervollständige dein Nutzerprofil</p>
@@ -61,11 +73,6 @@
     </section>
     <!-- Overview -->
     <section class="">
-      <BaseHeadline
-        class="mb-3 font-syne text-2xl font-bold text-gray-400"
-        type="h2"
-        text="Overview"
-      />
       <BaseBox>
         <div class="grid grid-cols-3 gap-3">
           <NuxtLink
@@ -395,6 +402,9 @@ const {
   fetchSettings,
 } = useSettings();
 await fetchSettings();
+
+const years = [2023, 2024, 2025];
+const selectedYear = ref(years[years.length - 1]);
 </script>
 
 <style>

@@ -38,7 +38,7 @@
         um eine neue Rechnung zu erstellen.
       </p>
     </BaseNote>
-    <div v-else>
+    <div>
       <div class="mb-2 flex items-center gap-8">
         <div class="">
           <div v-if="!!invoices?.length">
@@ -60,8 +60,33 @@
           </div>
         </div>
         <div class="flex gap-4 text-sm">
-          <USelectMenu placeholder="Wähle ein Jahr aus" />
-          <USelectMenu placeholder="Wähle einen Kunden aus" />
+          <USelectMenu
+            v-model="selectedYear"
+            :options="years"
+            placeholder="Wähle ein Jahr aus"
+          >
+            <template #label>
+              <span v-if="selectedYear.length" class="truncate">{{
+                selectedYear
+              }}</span>
+              <span v-else>Wähle ein Jahr aus</span>
+            </template>
+          </USelectMenu>
+          <USelectMenu
+            v-if="clients"
+            v-model="selectecClient"
+            :options="clients"
+            multiple
+            option-attribute="company"
+            value-attribute="_id"
+          >
+            <template #label>
+              <span v-if="selectecClient.length" class="truncate"
+                >{{ selectecClient.length }} Kunden ausgewählt</span
+              >
+              <span v-else>Wähle einen Kunden aus</span>
+            </template>
+          </USelectMenu>
         </div>
       </div>
       <div>
@@ -239,6 +264,12 @@ definePageMeta({
 const authStore = useAuthStore();
 const config = useRuntimeConfig();
 const backendBaseUrl = config.public.BACKEND_BASE_URL;
+
+const years: Array<string> = ["2023", "2024", "2025"];
+const selectedYear = ref<string>(years[years.length - 1]);
+
+const selectecClient = ref<string>("");
+
 const {
   data: invoices,
   refresh: refreshInvoices,
@@ -249,6 +280,10 @@ const {
   headers: {
     userid: authStore.userId,
     Authorization: `Bearer ${authStore.accessToken}`,
+  },
+  params: {
+    year: selectedYear,
+    client: selectecClient,
   },
 });
 
