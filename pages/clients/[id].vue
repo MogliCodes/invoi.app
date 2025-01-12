@@ -37,16 +37,16 @@
         </BaseBox>
       </section>
 
-      <section v-if="invoices">
+      <section v-if="invoices.invoices">
         <BaseHeadline type="h2" :text="`Invoices to ${client.company}`" />
-        <section v-if="!invoices.length">
+        <section v-if="!invoices.invoices.length">
           <BaseNote>
             <p>Du hast noch keine Rechnungen für diesen Kunden erstellt.</p>
           </BaseNote>
         </section>
         <table
           v-else
-          class="min-w-full overflow-hidden rounded-lg shadow-md dark:text-gray-400"
+          class="min-w-full overflow-hidden rounded-lg shadow-md dark:text-gray-400 text-xs"
         >
           <thead class="bg-blue-90 text-white">
             <tr>
@@ -54,11 +54,13 @@
               <th class="py-5 pl-6 text-left">Title</th>
               <th class="py-5 pl-6 text-left">Status</th>
               <th class="py-5 pl-6 text-left">Total</th>
+              <th class="py-5 pl-6 text-left">Taxes</th>
+              <th class="py-5 pl-6 text-left">Total with taxes</th>
             </tr>
           </thead>
           <tbody>
             <tr
-              v-for="invoice in invoices"
+              v-for="invoice in invoices.invoices"
               class="rounded bg-white p-4 even:bg-gray-200 dark:odd:bg-blue-80 dark:even:bg-blue-90"
             >
               <td class="py-3 pl-6">{{ invoice.nr }}</td>
@@ -66,7 +68,13 @@
               <td class="py-3 pl-6">
                 <InvoiceStatusPill :invoice="invoice" />
               </td>
-              <td class="py-3 pl-6">
+              <td class="py-3 pl-6 text-right">
+                {{ formatCurrencyAmount(formatCentToAmount(invoice.total)) }}
+              </td>
+              <td class="py-3 pl-6 text-right">
+                {{ formatCurrencyAmount(formatCentToAmount(invoice.taxes)) }}
+              </td>
+              <td class="py-3 pr-6 text-right">
                 {{
                   formatCurrencyAmount(
                     formatCentToAmount(invoice.totalWithTaxes)
@@ -75,20 +83,30 @@
               </td>
             </tr>
           </tbody>
+          <tfoot>
+            <tr class="bg-blue-90 text-white">
+              <td colspan="3"></td>
+              <td class="py-3 pl-6 text-right">
+                {{
+                  formatCurrencyAmount(formatCentToAmount(invoices.totalAcc))
+                }}
+              </td>
+              <td class="py-3 pl-6 text-right">
+                {{
+                  formatCurrencyAmount(formatCentToAmount(invoices.taxesAcc))
+                }}
+              </td>
+              <td class="py-3 pr-6 text-right">
+                {{
+                  formatCurrencyAmount(
+                    formatCentToAmount(invoices.totalWithTaxesAcc)
+                  )
+                }}
+              </td>
+            </tr>
+          </tfoot>
         </table>
       </section>
-      <section v-if="revenueByClient">
-        <BaseHeadline type="h2" :text="`Umsätze durch ${client.company}`" />
-        <BaseBox>
-          <div class="flex flex-col">
-            <BaseLabel text="Insgesamt" />
-            <span class="font-syne text-3xl font-bold text-secondary-100">{{
-              formatCurrencyAmount(formatCentToAmount(revenueByClient))
-            }}</span>
-          </div>
-        </BaseBox>
-      </section>
-
       <section v-if="contacts">
         <BaseHeadline type="h2" :text="`Contacts at ${client.company}`" />
         <section v-if="!contacts.length">
@@ -119,57 +137,6 @@
           </tbody>
         </table>
       </section>
-      <section v-if="projects">
-        <BaseHeadline type="h2" :text="`Projects with ${client.company}`" />
-        <table
-          class="min-w-full overflow-hidden rounded-lg shadow-md dark:text-gray-400"
-        >
-          <thead class="bg-blue-90 text-white">
-            <tr>
-              <th class="py-5 pl-6 text-left">Title</th>
-              <th class="py-5 pl-6 text-left">Description</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              v-for="project in projects"
-              class="rounded bg-white p-4 even:bg-gray-200 dark:odd:bg-blue-80 dark:even:bg-blue-90"
-            >
-              <td class="py-3 pl-6">{{ project.title }}</td>
-              <td class="py-3 pl-6">{{ project.description }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </section>
-      <section>
-        <BaseHeadline type="h2" text="Client-specific rates and prices" />
-        <section v-if="true">
-          <BaseNote>
-            <p>
-              Hier kannst du spezifische Preise für Dienstleistungen für diesen
-              Kunden hinterlegen.
-            </p>
-          </BaseNote>
-        </section>
-        <div v-else class="flex flex-col items-start gap-4">
-          <table
-            class="min-w-full overflow-hidden rounded-lg dark:text-gray-400"
-          >
-            <thead class="bg-blue-90 text-white">
-              <tr>
-                <th class="py-5 pl-6 text-left">Service</th>
-                <th>Price</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr
-                class="rounded bg-white p-4 even:bg-gray-200 dark:odd:bg-blue-80 dark:even:bg-blue-90"
-              ></tr>
-            </tbody>
-          </table>
-          <BaseButton text="Save client" @click="patchClient" />
-        </div>
-      </section>
     </div>
   </section>
 </template>
@@ -189,40 +156,20 @@ const { data: client } = useFetch<Client>(`/api/clients/${route.params.id}`, {
   },
 });
 
-const { data: invoices } = useFetch<Array<Invoice>>(
-  `/api/invoices/client?client=${route.params.id}`,
-  {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${authStore.accessToken}`,
-      Userid: authStore.userId,
-    },
-  }
-);
-
-const { data: projects } = useFetch<Array<Project>>(
-  `http://localhost:8000/restapi/client/projects?clientId=${route.params.id}`,
-  {
-    headers: {
-      Authorization: `Bearer ${authStore.accessToken}`,
-      Userid: authStore.userId,
-    },
-  }
-);
+const { data: invoices } = useFetch(`/api/invoices/get`, {
+  lazy: true,
+  method: "POST",
+  headers: {
+    userid: authStore.userId,
+    Authorization: `Bearer ${authStore.accessToken}`,
+  },
+  params: {
+    client: route.params.id,
+  },
+});
 
 const { data: contacts } = useFetch<Array<Contact>>(
   `/api/contacts/get?clientId=${route.params.id}`,
-  {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${authStore.accessToken}`,
-      Userid: authStore.userId,
-    },
-  }
-);
-
-const { data: revenueByClient } = useFetch(
-  `/api/revenues/client/${route.params.id}`,
   {
     method: "POST",
     headers: {

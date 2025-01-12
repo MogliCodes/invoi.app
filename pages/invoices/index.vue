@@ -32,7 +32,7 @@
         </div>
       </section>
     </Transition>
-    <BaseNote class="mb-4" v-if="invoices && invoices.invoices.length === 0">
+    <BaseNote class="mb-4" v-if="invoiceCount === 0">
       <p>
         Du hast noch keine Rechnungen angelegt. Klicke auf "Rechnung erstellen"
         um eine neue Rechnung zu erstellen.
@@ -172,15 +172,6 @@
                       name="i-heroicons-eye"
                     />
                   </NuxtLink>
-                  <a
-                    download
-                    href="file://Users/dennisfink/Workspace/MogliCodes/invoi/invoi-backend/tmp/2025/2025-001_ACME-GmbH_Test.pdf"
-                  >
-                    <UIcon
-                      class="cursor-pointer text-xl transition-colors hover:text-gray-400 dark:hover:text-white"
-                      name="i-heroicons-document-text"
-                    />
-                  </a>
                   <UIcon
                     class="cursor-pointer text-xl transition-colors hover:text-gray-400 dark:hover:text-white"
                     name="i-heroicons-trash"
@@ -288,14 +279,17 @@ definePageMeta({
 const authStore = useAuthStore();
 const selectecClient = ref<string>("");
 
-const { data: years } = useFetch<string[]>(`/api/invoices/years/get`, {
-  lazy: true,
-  method: "POST",
-  headers: {
-    userid: authStore.userId,
-    Authorization: `Bearer ${authStore.accessToken}`,
-  },
-});
+const { data: years, pending: yearsPending } = useFetch<string[]>(
+  `/api/invoices/years/get`,
+  {
+    lazy: true,
+    method: "POST",
+    headers: {
+      userid: authStore.userId,
+      Authorization: `Bearer ${authStore.accessToken}`,
+    },
+  }
+);
 
 type ApiResponseInvoice = {
   invoices: Invoice[];
@@ -305,6 +299,14 @@ type ApiResponseInvoice = {
 };
 
 const selectedYear = ref<string>();
+
+watch(yearsPending, (value) => {
+  console.log("yearsPending", value);
+  if (!value) {
+    console.log("years", years.value);
+    selectedYear.value = years?.value?.data[years?.value?.data.length - 1];
+  }
+});
 
 const {
   data: invoices,
@@ -356,12 +358,7 @@ const currentInvoiceId = ref("");
 const selectedInvoices = ref<string[]>([]);
 const selectAll = ref(false);
 const bulkAction = ref("Mehrfachauswahl");
-const bulkActionOptions = ref([
-  "Löschen",
-  "Mark as paid",
-  "Mark as unpaid",
-  "Mark as overdue",
-]);
+const bulkActionOptions = ref(["Löschen"]);
 
 function toggleSelectAll() {
   selectAll.value = !selectAll.value;
