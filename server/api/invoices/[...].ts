@@ -117,6 +117,25 @@ router.post(
 );
 
 router.post(
+  "/years/get",
+  defineEventHandler(async (event: H3Event) => {
+    const apiClient = new ApiClientBuilder();
+    const cookies = parseCookies(event);
+    const headers = {
+      userId: cookies.userId,
+      authorization: cookies.accessToken,
+    };
+
+    return await apiClient
+      .setResource("invoice")
+      .setEndpoint("years")
+      .setHeaders(headers)
+      .get()
+      .execute();
+  })
+);
+
+router.post(
   "/templates/get",
   defineEventHandler(async (event: H3Event) => {
     return await getCustomTemplates(event);

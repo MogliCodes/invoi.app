@@ -32,7 +32,7 @@
         </div>
       </section>
     </Transition>
-    <BaseNote v-if="invoices && invoices.length === 0">
+    <BaseNote class="mb-4" v-if="invoices && invoices.invoices.length === 0">
       <p>
         Du hast noch keine Rechnungen angelegt. Klicke auf "Rechnung erstellen"
         um eine neue Rechnung zu erstellen.
@@ -41,9 +41,9 @@
     <div>
       <div class="mb-2 flex items-center gap-8">
         <div class="">
-          <div v-if="!!invoices?.length">
+          <div v-if="!invoicesPending">
             <span class="text-sm font-bold text-secondary-100">{{
-              invoices?.length
+              invoices?.invoices?.length
             }}</span>
             <span class="text-sm font-bold text-secondary-100"> von </span>
             <span
@@ -62,11 +62,11 @@
         <div class="flex gap-4 text-sm">
           <USelectMenu
             v-model="selectedYear"
-            :options="years"
+            :options="years.data"
             placeholder="Wähle ein Jahr aus"
           >
             <template #label>
-              <span v-if="selectedYear.length" class="truncate">{{
+              <span v-if="selectedYear" class="truncate">{{
                 selectedYear
               }}</span>
               <span v-else>Wähle ein Jahr aus</span>
@@ -89,7 +89,7 @@
           </USelectMenu>
         </div>
       </div>
-      <div>
+      <div v-if="!invoicesPending && !!invoices?.invoices?.length">
         <table
           class="lg:text-md min-w-full overflow-hidden rounded-lg text-xs shadow-lg md:text-sm dark:text-gray-400"
         >
@@ -115,7 +115,7 @@
           </thead>
           <tbody>
             <tr
-              v-for="invoice in invoices as Array<Invoice>"
+              v-for="invoice in invoices.invoices"
               :key="invoice?._id"
               class="rounded bg-white p-4 even:bg-gray-200 dark:odd:bg-blue-80 dark:even:bg-blue-90"
             >
@@ -190,6 +190,30 @@
               </td>
             </tr>
           </tbody>
+          <tfoot>
+            <tr class="bg-blue-90 text-white">
+              <td></td>
+              <td colspan="5" class="px-6 py-3 font-bold">Summe</td>
+              <td class="whitespace-nowrap px-6 py-3 text-right">
+                {{
+                  formatCurrencyAmount(formatCentToAmount(invoices?.totalAcc))
+                }}
+              </td>
+              <td class="whitespace-nowrap px-6 py-3 text-right">
+                {{
+                  formatCurrencyAmount(formatCentToAmount(invoices?.taxesAcc))
+                }}
+              </td>
+              <td class="whitespace-nowrap px-6 py-3 text-right">
+                {{
+                  formatCurrencyAmount(
+                    formatCentToAmount(invoices?.totalWithTaxesAcc)
+                  )
+                }}
+              </td>
+              <td></td>
+            </tr>
+          </tfoot>
         </table>
         <div class="flex justify-between py-4">
           <div class="flex items-center gap-2">
@@ -262,19 +286,31 @@ definePageMeta({
 });
 
 const authStore = useAuthStore();
-const config = useRuntimeConfig();
-const backendBaseUrl = config.public.BACKEND_BASE_URL;
-
-const years: Array<string> = ["2023", "2024", "2025"];
-const selectedYear = ref<string>(years[years.length - 1]);
-
 const selectecClient = ref<string>("");
+
+const { data: years } = useFetch<string[]>(`/api/invoices/years/get`, {
+  lazy: true,
+  method: "POST",
+  headers: {
+    userid: authStore.userId,
+    Authorization: `Bearer ${authStore.accessToken}`,
+  },
+});
+
+type ApiResponseInvoice = {
+  invoices: Invoice[];
+  totalAcc: number;
+  taxesAcc: number;
+  totalWithTaxesAcc: number;
+};
+
+const selectedYear = ref<string>();
 
 const {
   data: invoices,
   refresh: refreshInvoices,
   pending: invoicesPending,
-} = useFetch<Invoice[]>(`/api/invoices/get`, {
+} = useFetch<ApiResponseInvoice>(`/api/invoices/get`, {
   lazy: true,
   method: "POST",
   headers: {
@@ -329,8 +365,10 @@ const bulkActionOptions = ref([
 
 function toggleSelectAll() {
   selectAll.value = !selectAll.value;
-  if (selectAll.value && invoices.value) {
-    selectedInvoices.value = invoices?.value.map((invoice) => invoice._id);
+  if (selectAll.value && invoices.value?.invoices) {
+    selectedInvoices.value = invoices?.value?.invoices.map(
+      (invoice) => invoice._id
+    );
   } else {
     selectedInvoices.value = [];
   }
