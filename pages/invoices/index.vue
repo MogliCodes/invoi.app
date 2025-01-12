@@ -107,10 +107,10 @@
               <th class="px-6 py-5 text-left">Kunde</th>
               <th class="px-6 py-5 text-left">Datum</th>
               <th class="px-6 py-5 text-left">Status</th>
-              <th class="px-6 py-5 text-left">Netto</th>
-              <th class="px-6 py-5 text-left">Mwst.</th>
-              <th class="px-6 py-5 text-left">Brutto</th>
-              <th class="px-6 py-5 text-left">Aktion</th>
+              <th class="px-6 py-5 text-right">Netto</th>
+              <th class="px-6 py-5 text-right">Mwst.</th>
+              <th class="px-6 py-5 text-right">Brutto</th>
+              <th class="px-6 py-5 text-right">Aktion</th>
             </tr>
           </thead>
           <tbody>
@@ -165,7 +165,7 @@
                 }}
               </td>
               <td class="px-6 py-3">
-                <span class="flex gap-2">
+                <span class="flex justify-end gap-2">
                   <NuxtLink :to="`/invoices/${invoice._id}`">
                     <UIcon
                       class="cursor-pointer text-xl transition-colors hover:text-gray-400 dark:hover:text-white"
@@ -182,9 +182,9 @@
             </tr>
           </tbody>
           <tfoot>
-            <tr class="bg-blue-90 text-white">
+            <tr class="bg-blue-90 text-white font-bold">
               <td></td>
-              <td colspan="5" class="px-6 py-3 font-bold">Summe</td>
+              <td colspan="5" class="px-6 py-5 font-bold">Summe</td>
               <td class="whitespace-nowrap px-6 py-3 text-right">
                 {{
                   formatCurrencyAmount(formatCentToAmount(invoices?.totalAcc))
