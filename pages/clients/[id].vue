@@ -107,36 +107,6 @@
           </tfoot>
         </table>
       </section>
-      <section v-if="contacts">
-        <BaseHeadline type="h2" :text="`Contacts at ${client.company}`" />
-        <section v-if="!contacts.length">
-          <BaseNote>
-            <p>Du hast noch keine Kontakte für diesen Kunden erstellt.</p>
-          </BaseNote>
-        </section>
-        <table
-          v-else
-          class="min-w-full overflow-hidden rounded-lg shadow-md dark:text-gray-400"
-        >
-          <thead class="bg-blue-90 text-white">
-            <tr>
-              <th class="py-5 pl-6 text-left">Firstname</th>
-              <th class="py-5 pl-6 text-left">Lastname</th>
-              <th class="py-5 pl-6 text-left">Email</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              v-for="contact in contacts"
-              class="rounded bg-white p-4 even:bg-gray-200 dark:odd:bg-blue-80 dark:even:bg-blue-90"
-            >
-              <td class="py-3 pl-6">{{ contact.firstname }}</td>
-              <td class="py-3 pl-6">{{ contact.lastname }}</td>
-              <td class="py-3 pl-6">{{ contact.email }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </section>
     </div>
   </section>
 </template>
@@ -169,7 +139,7 @@ const { data: invoices } = useFetch(`/api/invoices/get`, {
 });
 
 const { data: contacts } = useFetch<Array<Contact>>(
-  `/api/contacts/get?clientId=${route.params.id}`,
+  `/api/contacts/get?client=${route.params.id}`,
   {
     method: "POST",
     headers: {

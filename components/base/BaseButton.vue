@@ -50,14 +50,14 @@ const STYLE_MAPS = {
   yellow: "border-2 border-yellow-normal bg-yellow-normal text-yellow-dark",
   amber: "bg-yellow-400 text-yellow-900",
   outline:
-    "border-2 bg-transparent border-blue-900 text-blue-900 dark:bg-transparent dark:border-white dark:text-white",
+    "border-2 bg-white border-blue-900 text-blue-900 dark:bg-white dark:bg-opacity-10 dark:border-white dark:text-white",
   secondary: "border-2 border-secondary-100 bg-secondary-100 text-white",
 };
 
 const SIZE_MAP = {
   xs: "py-1 px-3 text-sm",
   sm: "px-4 py-2",
-  md: "px-6 py-3",
+  md: "px-5 py-2.5",
   lg: "px-9 py-6",
 };
 

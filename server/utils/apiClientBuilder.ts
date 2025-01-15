@@ -72,7 +72,10 @@ export default class ApiClientBuilder {
   }
 
   addParam(key: string, value: string): this {
-    this.params[key] = value;
+    if (Object.keys(this.params).length === 0) {
+      this.params = { [key]: value };
+    }
+    this.params = { ...this.params, [key]: value };
     return this;
   }
 

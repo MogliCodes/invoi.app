@@ -21,6 +21,8 @@ const invoiceStatusText = computed<string>(() => {
     case "pending":
       return "ausstehend";
     case "unpaid":
+      return "ausstehend";
+    case "due":
       return "überfällig";
     default:
       return "";

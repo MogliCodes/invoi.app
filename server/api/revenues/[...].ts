@@ -36,7 +36,6 @@ router.post(
     };
     const body = await readBody(event);
     const params = getRouterParams(event);
-    console.log("clientId", params.clientId);
     const apiClient = new ApiClientBuilder();
     return await apiClient
       .setResource("invoice")
