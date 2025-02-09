@@ -358,7 +358,7 @@ const currentInvoiceId = ref("");
 const selectedInvoices = ref<string[]>([]);
 const selectAll = ref(false);
 const bulkAction = ref("Mehrfachauswahl");
-const bulkActionOptions = ref(["Löschen"]);
+const bulkActionOptions = ref(["Löschen", "EÜR generieren"]);
 
 function toggleSelectAll() {
   selectAll.value = !selectAll.value;
@@ -387,17 +387,15 @@ function initiateDeletion(contactId: string): void {
   currentInvoiceId.value = contactId;
 }
 
-function executeBulkAction(): void {
+async function executeBulkAction(): void {
   console.log("bulkAction", bulkAction.value);
   switch (bulkAction.value) {
     case "Löschen":
       isOpen.value = true;
       break;
-    case "Mark as paid":
-      break;
-    case "Mark as unpaid":
-      break;
-    case "Mark as overdue":
+    case "EÜR generieren":
+      console.log("EÜR generieren");
+      await generateIncomeSurplusCalculation();
       break;
     default:
       break;
@@ -405,6 +403,30 @@ function executeBulkAction(): void {
 }
 
 const alertStore = useAlertStore();
+
+async function generateIncomeSurplusCalculation() {
+  try {
+    const res = await $fetch(`/api/incomes/isc`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${authStore.accessToken}`,
+        userid: authStore.userId,
+      },
+      body: {
+        year: selectedYear.value,
+      },
+    });
+    console.log(res);
+    if (res.status === 200) {
+      alertStore.setAlert("success", res.message);
+      setTimeout(() => {
+        alertStore.resetAlert();
+      }, 5000);
+    }
+  } catch (error) {
+    console.error(error);
+  }
+}
 
 async function deleteInvoice() {
   try {
