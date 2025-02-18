@@ -3,16 +3,23 @@
     <BaseHeadline type="h1" :text="template.name" />
     <pre
       v-if="templateHtml && htmlStatus === 'success'"
-      class="max-h-40 overflow-hidden overflow-y-scroll rounded-lg bg-black p-4 text-white"
+      class="max-h-screen overflow-hidden overflow-y-scroll rounded-lg bg-black p-4 text-white border-2 rounded"
     >
-      {{ templateHtml.templateData }}
+      <code class="lang-html">{{ templateHtml.templateData }}</code>
     </pre>
-    <div class="" v-html="templateHtml.templateData"></div>
+    <div class="border-2" v-html="templateHtml.templateData"></div>
   </section>
 </template>
 
 <script setup lang="ts">
+import { onMounted } from "vue";
+import Prism from "prismjs";
 import { useAuthStore } from "~/stores/auth.store";
+import "prismjs/themes/prism.min.css";
+
+onMounted(() => {
+  Prism.highlightAll();
+});
 const authStore = useAuthStore();
 const route = useRoute();
 

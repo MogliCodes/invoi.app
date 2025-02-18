@@ -1,7 +1,7 @@
 <template>
   <div>
-    <header class="fixed top-0 w-full py-8">
-      <div class="container mx-auto flex justify-between">
+    <header class="md:fixed top-0 w-full py-2 md:py-8 px-4 shadow-lg">
+      <div class="container mx-auto flex justify-between items-center">
         <NuxtLink
           to="/"
           class="text-md font-syne font-extrabold text-blue-90 dark:text-white"

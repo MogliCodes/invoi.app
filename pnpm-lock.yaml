@@ -62,6 +62,9 @@ importers:
       pinia:
         specifier: ^2.1.6
         version: 2.2.0(typescript@5.5.4)(vue@3.4.35(typescript@5.5.4))
+      prismjs:
+        specifier: ^1.29.0
+        version: 1.29.0
       solid:
         specifier: link:@heroicons/vue/20/solid
         version: link:@heroicons/vue/20/solid
@@ -105,6 +108,9 @@ importers:
       '@types/node':
         specifier: ^20.12.12
         version: 20.14.13
+      '@types/prismjs':
+        specifier: ^1.26.5
+        version: 1.26.5
       '@typescript-eslint/parser':
         specifier: ^6.7.5
         version: 6.21.0(eslint@8.57.0)(typescript@5.5.4)
@@ -2886,6 +2892,9 @@ packages:
 
   '@types/pretty-hrtime@1.0.3':
     resolution: {integrity: sha512-nj39q0wAIdhwn7DGUyT9irmsKK1tV0bd5WFEhgpqNTMFZ8cE+jieuTphCW0tfdm47S2zVT5mr09B28b1chmQMA==}
+
+  '@types/prismjs@1.26.5':
+    resolution: {integrity: sha512-AUZTa7hQ2KY5L7AmtSiqxlhWxb4ina0yd8hNbl4TWuqnv/pFP0nDMb3YrfSBf4hJVGLh2YEIBfKaBW/9UEl6IQ==}
 
   '@types/prop-types@15.7.12':
     resolution: {integrity: sha512-5zvhXYtRNRluoE/jAp4GVsSduVUzNWKkOZrCDBWYtE7biZywwdC2AcEzg+cSMLFRfVgeAFqpfNabiPjxFddV1Q==}
@@ -6490,6 +6499,10 @@ packages:
     resolution: {integrity: sha512-66hKPCr+72mlfiSjlEB1+45IjXSqvVAIy6mocupoww4tBFE9R9IhwwUGoI4G++Tc9Aq+2rxOt0RFU6gPcrte0A==}
     engines: {node: '>= 0.8'}
 
+  prismjs@1.29.0:
+    resolution: {integrity: sha512-Kx/1w86q/epKcmte75LNrEoT+lX8pBpavuAbvJWRXar7Hz8jrtF+e3vY751p0R8H9HdArwaCTNDDzHg/ScJK1Q==}
+    engines: {node: '>=6'}
+
   process-nextick-args@2.0.1:
     resolution: {integrity: sha512-3ouUOpQhtgrbOa17J7+uxOTpITYWaGP7/AhoR3+A+/1e9skrzelGi/dXzEYyvbxubEF6Wn2ypscTKiKJFFn1ag==}
 
@@ -7811,8 +7824,8 @@ packages:
   vue-bundle-renderer@2.1.0:
     resolution: {integrity: sha512-uZ+5ZJdZ/b43gMblWtcpikY6spJd0nERaM/1RtgioXNfWFbjKlUwrS8HlrddN6T2xtptmOouWclxLUkpgcVX3Q==}
 
-  vue-component-type-helpers@2.1.4:
-    resolution: {integrity: sha512-aVqB3KxwpM76cYRkpnezl1J62E/1omzHQfx1yuz7zcbxmzmP/PeSgI20NEmkdeGnjZPVzm0V9fB4ZyRu5BBj4A==}
+  vue-component-type-helpers@2.2.2:
+    resolution: {integrity: sha512-6lLY+n2xz2kCYshl59mL6gy8OUUTmkscmDFMO8i7Lj+QKwgnIFUZmM1i/iTYObtrczZVdw7UakPqDTGwVSGaRg==}
 
   vue-demi@0.14.10:
     resolution: {integrity: sha512-nMZBOwuzabUO0nLgIcc6rycZEebF6eeUfaiQx9+WSk8e29IbLvPU9feI6tqW4kTo3hvoYAJkMh8n8D0fuISphg==}
@@ -10917,7 +10930,7 @@ snapshots:
       ts-dedent: 2.2.0
       type-fest: 2.19.0
       vue: 3.4.35(typescript@5.5.4)
-      vue-component-type-helpers: 2.1.4
+      vue-component-type-helpers: 2.2.2
     transitivePeerDependencies:
       - encoding
       - supports-color
@@ -11346,6 +11359,8 @@ snapshots:
   '@types/normalize-package-data@2.4.4': {}
 
   '@types/pretty-hrtime@1.0.3': {}
+
+  '@types/prismjs@1.26.5': {}
 
   '@types/prop-types@15.7.12': {}
 
@@ -15584,6 +15599,8 @@ snapshots:
 
   pretty-hrtime@1.0.3: {}
 
+  prismjs@1.29.0: {}
+
   process-nextick-args@2.0.1: {}
 
   process@0.11.10: {}
@@ -17095,7 +17112,7 @@ snapshots:
     dependencies:
       ufo: 1.5.4
 
-  vue-component-type-helpers@2.1.4: {}
+  vue-component-type-helpers@2.2.2: {}
 
   vue-demi@0.14.10(vue@3.4.35(typescript@5.5.4)):
     dependencies:
