@@ -8,9 +8,9 @@
     <!--        <span>Sitzung läuft ab in: {{ formattedTime }}</span>-->
     <!--      </div>-->
     <!--    </div>-->
-    <TheSidebar v-if="authStore.isUserLoggedIn" />
+    <TheSidebar class="hidden md:block" v-if="authStore.isUserLoggedIn" />
     <main
-      class="relative ml-auto min-h-screen w-10/12 bg-gray-100 py-24 dark:bg-blue-100"
+      class="relative md:ml-auto min-h-screen w-full md:w-10/12 bg-gray-100 py-24 dark:bg-blue-100"
     >
       <StickyElement
         v-if="useRoute().meta.title"

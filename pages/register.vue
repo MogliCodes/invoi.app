@@ -1,50 +1,55 @@
 <template>
-  <section class="h-screen">
-    <div class="flex h-full">
-      <div class="flex h-full w-1/2 flex-col justify-center px-24 py-12">
-        <div class="pb-12">
-          <BaseHeadline
-            class="mb-8 text-blue-80 dark:text-white"
-            text="Erstelle ein kostenloses Konto"
-            type="h1"
-          />
-          <p class="w-6/12 text-xl text-slate-600 dark:text-white">
-            Falls du bereits ein Konto hast, kannst du dich
-            <NuxtLink class="text-yellow-normal" to="/login"
-              >hier einloggen</NuxtLink
-            >.
-          </p>
-        </div>
-        <BaseBox class="flex w-full flex-col gap-3">
-          <div>
-            <BaseLabel text="Benutzername" />
-            <BaseInput v-model="username" placeholder="Benutzername" />
-          </div>
-          <div>
-            <BaseLabel text="E-Mail" />
-            <BaseInput v-model="email" placeholder="E-Mail" />
-          </div>
-          <div>
-            <BaseLabel text="Passwort" />
-            <BaseInput
-              ref="passwordInput"
-              v-model="password"
-              placeholder="Passwort"
-              :type="isPasswordVisible ? 'text' : 'password'"
+  <section class="min-h-screen">
+    <BaseContainer>
+      <div class="flex flex-col md:flex-row h-full">
+        <div
+          class="flex h-full w-full md:w-1/2 flex-col justify-center md:px-24 py-12"
+        >
+          <div class="pb-12">
+            <BaseHeadline
+              class="mb-8 text-blue-80 dark:text-white"
+              text="Erstelle ein kostenloses Konto"
+              type="h1"
             />
+            <p class="md:w-6/12 text-xl text-slate-600 dark:text-white">
+              Falls du bereits ein Konto hast, kannst du dich
+              <NuxtLink class="text-yellow-normal" to="/login"
+                >hier einloggen
+              </NuxtLink>
+              .
+            </p>
           </div>
-          <BaseButton
-            class="w-full"
-            variant="yellow"
-            text="Kostenlos anmelden"
-            @click="register"
-          />
-        </BaseBox>
+          <BaseBox class="flex w-full flex-col gap-3">
+            <div>
+              <BaseLabel text="Benutzername" />
+              <BaseInput v-model="username" placeholder="Benutzername" />
+            </div>
+            <div>
+              <BaseLabel text="E-Mail" />
+              <BaseInput v-model="email" placeholder="E-Mail" />
+            </div>
+            <div>
+              <BaseLabel text="Passwort" />
+              <BaseInput
+                ref="passwordInput"
+                v-model="password"
+                placeholder="Passwort"
+                :type="isPasswordVisible ? 'text' : 'password'"
+              />
+            </div>
+            <BaseButton
+              class="w-full"
+              variant="yellow"
+              text="Kostenlos anmelden"
+              @click="register"
+            />
+          </BaseBox>
+        </div>
+        <div class="flex h-full w-1/2 items-center px-12 pb-24">
+          <img src="/img/undraw_printing-invoices_osgs.svg" alt="" />
+        </div>
       </div>
-      <div class="flex h-full w-1/2 items-center px-12 pb-24">
-        <img src="/img/undraw_printing-invoices_osgs.svg" alt="" />
-      </div>
-    </div>
+    </BaseContainer>
   </section>
 </template>
 

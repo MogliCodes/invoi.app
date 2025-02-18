@@ -12,7 +12,7 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const STYLE_MAP = {
-  h1: "font-syne text-xl md:text-5xl font-extrabold",
+  h1: "font-syne text-lg md:text-5xl font-extrabold",
   h2: "font-bold font-syne mb-3 text-gray-400 text-2xl",
   h3: "font-bold text-2xl",
 };

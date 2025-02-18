@@ -1,30 +1,31 @@
 <template>
   <div>
-    <section class="h-screen">
-      <div class="container mx-auto flex h-full items-center justify-center">
-        <div class="w-1/2 pb-32">
-          <BaseHeadline
-            class="text-blue-90 dark:text-white"
-            text="Einfach Rechnungen schreiben ohne Stress"
-          />
-          <h1 class="mb-8 text-6xl font-semibold"></h1>
-          <p class="mb-8 text-xl font-normal text-blue-90 dark:text-white">
-            Mit invoi.app kannst du Rechnungen schreiben, Kontakte verwalten und
-            Ausgaben im Blick behalten. Alles an einem Ort.
-          </p>
-          <div class="flex items-center gap-4">
-            <BaseButton
-              variant="yellow"
-              to="/register"
-              text="Kostenlos registrieren"
+    <section class="md:min-h-screen">
+      <BaseContainer>
+        <div class="flex flex-col-reverse h-full items-center justify-center">
+          <div class="md:w-1/2 md:pb-32">
+            <BaseHeadline
+              class="text-blue-90 dark:text-white mb-4"
+              text="Einfach Rechnungen schreiben ohne Stress"
             />
-            <BaseButton variant="outline" to="/login" text="Einloggen" />
+            <p class="mb-8 md:text-xl font-normal text-blue-90 dark:text-white">
+              Mit invoi.app kannst du Rechnungen schreiben, Kontakte verwalten
+              und Ausgaben im Blick behalten. Alles an einem Ort.
+            </p>
+            <div class="flex flex-col md:items-center gap-2">
+              <BaseButton
+                variant="yellow"
+                to="/register"
+                text="Kostenlos registrieren"
+              />
+              <BaseButton variant="outline" to="/login" text="Einloggen" />
+            </div>
+          </div>
+          <div class="flex h-full md:w-1/2 items-center px-12 py-12 md:pb-24">
+            <img src="/img/undraw_printing-invoices_osgs.svg" alt="" />
           </div>
         </div>
-        <div class="flex h-full w-1/2 items-center px-12 pb-24">
-          <img src="/img/undraw_printing-invoices_osgs.svg" alt="" />
-        </div>
-      </div>
+      </BaseContainer>
     </section>
     <section class="hidden bg-blue-100 py-12">
       <div class="container mx-auto py-12">
@@ -77,10 +78,14 @@
         </div>
       </div>
     </section>
-    <section id="create-invoices" class="h-screen py-32">
-      <div class="container mx-auto gap-12">
+    <section id="create-invoices" class="min-h-screen py-32">
+      <BaseContainer>
         <div>
-          <BaseHeadline class="mb-12 text-blue-90" type="h1" text="Features" />
+          <BaseHeadline
+            class="mb-12 text-blue-90 dark:text-white"
+            type="h1"
+            text="Features"
+          />
 
           <div class="grid gap-8 md:grid-cols-3">
             <BaseBox class="p-10">
@@ -92,7 +97,7 @@
                 type="h2"
                 text="Erstelle Rechnungen in Sekunden"
               />
-              <p class="text-gray-600">
+              <p class="text-gray-600 dark:text-gray-200">
                 Erstelle professionelle Rechnungen in Sekunden, die auf Deine
                 Marke zugeschnitten sind, und lasse den lästigen Papierkram
                 hinter Dir. Erhebe Dein Geschäft mit nahtloser Rechnungsstellung
@@ -111,7 +116,7 @@
                 type="h2"
                 text="Nutze Deine eigenen Templates"
               />
-              <p class="text-gray-600">
+              <p class="text-gray-600 dark:text-gray-200">
                 Erstelle professionelle Rechnungen in Sekunden, die auf Deine
                 Marke zugeschnitten sind, und lasse den lästigen Papierkram
                 hinter Dir. Erhebe Dein Geschäft mit nahtloser Rechnungsstellung
@@ -130,7 +135,7 @@
                 type="h2"
                 text="Trage Daten für deine Steuererklärung zusammen"
               />
-              <p class="text-gray-600">
+              <p class="text-gray-600 dark:text-gray-200">
                 Erstelle professionelle Rechnungen in Sekunden, die auf Deine
                 Marke zugeschnitten sind, und lasse den lästigen Papierkram
                 hinter Dir. Erhebe Dein Geschäft mit nahtloser Rechnungsstellung
@@ -139,11 +144,11 @@
             >
           </div>
         </div>
-      </div>
+      </BaseContainer>
     </section>
     <footer class="w-full bg-blue-90 py-12 text-white">
-      <div class="container mx-auto flex justify-between">
-        <div class="w-1/5">
+      <BaseContainer>
+        <div class="mb-4 md:mb-0 md:w-1/5">
           <BaseText
             text-color="text-white"
             text-color-dark-mode="dark:text-white"
@@ -162,7 +167,7 @@
           </ul>
         </div>
         <div class="w-1/5"></div>
-      </div>
+      </BaseContainer>
     </footer>
   </div>
 </template>

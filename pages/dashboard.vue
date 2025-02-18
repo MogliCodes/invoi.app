@@ -67,10 +67,10 @@
         text="Overview"
       />
       <BaseBox>
-        <div class="grid grid-cols-3 gap-3">
+        <div class="md:grid grid-cols-3 gap-3">
           <NuxtLink
             to="/contacts"
-            class="flex justify-between border-r-2 pr-3 dark:border-gray-600"
+            class="mb-2 flex justify-between border-b-2 pb-2 pr-3 md:border-r-2 dark:border-gray-600"
           >
             <div>
               <BaseLabel text="Kontakte" />
@@ -86,7 +86,7 @@
           </NuxtLink>
           <NuxtLink
             to="/invoices"
-            class="flex justify-between border-r-2 px-3 dark:border-gray-600"
+            class="mb-2 flex justify-between border-b-2 pb-2 md:border-r-2 dark:border-gray-600"
           >
             <div>
               <BaseLabel text="Rechnungen" />
@@ -100,7 +100,7 @@
               name="i-heroicons-document-chart-bar"
             />
           </NuxtLink>
-          <NuxtLink to="/clients" class="flex justify-between pl-3">
+          <NuxtLink to="/clients" class="flex justify-between">
             <div>
               <BaseLabel text="Kunden" />
               <span
