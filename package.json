@@ -18,6 +18,7 @@
     "playwright:ui": "playwright test --ui"
   },
   "devDependencies": {
+    "@nuxt/fonts": "^0.10.3",
     "@nuxtjs/eslint-config-typescript": "^12.1.0",
     "@playwright/test": "^1.44.1",
     "@storybook/addon-essentials": "^7.4.6",
