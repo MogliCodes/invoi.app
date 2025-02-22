@@ -38,9 +38,9 @@
         um eine neue Rechnung zu erstellen.
       </p>
     </BaseNote>
-    <div>
+    <section>
       <div class="mb-2 flex items-center gap-8">
-        <div class="">
+        <div class="invoices-count">
           <div v-if="!invoicesPending">
             <span class="text-sm font-bold text-secondary-100">{{
               invoices?.invoices?.length
@@ -59,7 +59,7 @@
             <USkeleton class="h-4 w-[150px] bg-secondary-100" />
           </div>
         </div>
-        <div class="flex gap-4 text-sm">
+        <div class="hidden gap-4 text-sm lg:flex">
           <USelectMenu
             v-model="selectedYear"
             :options="years.data"
@@ -90,112 +90,114 @@
         </div>
       </div>
       <div v-if="!invoicesPending && !!invoices?.invoices?.length">
-        <table
-          class="lg:text-md min-w-full overflow-hidden rounded-lg text-xs shadow-lg md:text-sm dark:text-gray-400"
-        >
-          <thead class="bg-blue-90 text-white">
-            <tr>
-              <th class="py-5 pl-6 text-left">
-                <UCheckbox
-                  v-model="selectAll"
-                  :checked="selectAll"
-                  @click="toggleSelectAll"
-                />
-              </th>
-              <th class="px-6 py-5 text-left">Rechnungsnummer</th>
-              <th class="px-6 py-5 text-left">Titel</th>
-              <th class="px-6 py-5 text-left">Kunde</th>
-              <th class="px-6 py-5 text-left">Datum</th>
-              <th class="px-6 py-5 text-left">Status</th>
-              <th class="px-6 py-5 text-right">Netto</th>
-              <th class="px-6 py-5 text-right">Mwst.</th>
-              <th class="px-6 py-5 text-right">Brutto</th>
-              <th class="px-6 py-5 text-right">Aktion</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              v-for="invoice in invoices.invoices"
-              :key="invoice?._id"
-              class="rounded bg-white p-4 even:bg-gray-200 dark:odd:bg-blue-80 dark:even:bg-blue-90"
-            >
-              <td class="py-3 pl-6">
-                <UCheckbox
-                  :checked="isSelectedInvoice(invoice._id)"
-                  @click="toggleSelection(invoice._id)"
-                />
-              </td>
-              <td class="px-6 py-3">
-                {{ invoice?.nr }}
-              </td>
-              <td class="px-6 py-3">
-                <span :title="invoice.title">{{ invoice.title }}</span>
-              </td>
-              <td class="px-6 py-3">
-                <span :title="getClientName(invoice.client)">
-                  {{ getClientName(invoice.client) }}
-                </span>
-              </td>
-              <td class="px-6 py-3">
-                {{
-                  new Date(invoice.date)
-                    .toLocaleDateString("en-GB", {
-                      day: "2-digit",
-                      month: "2-digit",
-                      year: "numeric",
+        <UTable
+          :rows="invoices.invoices"
+          :columns="[
+            {
+              key: 'select',
+              label: '',
+              sortable: false,
+              render: (row) =>
+                h(UCheckbox, {
+                  checked: isSelectedInvoice(row._id),
+                  onClick: () => toggleSelection(row._id),
+                }),
+            },
+            {
+              key: 'nr',
+              label: 'Rechnungsnummer',
+            },
+            {
+              key: 'title',
+              label: 'Titel',
+            },
+            {
+              key: 'client',
+              label: 'Kunde',
+              render: (row) => getClientName(row.client),
+            },
+            {
+              key: 'date',
+              label: 'Datum',
+              render: (row) =>
+                new Date(row.date)
+                  .toLocaleDateString('en-GB', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric',
+                  })
+                  .split('/')
+                  .join('.'),
+            },
+            {
+              key: 'status',
+              label: 'Status',
+              render: (row) => h(InvoiceStatusPill, { invoice: row }),
+            },
+            {
+              key: 'total',
+              label: 'Netto',
+              class: 'text-right whitespace-nowrap',
+              render: (row) =>
+                formatCurrencyAmount(formatCentToAmount(row.total)),
+            },
+            {
+              key: 'taxes',
+              label: 'Mwst.',
+              class: 'text-right whitespace-nowrap',
+              render: (row) =>
+                formatCurrencyAmount(formatCentToAmount(row.taxes)),
+            },
+            {
+              key: 'totalWithTaxes',
+              label: 'Brutto',
+              class: 'text-right whitespace-nowrap',
+              render: (row) =>
+                formatCurrencyAmount(formatCentToAmount(row.totalWithTaxes)),
+            },
+            {
+              key: 'actions',
+              label: 'Aktion',
+              sortable: false,
+              class: 'text-right',
+              render: (row) =>
+                h('span', { class: 'flex justify-end gap-2' }, [
+                  h(NuxtLink, { to: `/invoices/${row._id}` }, () =>
+                    h(UIcon, {
+                      name: 'i-heroicons-eye',
+                      class:
+                        'cursor-pointer text-xl transition-colors hover:text-gray-400 dark:hover:text-white',
                     })
-                    .split("/")
-                    .join(".")
-                }}
-              </td>
-              <td class="px-6 py-3">
-                <InvoiceStatusPill :invoice="invoice" />
-              </td>
-              <td class="whitespace-nowrap px-6 py-3 text-right">
-                {{ formatCurrencyAmount(formatCentToAmount(invoice.total)) }}
-              </td>
-              <td class="whitespace-nowrap px-6 py-3 text-right">
-                {{ formatCurrencyAmount(formatCentToAmount(invoice?.taxes)) }}
-              </td>
-              <td class="whitespace-nowrap px-6 py-3 text-right">
-                {{
-                  formatCurrencyAmount(
-                    formatCentToAmount(invoice?.totalWithTaxes)
-                  )
-                }}
-              </td>
-              <td class="px-6 py-3">
-                <span class="flex justify-end gap-2">
-                  <NuxtLink :to="`/invoices/${invoice._id}`">
-                    <UIcon
-                      class="cursor-pointer text-xl transition-colors hover:text-gray-400 dark:hover:text-white"
-                      name="i-heroicons-eye"
-                    />
-                  </NuxtLink>
-                  <UIcon
-                    class="cursor-pointer text-xl transition-colors hover:text-gray-400 dark:hover:text-white"
-                    name="i-heroicons-trash"
-                    @click="initiateDeletion(invoice._id)"
-                  />
-                </span>
-              </td>
-            </tr>
-          </tbody>
-          <tfoot>
-            <tr class="bg-blue-90 font-bold text-white">
+                  ),
+                  h(UIcon, {
+                    name: 'i-heroicons-trash',
+                    class:
+                      'cursor-pointer text-xl transition-colors hover:text-gray-400 dark:hover:text-white',
+                    onClick: () => initiateDeletion(row._id),
+                  }),
+                ]),
+            },
+          ]"
+        >
+          <template #head-select>
+            <UCheckbox :checked="selectAll" @click="toggleSelectAll" />
+          </template>
+
+          <template #foot>
+            <tr class="font-bold text-white">
               <td></td>
-              <td colspan="5" class="px-6 py-5 font-bold">Summe</td>
-              <td class="whitespace-nowrap px-6 py-3 text-right">
+              <td colspan="5" class="px-6 py-5">Summe</td>
+              <td class="whitespace-nowrap text-right">
                 {{
                   formatCurrencyAmount(formatCentToAmount(invoices?.totalAcc))
                 }}
               </td>
-              <td class="whitespace-nowrap px-6 py-3 text-right">
+              <td class="whitespace-nowrap text-right">
                 {{
                   formatCurrencyAmount(formatCentToAmount(invoices?.taxesAcc))
                 }}
               </td>
-              <td class="whitespace-nowrap px-6 py-3 text-right">
+              <td class="whitespace-nowrap text-right">
                 {{
                   formatCurrencyAmount(
                     formatCentToAmount(invoices?.totalWithTaxesAcc)
@@ -204,8 +206,9 @@
               </td>
               <td></td>
             </tr>
-          </tfoot>
-        </table>
+          </template>
+        </UTable>
+
         <div class="flex justify-between py-4">
           <div class="flex items-center gap-2">
             <USelectMenu
@@ -223,7 +226,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </section>
     <UModal v-model="isOpen">
       <div class="flex flex-col items-center p-8 text-center">
         <div

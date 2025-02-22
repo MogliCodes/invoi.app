@@ -18,7 +18,19 @@
         "tailwindcss/classnames-order": "error",
         "no-console": ["warn", { "allow": ["error", "warn", "info"] }],
         "tailwindcss/no-custom-classname": ["off", { "whitelist": ["add-row-btn", "a4"] }],
-        "tailwindcss/migration-from-tailwind-2": ["off", { "whitelist": ["bg-opacity-20", "bg-opacity-80"] }]
+        "tailwindcss/migration-from-tailwind-2": ["off", { "whitelist": ["bg-opacity-20", "bg-opacity-80"] }],
+        "max-len": [
+            "error",
+            {
+                "code": 120,  // Adjust this value to your preferred line length
+                "ignoreUrls": true,
+                "ignoreComments": false,
+                "ignoreTrailingComments": false,
+                "ignoreStrings": false,
+                "ignoreTemplateLiterals": false,
+                "ignoreRegExpLiterals": false
+            }
+        ]
     },
     "ignorePatterns": [
         "node_modules/",

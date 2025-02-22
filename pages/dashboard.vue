@@ -37,8 +37,8 @@
       <BaseNote v-if="!validUserData">
         <p>Bitte vervollständige dein Nutzerprofil</p>
         <nuxt-link class="font-bold text-blue-600" to="/settings"
-          >Zu den Einstellungen</nuxt-link
-        >
+          >Zu den Einstellungen
+        </nuxt-link>
       </BaseNote>
       <BaseNote v-if="!validCompanyData">
         <p>
@@ -46,8 +46,8 @@
           vervollständige deine Unternehmensdaten, um Rechnungen zu erstellen.
         </p>
         <nuxt-link class="font-bold text-blue-600" to="/settings#company"
-          >Zu den Einstellungen</nuxt-link
-        >
+          >Zu den Einstellungen
+        </nuxt-link>
       </BaseNote>
       <BaseNote v-if="!validBankData">
         <p>
@@ -55,19 +55,19 @@
           die Bankverbindung hinzu, um Rechnungen zu erstellen.
         </p>
         <nuxt-link class="font-bold text-blue-600" to="/settings#bank-info"
-          >Zu den Einstellungen</nuxt-link
-        >
+          >Zu den Einstellungen
+        </nuxt-link>
       </BaseNote>
     </section>
     <!-- Overview -->
     <section class="">
       <BaseHeadline
-        class="font-syne text-2xl font-bold text-gray-400"
+        class="!mb-1 font-syne text-lg font-bold text-gray-400 lg:text-2xl"
         type="h2"
         text="Overview"
       />
       <BaseBox>
-        <div class="md:grid grid-cols-3 gap-3">
+        <div class="grid-cols-3 gap-3 md:grid">
           <NuxtLink
             to="/contacts"
             class="mb-2 flex justify-between border-b-2 pb-2 pr-3 md:border-r-2 dark:border-gray-600"
@@ -263,6 +263,7 @@
 import { useAuthStore } from "~/stores/auth.store";
 import TestGraph from "~/components/TestGraph.vue";
 import "vue-sticky-element/css";
+
 const authStore = useAuthStore(); // this is required for default styles to work.
 
 definePageMeta({
