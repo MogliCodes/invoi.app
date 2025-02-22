@@ -1,18 +1,20 @@
 <template>
   <div>
-    <section class="md:min-h-screen">
+    <section id="start" class="flex md:min-h-screen">
       <BaseContainer>
-        <div class="flex flex-col-reverse h-full items-center justify-center">
+        <div
+          class="flex h-full flex-col-reverse items-center justify-center md:flex-row"
+        >
           <div class="md:w-1/2 md:pb-32">
             <BaseHeadline
-              class="text-blue-90 dark:text-white mb-4"
+              class="mb-4 text-blue-90 dark:text-white"
               text="Einfach Rechnungen schreiben ohne Stress"
             />
-            <p class="mb-8 md:text-xl font-normal text-blue-90 dark:text-white">
+            <p class="mb-8 font-normal text-blue-90 md:text-xl dark:text-white">
               Mit invoi.app kannst du Rechnungen schreiben, Kontakte verwalten
               und Ausgaben im Blick behalten. Alles an einem Ort.
             </p>
-            <div class="flex flex-col md:items-center gap-2">
+            <div class="flex flex-col gap-2 md:flex-row md:items-center">
               <BaseButton
                 variant="yellow"
                 to="/register"
@@ -21,64 +23,13 @@
               <BaseButton variant="outline" to="/login" text="Einloggen" />
             </div>
           </div>
-          <div class="flex h-full md:w-1/2 items-center px-12 py-12 md:pb-24">
+          <div class="flex h-full items-center p-12 md:w-1/2 md:pb-24">
             <img src="/img/undraw_printing-invoices_osgs.svg" alt="" />
           </div>
         </div>
       </BaseContainer>
     </section>
-    <section class="hidden bg-blue-100 py-12">
-      <div class="container mx-auto py-12">
-        <div class="grid grid-cols-3">
-          <div class="p-12">
-            <img src="/img/undraw_fast_y061.svg" alt="" />
-            <BaseHeadline type="h2" text="Create invoices" />
-            <BaseText class="text-gray-300">
-              Create professional invoices in seconds, tailored to your brand,
-              and leave the tedious paperwork behind. Elevate your business with
-              seamless invoicing at your fingertips.
-            </BaseText>
-            <br /><br />
-            <NuxtLink class="text-yellow-400" to="/#create-invoices"
-              >Learn more</NuxtLink
-            >
-          </div>
-          <div class="p-12">
-            <UIcon
-              class="size-20 text-blue-80 dark:text-gray-600"
-              name="i-heroicons-user-circle"
-            />
-            <BaseHeadline type="h2" text="Manage contacts" />
-            <BaseText class="text-gray-300">
-              Efficiently organize your network by seamlessly managing contacts.
-              Our user-friendly platform ensures smooth communication and easy
-              access to essential information.
-            </BaseText>
-            <br /><br />
-            <NuxtLink class="text-yellow-400" to="/#manage-contacts"
-              >Learn more</NuxtLink
-            >
-          </div>
-          <div class="p-12">
-            <UIcon
-              class="size-20 text-blue-80 dark:text-gray-600"
-              name="i-heroicons-credit-card"
-            />
-            <BaseHeadline type="h2" text="Track expenses" />
-            <BaseText class="text-gray-300">
-              Simplify your financial management with our intuitive expense
-              tracking feature. Easily categorize and analyze your expenditures,
-              gaining valuable insights into your budget.
-            </BaseText>
-            <br /><br />
-            <NuxtLink class="text-yellow-400" to="/#track-expenses"
-              >Learn more</NuxtLink
-            >
-          </div>
-        </div>
-      </div>
-    </section>
-    <section id="create-invoices" class="min-h-screen py-32">
+    <section id="features" class="min-h-screen py-32">
       <BaseContainer>
         <div>
           <BaseHeadline
@@ -87,7 +38,7 @@
             text="Features"
           />
 
-          <div class="grid gap-8 md:grid-cols-3">
+          <div class="grid gap-8 lg:grid-cols-3">
             <BaseBox class="p-10">
               <figure class="px-20 py-10">
                 <img class="mx-auto h-40" src="/img/undraw_fast_y061.svg" />
@@ -146,27 +97,206 @@
         </div>
       </BaseContainer>
     </section>
-    <footer class="w-full bg-blue-90 py-12 text-white">
+    <section id="pricing" class="py-20">
       <BaseContainer>
-        <div class="mb-4 md:mb-0 md:w-1/5">
-          <BaseText
-            text-color="text-white"
-            text-color-dark-mode="dark:text-white"
-          >
-            invoi.app ist eine einfache und flexible Rechnungssoftware für
-            Selbstständige und kleine Unternehmen.
-          </BaseText>
+        <div class="mb-12 text-center">
+          <BaseHeadline
+            type="h1"
+            class="text-blue-90 dark:text-white"
+            text="Preise, die zu dir passen"
+          />
+          <p class="text-gray-600 md:text-lg dark:text-gray-300">
+            Flexible Preisoptionen für Selbstständige und kleine Unternehmen.
+            Starte mit einer kostenlosen Testversion!
+          </p>
         </div>
-        <div class="w-1/5">
-          <BaseHeadline type="h2" text="invoi" />
-          <ul class="flex flex-col gap-2">
-            <li>Über uns</li>
-            <li>Preise</li>
-            <li>Impressum</li>
-            <li>Datenschutz</li>
-          </ul>
+
+        <div class="grid gap-8 lg:grid-cols-3">
+          <!-- Free Tier -->
+          <BaseBox class="text-center">
+            <BaseHeadline
+              type="h2"
+              class="mb-4 text-blue-90 dark:text-white"
+              text="Kostenlos"
+            />
+            <p class="text-gray-600 dark:text-gray-300">
+              Teste invoi.app 14 Tage kostenlos.
+            </p>
+            <p class="my-6 text-3xl font-bold text-blue-90 dark:text-white">
+              €0
+            </p>
+            <ul class="mb-6 space-y-1 text-sm text-gray-600 dark:text-gray-300">
+              <li class="flex items-center justify-center">
+                <span class="mr-2">✓</span> Alle Basisfunktionen
+              </li>
+              <li class="flex items-center justify-center">
+                <span class="mr-2">✓</span> Max. 5 Rechnungen
+              </li>
+              <li class="flex items-center justify-center">
+                <span class="mr-2">✓</span> E-Mail Support
+              </li>
+            </ul>
+            <BaseButton variant="yellow" to="/register" text="Jetzt testen" />
+          </BaseBox>
+
+          <!-- Pro Tier -->
+          <BaseBox class="border-2 border-yellow-500 text-center">
+            <BaseHeadline
+              type="h2"
+              class="mb-4 text-blue-90 dark:text-white"
+              text="Pro"
+            />
+            <p class="text-gray-600 dark:text-gray-300">
+              Perfekt für Selbstständige.
+            </p>
+            <p class="my-6 text-3xl font-bold text-blue-90 dark:text-white">
+              €12<span class="text-lg">/Monat</span>
+            </p>
+            <ul class="mb-6 space-y-1 text-sm text-gray-600 dark:text-gray-300">
+              <li class="flex items-center justify-center">
+                <span class="mr-2">✓</span> Unbegrenzte Rechnungen
+              </li>
+              <li class="flex items-center justify-center">
+                <span class="mr-2">✓</span> Individuelle Rechnungs-Templates
+              </li>
+              <li class="flex items-center justify-center">
+                <span class="mr-2">✓</span> Automatische Zahlungserinnerungen
+              </li>
+              <li class="flex items-center justify-center">
+                <span class="mr-2">✓</span> Priorisierter Support
+              </li>
+            </ul>
+            <BaseButton variant="yellow" to="/register" text="Jetzt starten" />
+          </BaseBox>
+
+          <!-- Business Tier -->
+          <BaseBox class="text-center">
+            <BaseHeadline
+              type="h2"
+              class="mb-4 text-blue-90 dark:text-white"
+              text="Business"
+            />
+            <p class="text-gray-600 dark:text-gray-300">
+              Für Teams und Unternehmen.
+            </p>
+            <p class="my-6 text-3xl font-bold text-blue-90 dark:text-white">
+              €29<span class="text-lg">/Monat</span>
+            </p>
+            <ul class="mb-6 space-y-1 text-sm text-gray-600 dark:text-gray-300">
+              <li class="flex items-center justify-center">
+                <span class="mr-2">✓</span> Alle Pro-Funktionen
+              </li>
+              <li class="flex items-center justify-center">
+                <span class="mr-2">✓</span> Mehrere Benutzer
+              </li>
+              <li class="flex items-center justify-center">
+                <span class="mr-2">✓</span> API-Zugang
+              </li>
+              <li class="flex items-center justify-center">
+                <span class="mr-2">✓</span> Premium-Support
+              </li>
+            </ul>
+            <BaseButton variant="yellow" to="/register" text="Jetzt starten" />
+          </BaseBox>
         </div>
-        <div class="w-1/5"></div>
+      </BaseContainer>
+    </section>
+    <footer class="bg-blue-90 py-10 text-gray-300">
+      <BaseContainer>
+        <div class="grid gap-8 md:grid-cols-4">
+          <!-- Logo & Beschreibung -->
+          <div>
+            <BaseHeadline
+              type="h3"
+              class="mb-3 font-syne text-white"
+              text="invoi.app"
+            />
+            <p class="text-sm">
+              Die einfache Lösung für Rechnungsstellung & Finanzen.
+            </p>
+          </div>
+
+          <!-- Navigation -->
+          <div>
+            <BaseHeadline
+              type="h4"
+              class="mb-2 text-sm text-white"
+              text="Navigation"
+            />
+            <ul class="space-y-1 text-sm">
+              <li>
+                <NuxtLink to="#features" class="hover:text-yellow-500"
+                  >Funktionen</NuxtLink
+                >
+              </li>
+              <li>
+                <NuxtLink to="#pricing" class="hover:text-yellow-500"
+                  >Preise</NuxtLink
+                >
+              </li>
+              <li>
+                <NuxtLink to="/support" class="hover:text-yellow-500"
+                  >Support</NuxtLink
+                >
+              </li>
+            </ul>
+          </div>
+
+          <!-- Rechtliches -->
+          <div>
+            <BaseHeadline
+              type="h4"
+              class="mb-2 text-sm text-white"
+              text="Rechtliches"
+            />
+            <ul class="space-y-1 text-sm">
+              <li>
+                <NuxtLink to="/privacy" class="hover:text-yellow-500"
+                  >Datenschutz</NuxtLink
+                >
+              </li>
+              <li>
+                <NuxtLink to="/terms" class="hover:text-yellow-500"
+                  >AGB</NuxtLink
+                >
+              </li>
+              <li>
+                <NuxtLink to="/impressum" class="hover:text-yellow-500"
+                  >Impressum</NuxtLink
+                >
+              </li>
+            </ul>
+          </div>
+
+          <!-- Social Media & Kontakt -->
+          <div>
+            <BaseHeadline
+              type="h4"
+              class="mb-2 text-sm text-white"
+              text="Kontakt"
+            />
+            <ul class="space-y-1 text-sm">
+              <li>
+                <a href="mailto:support@invoi.app" class="hover:text-yellow-500"
+                  >support@invoi.app</a
+                >
+              </li>
+              <li class="mt-2 flex space-x-4">
+                <a href="#" class="hover:text-yellow-500"
+                  ><Icon name="mdi:twitter" size="20"
+                /></a>
+                <a href="#" class="hover:text-yellow-500"
+                  ><Icon name="mdi:linkedin" size="20"
+                /></a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Trennlinie -->
+        <div class="mt-8 border-t border-gray-700 pt-4 text-center text-sm">
+          © {{ new Date().getFullYear() }} invoi.app – Alle Rechte vorbehalten.
+        </div>
       </BaseContainer>
     </footer>
   </div>

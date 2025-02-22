@@ -20,6 +20,7 @@
   "devDependencies": {
     "@nuxt/fonts": "^0.10.3",
     "@nuxtjs/eslint-config-typescript": "^12.1.0",
+    "@nuxtjs/tailwindcss": "^6.13.1",
     "@playwright/test": "^1.44.1",
     "@storybook/addon-essentials": "^7.4.6",
     "@storybook/addon-interactions": "^7.4.6",

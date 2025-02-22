@@ -1,8 +1,8 @@
 <template>
-  <section class="min-h-screen">
-    <div class="flex flex-col-reverse h-full">
+  <section class="flex min-h-screen items-center">
+    <BaseContainer class="flex h-full flex-col-reverse md:flex-row">
       <div
-        class="flex h-full md:w-1/2 flex-col justify-center px-4 md:px-24 py-12 dark:bg-blue-100"
+        class="flex h-full flex-col justify-center px-4 py-12 md:w-1/2 md:px-24 dark:bg-blue-100"
       >
         <div class="pb-12">
           <BaseHeadline
@@ -10,7 +10,7 @@
             text="Einloggen"
             type="h1"
           />
-          <p class="md:w-6/12 text-xl text-slate-600 dark:text-white">
+          <p class="text-xl text-slate-600 md:w-6/12 dark:text-white">
             Falls du noch kein Konto hast, kannst du dich
             <NuxtLink class="text-yellow-normal" to="/register"
               >hier registrieren</NuxtLink
@@ -47,11 +47,11 @@
         </BaseBox>
       </div>
       <div
-        class="hidden md:flex h-full md:w-1/2 items-center md:px-12 md:pb-24"
+        class="hidden h-full items-center md:flex md:w-1/2 md:px-12 md:pb-24"
       >
         <img src="/img/undraw_printing-invoices_osgs.svg" alt="" />
       </div>
-    </div>
+    </BaseContainer>
   </section>
 </template>
 

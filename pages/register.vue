@@ -1,9 +1,9 @@
 <template>
-  <section class="min-h-screen">
+  <section class="flex min-h-screen">
     <BaseContainer>
-      <div class="flex flex-col md:flex-row h-full">
+      <div class="flex h-full flex-col md:flex-row">
         <div
-          class="flex h-full w-full md:w-1/2 flex-col justify-center md:px-24 py-12"
+          class="flex size-full flex-col justify-center py-12 md:w-1/2 md:px-24"
         >
           <div class="pb-12">
             <BaseHeadline
@@ -11,7 +11,7 @@
               text="Erstelle ein kostenloses Konto"
               type="h1"
             />
-            <p class="md:w-6/12 text-xl text-slate-600 dark:text-white">
+            <p class="text-xl text-slate-600 md:w-6/12 dark:text-white">
               Falls du bereits ein Konto hast, kannst du dich
               <NuxtLink class="text-yellow-normal" to="/login"
                 >hier einloggen

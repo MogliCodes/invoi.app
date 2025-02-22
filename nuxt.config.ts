@@ -17,7 +17,7 @@ export default defineNuxtConfig({
     secretKey: process.env.SECRET_KEY,
   },
 
-  modules: ["@nuxt/ui", "@pinia/nuxt", "@nuxt/fonts"],
+  modules: ["@nuxt/ui", "@pinia/nuxt", "@nuxt/fonts", "@nuxtjs/tailwindcss"],
 
   vite: {
     define: {
