@@ -1,96 +1,50 @@
 <template>
   <div class="flex flex-col gap-4">
     <section v-if="showTourTeaser" id="tutorial">
-      <BaseContainer>
-        <BaseBox
-          class="relative overflow-hidden bg-yellow-300 !p-12 text-yellow-950"
-        >
-          <div class="md:w-2/3">
-            <BaseHeadline
-              class="mb-6 !text-yellow-950 dark:!text-yellow-950"
-              type="h1"
-              text="Professional invoices made easy"
-            />
-            <p class="mb-6 text-xl">
-              Explore the simplicity of creating invoices with our quick tour.
-              Learn easy steps to effortlessly generate invoices and enhance
-              your invoicing experience. Take the tutorial now for a hassle-free
-              invoicing journey.
-            </p>
-            <BaseButton text="Start the tour" variant="amber" />
-            <div
-              class="absolute right-6 top-6 flex size-9 items-center justify-center rounded-lg bg-yellow-400"
-            >
-              <UIcon
-                class="text-2xl"
-                name="i-heroicons-x-mark"
-                @click="showTourTeaser = false"
-              />
-            </div>
-            <UIcon
-              class="absolute -bottom-10 right-10 hidden size-[300px] md:block"
-              name="i-heroicons-document-chart-bar"
-            />
+      <BaseBox class="relative overflow-hidden bg-yellow-300 !p-12 text-yellow-950">
+        <div class="md:w-2/3">
+          <BaseHeadline class="mb-6 !text-yellow-950 dark:!text-yellow-950" type="h1"
+            text="Professional invoices made easy" />
+          <p class="mb-6 text-xl">
+            Explore the simplicity of creating invoices with our quick tour.
+            Learn easy steps to effortlessly generate invoices and enhance
+            your invoicing experience. Take the tutorial now for a hassle-free
+            invoicing journey.
+          </p>
+          <BaseButton text="Start the tour" variant="amber" />
+          <div class="absolute right-6 top-6 flex size-9 items-center justify-center rounded-lg bg-yellow-400">
+            <UIcon class="text-2xl" name="i-heroicons-x-mark" @click="showTourTeaser = false" />
           </div>
-        </BaseBox>
-      </BaseContainer>
+          <UIcon class="absolute -bottom-10 right-10 hidden size-[300px] md:block"
+            name="i-heroicons-document-chart-bar" />
+        </div>
+      </BaseBox>
     </section>
     <section id="overview">
-      <BaseContainer>
-        <BaseHeadline
-          class="!mb-1 font-syne text-lg font-bold text-gray-400 lg:text-2xl"
-          type="h2"
-          text="Overview"
-        />
-        <BaseBox>
-          <div class="lg:grid lg:grid-cols-3 lg:gap-4">
-            <BaseWidget
-              v-for="widget in overviewWidgets"
-              :label="widget.label"
-              :value="widget.value"
-              :icon="widget.icon"
-            />
-          </div>
-        </BaseBox>
-      </BaseContainer>
+      <BaseHeadline class="!mb-1 font-syne text-lg font-bold text-gray-400 lg:text-2xl" type="h2" text="Overview" />
+      <BaseBox>
+        <div class="lg:grid lg:grid-cols-3 lg:gap-4">
+          <BaseWidget v-for="widget in overviewWidgets" :label="widget.label" :value="widget.value"
+            :icon="widget.icon" />
+        </div>
+      </BaseBox>
     </section>
     <section id="revenues">
-      <BaseContainer>
-        <BaseHeadline
-          class="!mb-1 font-syne text-lg font-bold text-gray-400 lg:text-2xl"
-          type="h2"
-          text="Revenues"
-        />
-        <BaseBox>
-          <div class="lg:grid lg:grid-cols-3 lg:gap-4">
-            <BaseWidget
-              v-for="widget in revenueWidgets"
-              :label="widget.label"
-              :value="widget.value"
-              :icon="widget.icon"
-            />
-          </div>
-        </BaseBox>
-      </BaseContainer>
+      <BaseHeadline class="!mb-1 font-syne text-lg font-bold text-gray-400 lg:text-2xl" type="h2" text="Revenues" />
+      <BaseBox>
+        <div class="lg:grid lg:grid-cols-3 lg:gap-4">
+          <BaseWidget v-for="widget in revenueWidgets" :label="widget.label" :value="widget.value"
+            :icon="widget.icon" />
+        </div>
+      </BaseBox>
     </section>
     <section id="taxes">
-      <BaseContainer>
-        <BaseHeadline
-          class="!mb-1 font-syne text-lg font-bold text-gray-400 lg:text-2xl"
-          type="h2"
-          text="Taxes"
-        />
-        <BaseBox>
-          <div class="lg:grid lg:grid-cols-3 lg:gap-4">
-            <BaseWidget
-              v-for="widget in taxesWidgets"
-              :label="widget.label"
-              :value="widget.value"
-              :icon="widget.icon"
-            />
-          </div>
-        </BaseBox>
-      </BaseContainer>
+      <BaseHeadline class="!mb-1 font-syne text-lg font-bold text-gray-400 lg:text-2xl" type="h2" text="Taxes" />
+      <BaseBox>
+        <div class="lg:grid lg:grid-cols-3 lg:gap-4">
+          <BaseWidget v-for="widget in taxesWidgets" :label="widget.label" :value="widget.value" :icon="widget.icon" />
+        </div>
+      </BaseBox>
     </section>
   </div>
 </template>

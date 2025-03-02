@@ -1,16 +1,9 @@
 <template>
-  <NuxtLink
-    active-class="text-yellow-300"
-    exact-active-class="bg-yellow-300 !text-yellow-950 focus:border-yellow-100 hover:bg-yellow-200"
-    :to="to"
-    :class="[commonClasses, classes]"
-  >
+  <NuxtLink active-class="text-yellow-300"
+    exact-active-class="bg-yellow-300 !text-yellow-950 focus:border-yellow-100 hover:bg-yellow-200" :to="to"
+    :class="[commonClasses, classes]" @click="$emit('click')">
     <div class="flex w-full items-center gap-4">
-      <UIcon
-        v-if="icon"
-        class="text-xl"
-        :name="icon"
-      />
+      <UIcon v-if="icon" class="text-xl" :name="icon" />
       <span v-if="text">{{ text }}</span>
     </div>
     <slot name="trailingIcon"></slot>
@@ -33,6 +26,8 @@ const props = withDefaults(defineProps<Props>(), {
   size: 'md',
   onDarkBg: false,
 });
+
+defineEmits(['click']);
 
 const commonClasses = 'flex items-center rounded-lg cursor-pointer';
 const STYLE_MAP = {

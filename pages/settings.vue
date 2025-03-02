@@ -1,32 +1,19 @@
 <template>
-  <div class="w-1/2">
+  <div class="w-full lg:w-1/2">
     <div v-if="!settings?.data">
       <p>No settings yet.</p>
       <BaseButton text="Initialize settings" @click="initSettigns" />
     </div>
     <div v-else class="flex flex-col gap-6">
       <section>
-        <BaseHeadline
-          class="mb-2 text-xl font-bold dark:text-white"
-          text="Allgemein"
-          type="h2"
-        />
+        <BaseHeadline class="mb-2 text-xl font-bold dark:text-white" text="Allgemein" type="h2" />
         <BaseBox>
           <div class="flex flex-col gap-3">
             <div>
               <BaseLabel text="Profilbild" />
               <div class="flex gap-4">
-                <UInput
-                  v-model="profileImage"
-                  type="file"
-                  placeholder="Username"
-                />
-                <BaseButton
-                  size="xs"
-                  type="submit"
-                  text="Upload"
-                  @click="uploadProfileImage"
-                />
+                <UInput v-model="profileImage" type="file" placeholder="Username" />
+                <BaseButton size="xs" type="submit" text="Upload" @click="uploadProfileImage" />
               </div>
             </div>
             <div>
@@ -49,11 +36,7 @@
         </BaseBox>
       </section>
       <section id="company">
-        <BaseHeadline
-          class="mb-2 text-xl font-bold dark:text-white"
-          type="h2"
-          text="Firma"
-        />
+        <BaseHeadline class="mb-2 text-xl font-bold dark:text-white" type="h2" text="Firma" />
         <BaseBox>
           <div class="flex flex-col gap-3">
             <div>
@@ -88,11 +71,7 @@
         </BaseBox>
       </section>
       <section id="bank-info">
-        <BaseHeadline
-          class="mb-2 text-xl font-bold dark:text-white"
-          text="Bank information"
-          type="h2"
-        />
+        <BaseHeadline class="mb-2 text-xl font-bold dark:text-white" text="Bank information" type="h2" />
         <BaseBox>
           <div class="flex flex-col gap-3">
             <div>
@@ -111,47 +90,32 @@
         </BaseBox>
       </section>
       <section>
-        <BaseHeadline
-          class="text-xl font-bold dark:text-white"
-          text="Templates"
-          type="h2"
-        />
+        <BaseHeadline class="text-xl font-bold dark:text-white" text="Templates" type="h2" />
         <BaseBox>
           <div>
             <div class="flex w-full flex-col gap-3">
               <div>
                 <BaseLabel text="Invoice number schema" />
-                <BaseInput
-                  v-model="invoiceNumberSchema"
-                  placeholder="2023-001 (YYYY-XXX)"
-                />
+                <BaseInput v-model="invoiceNumberSchema" placeholder="2023-001 (YYYY-XXX)" />
               </div>
               <div>
                 <BaseLabel text="Additional Text for End of Invoices" />
-                <textarea
-                  v-model="additionalTextForEndOfInvoices"
+                <textarea v-model="additionalTextForEndOfInvoices"
                   class="font-inherit w-full rounded-lg border-2 border-gray-200 bg-gray-100 p-1 text-yellow-dark focus:border-2 focus:border-yellow-normal focus:outline-0 dark:border-white dark:border-opacity-20 dark:bg-black dark:bg-opacity-20 dark:text-gray-100 dark:placeholder:text-gray-600 dark:focus:border-yellow-300"
-                  rows="3"
-                ></textarea>
+                  rows="3"></textarea>
               </div>
               <div>
                 <BaseLabel text="Additional Text for Reverse Charge Invoices" />
-                <textarea
-                  v-model="additionalTextForReverseChargeInvoices"
+                <textarea v-model="additionalTextForReverseChargeInvoices"
                   class="font-inherit w-full rounded-lg border-2 border-gray-200 bg-gray-100 p-1 text-yellow-dark focus:border-2 focus:border-yellow-normal focus:outline-0 dark:border-white dark:border-opacity-20 dark:bg-black dark:bg-opacity-20 dark:text-gray-100 dark:placeholder:text-gray-600 dark:focus:border-yellow-300"
-                  rows="3"
-                ></textarea>
+                  rows="3"></textarea>
               </div>
             </div>
           </div>
         </BaseBox>
       </section>
       <section id="defaults">
-        <BaseHeadline
-          type="h2"
-          text="Defaults"
-          class="text-xl font-bold dark:text-white"
-        />
+        <BaseHeadline type="h2" text="Defaults" class="text-xl font-bold dark:text-white" />
         <BaseBox class="flex flex-col gap-3">
           <!--          <BaseHeadline-->
           <!--            type="h3"-->
@@ -170,11 +134,7 @@
           <!--            <BaseLabel text="Timezone" />-->
           <!--            <BaseInput v-model="timezone" placeholder="Timezone" />-->
           <!--          </div>-->
-          <BaseHeadline
-            type="h3"
-            text="Rates"
-            class="text-xl font-bold dark:text-white"
-          />
+          <BaseHeadline type="h3" text="Rates" class="text-xl font-bold dark:text-white" />
           <div>
             <BaseLabel text="Hourly Rate" />
             <BaseInput v-model="hourlyRate" placeholder="80€" />
@@ -190,12 +150,8 @@
         </BaseBox>
       </section>
     </div>
-    <BaseButton
-      icon="i-heroicons-check"
-      class="fixed bottom-10 right-10 shadow-xl"
-      text="Speichern"
-      @click="updateSettings"
-    />
+    <BaseButton icon="i-heroicons-check" class="fixed bottom-4 right-4 lg:bottom-10 lg:right-10 shadow-xl"
+      text="Speichern" @click="updateSettings" />
   </div>
 </template>
 <script setup lang="ts">

@@ -1,55 +1,39 @@
 <template>
   <nav
-    class="absolute inset-x-0 bottom-0 z-40 translate-y-full border-t-2 bg-blue-100 p-4 lg:static lg:translate-y-0 lg:border-t-0"
-  >
+    class="absolute inset-x-0 bottom-0 z-40 translate-y-full border-t-2 bg-blue-100 p-4 lg:static lg:translate-y-0 lg:border-t-0">
     <ul class="flex flex-col gap-3">
-      <li
-        v-for="(item, index) in menuItems"
-        :key="index"
-        class="group inline-block rounded-lg sm:block"
-        :class="[
-          { 'hover:bg-blue-80': item?.subItems?.length },
-          { 'bg-blue-80': isActiveSubmenu(`menu-${index}`) },
-        ]"
-      >
-        <BaseMenuItem
-          on-dark-bg
-          :to="item.to"
-          :text="item.text"
-          :icon="item.icon"
-        >
+      <li v-for="(item, index) in menuItems" :key="index" class="group inline-block rounded-lg sm:block" :class="[
+        { 'hover:bg-blue-80': item?.subItems?.length },
+        { 'bg-blue-80': isActiveSubmenu(`menu-${index}`) },
+      ]">
+        <BaseMenuItem on-dark-bg :to="item.to" :text="item.text" :icon="item.icon" @click="emitNavClick">
           <template v-if="!!item?.subItems?.length" #trailingIcon>
-            <IconButton
-              variant="secondary"
-              size="xs"
-              :icon="
-                isActiveSubmenu(`menu-${index}`)
-                  ? 'i-heroicons-chevron-up'
-                  : 'i-heroicons-chevron-down'
-              "
-              @click.prevent="toggleSubmenu(`menu-${index}`)"
-            />
+            <IconButton variant="secondary" size="xs" :icon="isActiveSubmenu(`menu-${index}`)
+              ? 'i-heroicons-chevron-up'
+              : 'i-heroicons-chevron-down'
+              " @click.prevent="toggleSubmenu(`menu-${index}`)" />
           </template>
         </BaseMenuItem>
-        <ul
-          v-if="!!item?.subItems?.length"
-          class="pb-5"
-          :class="isActiveSubmenu(`menu-${index}`) ? 'block' : 'hidden'"
-        >
+        <ul v-if="!!item?.subItems?.length" class="pb-5" :class="isActiveSubmenu(`menu-${index}`) ? 'block' : 'hidden'">
           <li v-for="subItem in item.subItems" class="px-5">
-            <BaseMenuItem
-              on-dark-bg
-              :to="subItem.to"
-              :text="subItem.text"
-              :icon="subItem.icon"
-            />
+            <BaseMenuItem on-dark-bg :to="subItem.to" :text="subItem.text" :icon="subItem.icon" @click="emitNavClick" />
           </li>
         </ul>
+      </li>
+      <!-- Settings option visible only on mobile -->
+      <li class="group inline-block rounded-lg sm:block lg:hidden mt-4 border-t border-blue-200 pt-4">
+        <BaseMenuItem on-dark-bg to="/settings" text="Settings" icon="i-heroicons-cog-6-tooth" @click="emitNavClick" />
       </li>
     </ul>
   </nav>
 </template>
 <script setup lang="ts">
+const emit = defineEmits(['navigation-clicked']);
+
+function emitNavClick() {
+  emit('navigation-clicked');
+}
+
 const menuItems = [
   {
     icon: "i-heroicons-home",
