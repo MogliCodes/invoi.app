@@ -21,6 +21,36 @@ invoi is a side project I started years ago when I was still doing mostly freela
 
 ### Track your working hours
 
+## Feature Toggles
+
+invoi.app uses feature toggles to enable or disable certain features in the navigation menu. The core features (Dashboard, Kontakte, Kunden, Rechnungen) are always available, while other features can be toggled on or off using environment variables.
+
+### Available Feature Toggles
+
+| Environment Variable | Description | Default |
+|----------------------|-------------|---------|
+| NUXT_PUBLIC_FEATURE_SERVICES | Enable/disable Leistungen | false |
+| NUXT_PUBLIC_FEATURE_PROPOSALS | Enable/disable Angebote | false |
+| NUXT_PUBLIC_FEATURE_REVENUES | Enable/disable Einkünfte | false |
+| NUXT_PUBLIC_FEATURE_EXPENSES | Enable/disable Ausgabe | false |
+| NUXT_PUBLIC_FEATURE_TIME_RECORDING | Enable/disable Zeiterfassung | false |
+
+### How to Use
+
+1. Copy the `.env.example` file to `.env`
+2. Set the desired feature toggles to `true` to enable them
+3. Restart the application
+
+Example:
+```
+# Enable Leistungen and Angebote, disable others
+NUXT_PUBLIC_FEATURE_SERVICES=true
+NUXT_PUBLIC_FEATURE_PROPOSALS=true
+NUXT_PUBLIC_FEATURE_REVENUES=false
+NUXT_PUBLIC_FEATURE_EXPENSES=false
+NUXT_PUBLIC_FEATURE_TIME_RECORDING=false
+```
+
 # Nuxt 3 Minimal Starter
 
 Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.

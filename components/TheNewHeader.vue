@@ -9,7 +9,7 @@
           </div>
         </div>
         <div :class="{ 'hidden': !showMenu && !isDesktop }" class="lg:block">
-          <TheNavigation @navigation-clicked="handleNavClick" />
+          <TheNavigation ref="navigationRef" @navigation-clicked="handleNavClick" />
         </div>
         <div></div>
       </div>
@@ -20,6 +20,7 @@
 <script setup lang="ts">
 const showMenu = ref(false);
 const isDesktop = ref(false);
+const navigationRef = ref(null);
 
 // Check if we're on desktop and set menu visibility accordingly
 function checkScreenSize() {
@@ -44,6 +45,11 @@ onUnmounted(() => {
 
 function toggleMenu(): void {
   showMenu.value = !showMenu.value;
+
+  // If menu is being closed, also close any open submenus
+  if (!showMenu.value && navigationRef.value && typeof navigationRef.value.closeAllSubmenus === 'function') {
+    navigationRef.value.closeAllSubmenus();
+  }
 }
 
 function handleNavClick(): void {
