@@ -1,70 +1,64 @@
 <template>
-  <BaseContainer>
-    <section class="mb-12 flex items-end justify-between">
-      <div>
-        <BaseButtonGroup>
-          <BaseButton
-            variant="yellow"
-            to="/invoices/create"
-            text="Rechnung erstellen"
-          />
-          <BaseButton
-            variant="outline"
-            to="/invoices/import"
-            text="Rechnungen importieren"
-          />
-          <BaseButton
-            variant="outline"
-            to="/invoices/templates"
-            text="Templates verwalten"
-          />
-        </BaseButtonGroup>
+  <main class="flex flex-col items-start">
+    <section class="lg:mb-12 w-full">
+      <!-- Desktop buttons -->
+      <div class="hidden sm:flex sm:flex-row sm:items-center gap-3">
+        <BaseButton variant="yellow" to="/invoices/create" text="Rechnung erstellen" />
+        <BaseButton variant="outline" to="/invoices/import" text="Rechnungen importieren" />
+        <BaseButton variant="outline" to="/invoices/templates" text="Templates verwalten" />
+      </div>
+
+      <!-- Mobile action menu -->
+      <div class="sm:hidden w-full mb-6">
+        <MobileActionMenu main-button-text="Rechnungs-Menü">
+          <MobileActionMenuItem to="/invoices/create" text="Rechnung erstellen" icon="i-heroicons-document-plus"
+            :is-primary="true" />
+          <MobileActionMenuItem to="/invoices/import" text="Rechnungen importieren"
+            icon="i-heroicons-arrow-down-tray" />
+          <MobileActionMenuItem to="/invoices/templates" text="Templates verwalten"
+            icon="i-heroicons-document-duplicate" />
+        </MobileActionMenu>
       </div>
     </section>
+
     <Transition>
-      <section v-if="showAdvancedFilters" class="mb-8">
-        <div class="flex gap-4">
-          <BaseInput placeholder="Search" />
-          <BaseInput placeholder="Search" />
-          <BaseInput placeholder="Search" />
-          <BaseInput placeholder="Search" />
-          <BaseInput placeholder="Search" />
+      <section v-if="showAdvancedFilters" class="lg:mb-8 w-full">
+        <div class="flex flex-col sm:flex-row gap-4">
+          <BaseInput placeholder="Search" class="w-full sm:w-auto" />
+          <BaseInput placeholder="Search" class="w-full sm:w-auto" />
+          <BaseInput placeholder="Search" class="w-full sm:w-auto" />
+          <BaseInput placeholder="Search" class="w-full sm:w-auto" />
+          <BaseInput placeholder="Search" class="w-full sm:w-auto" />
         </div>
       </section>
     </Transition>
-    <BaseNote v-if="invoiceCount === 0" class="mb-4">
+
+    <BaseNote v-if="invoiceCount === 0" class="mb-4 w-full">
       <p>
         Du hast noch keine Rechnungen angelegt. Klicke auf "Rechnung erstellen"
         um eine neue Rechnung zu erstellen.
       </p>
     </BaseNote>
-    <div>
-      <div class="mb-2 flex items-center gap-8">
-        <div class="">
+
+    <div class="w-full">
+      <div class="mb-2 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-8">
+        <div>
           <div v-if="!invoicesPending">
             <span class="text-sm font-bold text-secondary-100">{{
-              invoices?.invoices?.length
+              invoices?.invoices?.length || 0
             }}</span>
             <span class="text-sm font-bold text-secondary-100"> von </span>
-            <span
-              v-if="invoiceCount"
-              class="text-sm font-bold text-secondary-100"
-              >{{ invoiceCount }}</span
-            >
+            <span v-if="invoiceCount" class="text-sm font-bold text-secondary-100">{{ invoiceCount }}</span>
             <span class="text-sm font-bold text-secondary-100">
-              Rechnungen</span
-            >
+              Rechnungen</span>
           </div>
           <div v-else>
             <USkeleton class="h-4 w-[150px] bg-secondary-100" />
           </div>
         </div>
-        <div class="flex gap-4 text-sm">
-          <USelectMenu
-            v-model="selectedYear"
-            :options="years.data"
-            placeholder="Wähle ein Jahr aus"
-          >
+        <div class="flex flex-col sm:flex-row gap-2 text-sm w-full sm:w-auto mb-4 lg:mb-0">
+          <USelectMenu v-model="selectedYear" :options="years?.data || []" placeholder="Wähle ein Jahr aus"
+            class="w-full sm:w-auto">
             <template #label>
               <span v-if="selectedYear" class="truncate">{{
                 selectedYear
@@ -72,163 +66,39 @@
               <span v-else>Wähle ein Jahr aus</span>
             </template>
           </USelectMenu>
-          <USelectMenu
-            v-if="clients"
-            v-model="selectecClient"
-            :options="clients"
-            multiple
-            option-attribute="company"
-            value-attribute="_id"
-          >
+          <USelectMenu v-if="clients" v-model="selectecClient" :options="clients" multiple option-attribute="company"
+            value-attribute="_id" class="w-full sm:w-auto">
             <template #label>
-              <span v-if="selectecClient.length" class="truncate"
-                >{{ selectecClient.length }} Kunden ausgewählt</span
-              >
+              <span v-if="selectecClient.length" class="truncate">{{ selectecClient.length }} Kunden ausgewählt</span>
               <span v-else>Wähle einen Kunden aus</span>
             </template>
           </USelectMenu>
         </div>
       </div>
-      <div v-if="!invoicesPending && !!invoices?.invoices?.length">
-        <table
-          class="lg:text-md min-w-full overflow-hidden rounded-lg text-xs shadow-lg md:text-sm dark:text-gray-400"
-        >
-          <thead class="bg-blue-90 text-white">
-            <tr>
-              <th class="py-5 pl-6 text-left">
-                <UCheckbox
-                  v-model="selectAll"
-                  :checked="selectAll"
-                  @click="toggleSelectAll"
-                />
-              </th>
-              <th class="px-6 py-5 text-left">Rechnungsnummer</th>
-              <th class="px-6 py-5 text-left">Titel</th>
-              <th class="px-6 py-5 text-left">Kunde</th>
-              <th class="px-6 py-5 text-left">Datum</th>
-              <th class="px-6 py-5 text-left">Status</th>
-              <th class="px-6 py-5 text-right">Netto</th>
-              <th class="px-6 py-5 text-right">Mwst.</th>
-              <th class="px-6 py-5 text-right">Brutto</th>
-              <th class="px-6 py-5 text-right">Aktion</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              v-for="invoice in invoices.invoices"
-              :key="invoice?._id"
-              class="rounded bg-white p-4 even:bg-gray-200 dark:odd:bg-blue-80 dark:even:bg-blue-90"
-            >
-              <td class="py-3 pl-6">
-                <UCheckbox
-                  :checked="isSelectedInvoice(invoice._id)"
-                  @click="toggleSelection(invoice._id)"
-                />
-              </td>
-              <td class="px-6 py-3">
-                {{ invoice?.nr }}
-              </td>
-              <td class="px-6 py-3">
-                <span :title="invoice.title">{{ invoice.title }}</span>
-              </td>
-              <td class="px-6 py-3">
-                <span :title="getClientName(invoice.client)">
-                  {{ getClientName(invoice.client) }}
-                </span>
-              </td>
-              <td class="px-6 py-3">
-                {{
-                  new Date(invoice.date)
-                    .toLocaleDateString("en-GB", {
-                      day: "2-digit",
-                      month: "2-digit",
-                      year: "numeric",
-                    })
-                    .split("/")
-                    .join(".")
-                }}
-              </td>
-              <td class="px-6 py-3">
-                <InvoiceStatusPill :invoice="invoice" />
-              </td>
-              <td class="whitespace-nowrap px-6 py-3 text-right">
-                {{ formatCurrencyAmount(formatCentToAmount(invoice.total)) }}
-              </td>
-              <td class="whitespace-nowrap px-6 py-3 text-right">
-                {{ formatCurrencyAmount(formatCentToAmount(invoice?.taxes)) }}
-              </td>
-              <td class="whitespace-nowrap px-6 py-3 text-right">
-                {{
-                  formatCurrencyAmount(
-                    formatCentToAmount(invoice?.totalWithTaxes)
-                  )
-                }}
-              </td>
-              <td class="px-6 py-3">
-                <span class="flex justify-end gap-2">
-                  <NuxtLink :to="`/invoices/${invoice._id}`">
-                    <UIcon
-                      class="cursor-pointer text-xl transition-colors hover:text-gray-400 dark:hover:text-white"
-                      name="i-heroicons-eye"
-                    />
-                  </NuxtLink>
-                  <UIcon
-                    class="cursor-pointer text-xl transition-colors hover:text-gray-400 dark:hover:text-white"
-                    name="i-heroicons-trash"
-                    @click="initiateDeletion(invoice._id)"
-                  />
-                </span>
-              </td>
-            </tr>
-          </tbody>
-          <tfoot>
-            <tr class="bg-blue-90 font-bold text-white">
-              <td></td>
-              <td colspan="5" class="px-6 py-5 font-bold">Summe</td>
-              <td class="whitespace-nowrap px-6 py-3 text-right">
-                {{
-                  formatCurrencyAmount(formatCentToAmount(invoices?.totalAcc))
-                }}
-              </td>
-              <td class="whitespace-nowrap px-6 py-3 text-right">
-                {{
-                  formatCurrencyAmount(formatCentToAmount(invoices?.taxesAcc))
-                }}
-              </td>
-              <td class="whitespace-nowrap px-6 py-3 text-right">
-                {{
-                  formatCurrencyAmount(
-                    formatCentToAmount(invoices?.totalWithTaxesAcc)
-                  )
-                }}
-              </td>
-              <td></td>
-            </tr>
-          </tfoot>
-        </table>
-        <div class="flex justify-between py-4">
-          <div class="flex items-center gap-2">
-            <USelectMenu
-              v-model="bulkAction"
-              class="cursor-pointer !bg-white"
-              size="xl"
-              color="white"
-              :options="bulkActionOptions"
-            >
+
+      <div v-if="!invoicesPending && invoices?.invoices && invoices.invoices.length > 0" class="w-full">
+        <ResponsiveInvoiceTable :invoices="invoices.invoices" :selected-invoices="selectedInvoices"
+          :select-all="selectAll" :clients="clients || []" :total-acc="invoices.totalAcc" :taxes-acc="invoices.taxesAcc"
+          :total-with-taxes-acc="invoices.totalWithTaxesAcc" @toggle-selection="toggleSelection"
+          @toggle-select-all="toggleSelectAll" @delete="initiateDeletion" />
+
+        <div class="flex flex-col sm:flex-row justify-between py-4 gap-4">
+          <div class="flex flex-col sm:flex-row items-start sm:items-center gap-2">
+            <USelectMenu v-model="bulkAction" class="cursor-pointer !bg-white w-full sm:w-auto" size="xl" color="white"
+              :options="bulkActionOptions">
               <template #label>
                 {{ bulkAction }}
               </template>
             </USelectMenu>
-            <BaseButton size="sm" text="Anwenden" @click="executeBulkAction" />
+            <BaseButton size="sm" text="Anwenden" class="w-full sm:w-auto" @click="executeBulkAction" />
           </div>
         </div>
       </div>
     </div>
+
     <UModal v-model="isOpen">
-      <div class="flex flex-col items-center p-8 text-center">
-        <div
-          class="mx-auto mb-4 flex size-10 items-center justify-center rounded-full bg-red-500"
-        >
+      <div class="flex flex-col items-center p-4 sm:p-8 text-center">
+        <div class="mx-auto mb-4 flex size-10 items-center justify-center rounded-full bg-red-500">
           <UIcon class="text-2xl text-red-900" name="i-heroicons-trash" />
         </div>
         <BaseHeadline class="mb-2" type="h3" text="Confirm delete" />
@@ -236,41 +106,30 @@
           <p class="mb-8">Are you sure you want to delete this entry?</p>
           <div class="flex justify-center gap-4">
             <BaseButton variant="red" text="Delete" @click="deleteInvoice()" />
-            <BaseButton
-              variant="outline"
-              text="Discard"
-              @click="isOpen = false"
-            />
+            <BaseButton variant="outline" text="Discard" @click="isOpen = false" />
           </div>
         </section>
         <section v-else>
           <p class="mb-8">
             Are you sure you want to delete the entries with the following ids?
           </p>
-          <div class="mb-8 break-all bg-black p-1 text-gray-200">
+          <div class="mb-8 break-all bg-black p-1 text-gray-200 max-h-40 overflow-auto">
             {{ selectedInvoices.toString() }}
           </div>
           <div class="flex justify-center gap-4">
-            <BaseButton
-              variant="red"
-              text="Delete"
-              @click="bulkDeleteInvoices"
-            />
-            <BaseButton
-              variant="outline"
-              text="Discard"
-              @click="isOpen = false"
-            />
+            <BaseButton variant="red" text="Delete" @click="bulkDeleteInvoices" />
+            <BaseButton variant="outline" text="Discard" @click="isOpen = false" />
           </div>
         </section>
       </div>
     </UModal>
-  </BaseContainer>
+  </main>
 </template>
 
 <script setup lang="ts">
 import { useAuthStore } from "~/stores/auth.store";
 import { useAlertStore } from "~/stores/alert";
+import { ref, watch } from 'vue';
 
 definePageMeta({
   title: "Rechnungen",
@@ -280,7 +139,7 @@ definePageMeta({
 const authStore = useAuthStore();
 const selectecClient = ref<string>("");
 
-const { data: years, pending: yearsPending } = useFetch<string[]>(
+const { data: years, pending: yearsPending, error: yearsError } = useFetch<{ data: string[] }>(
   `/api/invoices/years/get`,
   {
     lazy: true,
@@ -289,6 +148,7 @@ const { data: years, pending: yearsPending } = useFetch<string[]>(
       userid: authStore.userId,
       Authorization: `Bearer ${authStore.accessToken}`,
     },
+    default: () => ({ data: [] }),
   }
 );
 
@@ -303,9 +163,9 @@ const selectedYear = ref<string>();
 
 watch(yearsPending, (value) => {
   console.log("yearsPending", value);
-  if (!value) {
+  if (!value && years.value && years.value.data && years.value.data.length > 0) {
     console.log("years", years.value);
-    selectedYear.value = years?.value?.data[years?.value?.data.length - 1];
+    selectedYear.value = years.value.data[years.value.data.length - 1];
   }
 });
 
@@ -324,17 +184,23 @@ const {
     year: selectedYear,
     client: selectecClient,
   },
+  default: () => ({
+    invoices: [],
+    totalAcc: 0,
+    taxesAcc: 0,
+    totalWithTaxesAcc: 0
+  }),
 });
 
-const { data: invoiceCount, refresh: refreshInvoiceCount } = useFetch<
-  Invoice[]
->(`/api/invoices/count/get`, {
+const { data: invoiceCount, refresh: refreshInvoiceCount } = useFetch<number>(
+  `/api/invoices/count/get`, {
   method: "POST",
   lazy: true,
   headers: {
     userId: authStore.userId,
     Authorization: `Bearer ${authStore.accessToken}`,
   },
+  default: () => 0,
 });
 
 const { data: clients } = useFetch<Client[]>(`/api/clients/get`, {
@@ -344,13 +210,16 @@ const { data: clients } = useFetch<Client[]>(`/api/clients/get`, {
     userId: authStore.userId,
     Authorization: `Bearer ${authStore.accessToken}`,
   },
+  default: () => [],
 });
 
 function getClientName(clientId: string) {
-  const client = clients?.value?.find(
+  if (!clientId || !clients.value) return 'Unknown Client';
+
+  const client = clients.value.find(
     (client: Client) => client._id === clientId
   );
-  return client?.company;
+  return client?.company || 'Unknown Client';
 }
 
 const showAdvancedFilters = ref(false);
@@ -364,7 +233,7 @@ const bulkActionOptions = ref(["Löschen", "EÜR generieren"]);
 function toggleSelectAll() {
   selectAll.value = !selectAll.value;
   if (selectAll.value && invoices.value?.invoices) {
-    selectedInvoices.value = invoices?.value?.invoices.map(
+    selectedInvoices.value = invoices.value.invoices.map(
       (invoice) => invoice._id
     );
   } else {
@@ -378,9 +247,9 @@ const isSelectedInvoice = (invoiceId: string) =>
 function toggleSelection(invoiceId: string) {
   isSelectedInvoice(invoiceId)
     ? selectedInvoices.value.splice(
-        selectedInvoices.value.indexOf(invoiceId),
-        1
-      )
+      selectedInvoices.value.indexOf(invoiceId),
+      1
+    )
     : selectedInvoices.value.push(invoiceId);
 }
 
@@ -478,6 +347,16 @@ async function bulkDeleteInvoices() {
     console.error(error);
   }
 }
+
+watch(selectedYear, (newValue) => {
+  if (newValue) {
+    refreshInvoices();
+  }
+});
+
+watch(selectecClient, () => {
+  refreshInvoices();
+});
 </script>
 
 <style>

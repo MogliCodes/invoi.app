@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col gap-4">
     <section v-if="showTourTeaser" id="tutorial">
-      <BaseBox class="relative overflow-hidden bg-yellow-300 !p-12 text-yellow-950">
+      <BaseBox class="relative overflow-hidden bg-yellow-300 !p-8 lg:!p-12 text-yellow-950">
         <div class="md:w-2/3">
           <BaseHeadline class="mb-6 !text-yellow-950 dark:!text-yellow-950" type="h1"
             text="Professional invoices made easy" />
