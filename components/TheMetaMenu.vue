@@ -1,18 +1,6 @@
 <template>
-  <div
-    class="fixed right-6 top-1.5 z-50 hidden items-center justify-center gap-1 lg:flex"
-  >
-    <div
-      class="flex size-9 items-center justify-center rounded-lg bg-white transition hover:bg-gray-50 dark:bg-blue-90"
-    >
-      <UIcon
-        class="cursor-pointer text-2xl text-gray-500 dark:text-gray-300"
-        name="i-heroicons-bell"
-      ></UIcon>
-    </div>
-    <div class="">
-      <ColorModeButton />
-    </div>
+  <div class="fixed right-6 top-1.5 z-50 hidden items-center justify-center gap-1 lg:flex">
+    <ColorModeButton />
     <div class="relative flex">
       <UAvatar
         v-if="settings?.avatar"
@@ -53,12 +41,12 @@
 </template>
 
 <script setup lang="ts">
-import { onClickOutside } from "@vueuse/core";
-import { useAuthStore } from "~/stores/auth.store";
+import { onClickOutside } from '@vueuse/core';
+import { useAuthStore } from '~/stores/auth.store';
 
 const authStore = useAuthStore();
 const { data: settings, refresh } = useFetch(`/api/settings/get`, {
-  method: "POST",
+  method: 'POST',
   headers: {
     Authorization: `Bearer ${authStore.accessToken}`,
     userid: authStore.userId,
@@ -75,15 +63,15 @@ const initials = computed<string>(() => {
   if (settings?.value?.data.firstname && settings?.value?.data.lastname) {
     return `${settings?.value.data.firstname[0]}${settings?.value.data.lastname[0]}`;
   }
-  return "";
+  return '';
 });
 
 const userMenu = ref(null);
 onClickOutside(userMenu, () => (isUserMenuActive.value = false));
 
 async function logout() {
-  const response = await $fetch("/api/logout", {
-    method: "POST",
+  const response = await $fetch('/api/logout', {
+    method: 'POST',
     body: {
       userId: authStore.userId,
     },
@@ -92,7 +80,7 @@ async function logout() {
     authStore.setUserLoggedIn(false);
     authStore.setAccessToken(null);
     authStore.setUserId(null);
-    navigateTo("/login");
+    navigateTo('/login');
   }
 }
 </script>

@@ -1,5 +1,8 @@
 {
-    "plugins": ["vue", "tailwindcss"],
+    "plugins": [
+        "vue",
+        "tailwindcss"
+    ],
     "extends": [
         "plugin:vue/vue3-recommended",
         "@nuxtjs/eslint-config-typescript",
@@ -13,16 +16,64 @@
         }
     },
     "rules": {
-        "prettier/prettier": "error",
+        "prettier/prettier": [
+            "error",
+            {
+                "singleAttributePerLine": true
+            }
+        ],
+        "vue/first-attribute-linebreak": [
+            "error",
+            {
+                "singleline": "ignore",
+                "multiline": "below"
+            }
+        ],
+        "vue/max-attributes-per-line": [
+            "error",
+            {
+                "singleline": {
+                    "max": 1
+                },
+                "multiline": {
+                    "max": 1
+                }
+            }
+        ],
         "require-await": "off",
         "tailwindcss/classnames-order": "error",
-        "no-console": ["warn", { "allow": ["error", "warn", "info"] }],
-        "tailwindcss/no-custom-classname": ["off", { "whitelist": ["add-row-btn", "a4"] }],
-        "tailwindcss/migration-from-tailwind-2": ["off", { "whitelist": ["bg-opacity-20", "bg-opacity-80"] }],
+        "no-console": [
+            "warn",
+            {
+                "allow": [
+                    "error",
+                    "warn",
+                    "info"
+                ]
+            }
+        ],
+        "tailwindcss/no-custom-classname": [
+            "off",
+            {
+                "whitelist": [
+                    "add-row-btn",
+                    "a4"
+                ]
+            }
+        ],
+        "tailwindcss/migration-from-tailwind-2": [
+            "off",
+            {
+                "whitelist": [
+                    "bg-opacity-20",
+                    "bg-opacity-80"
+                ]
+            }
+        ],
         "max-len": [
             "error",
             {
-                "code": 120,  // Adjust this value to your preferred line length
+                "code": 120, // Adjust this value to your preferred line length
                 "ignoreUrls": true,
                 "ignoreComments": false,
                 "ignoreTrailingComments": false,

@@ -11,9 +11,9 @@
         :text="useRoute().meta.title"
       />
     </StickyElement>
-    <div class="pt-0 lg:min-h-screen lg:p-4">
+    <BaseContainer class="pt-0 lg:min-h-screen lg:p-4">
       <slot />
-    </div>
+    </BaseContainer>
   </main>
 </template>
 <script setup lang="ts">

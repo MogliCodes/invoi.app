@@ -5,6 +5,8 @@
   "scripts": {
     "lint": "eslint --ext .js,.ts,.vue --ignore-path .gitignore .",
     "lint:fix": "eslint --ext .js,.ts,.vue --ignore-path .gitignore . --fix",
+    "format": "prettier --write \"**/*.{js,ts,vue,json,css,scss,md}\"",
+    "format:vue": "./format-vue-files.sh",
     "test": "vitest",
     "build": "nuxt build",
     "dev": "NODE_ENV=development nuxt dev",

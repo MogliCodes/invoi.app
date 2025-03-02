@@ -17,8 +17,8 @@
           bevor du eine Rechnung erstellst.
         </p>
         <NuxtLink class="font-bold text-blue-600" to="/clients/create"
-          >Kunden anlegen</NuxtLink
-        >
+          >Kunden anlegen
+        </NuxtLink>
       </BaseNote>
       <BaseNote v-if="!validSettings">
         <p>
@@ -246,7 +246,7 @@
               :disabled="!isValidInvoice"
               variant="outline"
               text="Als Vorlage speichern"
-              @click="saveAsDraft"
+              @click="showCreateDraftModal = true"
             />
           </div>
         </section>
@@ -281,10 +281,23 @@
               :options="invoiceDrafts"
               class="mb-3"
               placeholder="Select a draft"
-              option-attribute="title"
+              option-attribute="draftTitle"
               value-attribute="_id"
             />
             <BaseButton text="Use draft" @click="applyDraft" />
+          </div>
+        </template>
+      </UModal>
+      <UModal v-model="showCreateDraftModal">
+        <template #default>
+          <div class="flex flex-col gap-3 p-6">
+            <BaseHeadline type="h2" text="Vorlage speichern" />
+            <BaseInput
+              v-model="draftTitle"
+              placeholder="Vorlagenname"
+              class="!mb-3 block"
+            />
+            <BaseButton text="Vorlage speichern" @click="saveAsDraft" />
           </div>
         </template>
       </UModal>
@@ -651,11 +664,13 @@ async function createInvoice() {
 }
 
 const invoicePreviewHtml = ref();
+
 async function getInvoicePreview() {
   const { data } = useFetch("../invoice-template-single.html");
   invoicePreviewHtml.value = data.value;
   showPreview.value = true;
 }
+
 const showDraftSelectModal = ref(false);
 
 function applyDraft() {
@@ -688,6 +703,8 @@ function applyDraft() {
   showDraftSelectModal.value = false;
 }
 
+const draftTitle = ref("");
+const showCreateDraftModal = ref(false);
 const shouldBeSavedAsDraft = ref(false);
 
 async function saveAsDraft() {
@@ -695,6 +712,7 @@ async function saveAsDraft() {
     nr: invoiceNumber.value,
     contact: selectedContact.value,
     client: selectedClient.value,
+    draftTitle: draftTitle.value,
     title: invoiceTitle.value,
     date: invoiceDate.value,
     performancePeriodStart: performancePeriodStart.value,
@@ -762,6 +780,7 @@ const selectedInvoiceDraft = ref();
   height: 297mm;
   width: 210mm;
 }
+
 tr:hover .add-row-btn {
   opacity: 1;
   transform: scale(1) translateY(50%);

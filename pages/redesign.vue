@@ -9,7 +9,7 @@
             <BaseHeadline
               class="mb-6 !text-yellow-950 dark:!text-yellow-950"
               type="h1"
-              text="Professinal invoices made easy"
+              text="Professional invoices made easy"
             />
             <p class="mb-6 text-xl">
               Explore the simplicity of creating invoices with our quick tour.
